@@ -1,0 +1,5 @@
+Set Color Black
+
+Extreme Dark: 220
+Dark: 200
+Normal: 180

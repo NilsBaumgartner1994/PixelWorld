@@ -143,7 +143,7 @@ public class CameraController {
 		
 		Sprite debug = new Sprite(new Debug().getTexture());
 
-		MapTile bigger = area.get(area.size() / 2);
+		List<MapTile> cloud = area.get(area.size() / 2).getMoore();
 
 		for (MapTile tile : area) {
 			Sprite sprite = tile.getMaterialSprite();
@@ -151,7 +151,7 @@ public class CameraController {
 
 			Color save = fboBatch.getColor();
 
-			if (tile == bigger) {
+			if (cloud.contains(tile)) {
 				fboBatch.setColor(save.cpy().add(-0.5f, -0.5f, -0.5f, 0));
 			}
 
@@ -160,7 +160,7 @@ public class CameraController {
 			
 			
 			
-			if (tile == bigger) {
+			if (cloud.contains(tile)) {
 				fboBatch.setColor(save);
 			}
 

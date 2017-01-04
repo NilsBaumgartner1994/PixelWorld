@@ -100,10 +100,10 @@ public class MapTile extends Entity {
 
 	public List<MapTile> getNeumann() {
 		List<MapTile> back = new ArrayList<MapTile>();
-		back.add(getLeft());
-		back.add(getRight());
-		back.add(getAbouve());
-		back.add(getUnder());
+		back.add(getOffset(1, 0));
+		back.add(getOffset(-1, 0));
+		back.add(getOffset(0, 1));
+		back.add(getOffset(0, -1));
 		return back;
 	}
 

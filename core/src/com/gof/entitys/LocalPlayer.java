@@ -32,7 +32,7 @@ public class LocalPlayer extends Entity {
 	public CameraController cameraController;
 	public MenuHandler menuHandler;
 
-	private float speed;
+	private int speed;
 	
 	private boolean sneaking;
 
@@ -51,14 +51,14 @@ public class LocalPlayer extends Entity {
 	public void sneak(boolean sneak){
 		sneaking = sneak;
 		if(sneaking){
-//			speed = Speed.sneakSpeed;
+			speed = Speed.sneak;
 		}
 	}
 
 	public void run(boolean run) {
 		// true : false
 		if (!sneaking) {
-//			speed = run ? Speed.runSpeed : Speed.walkSpeed;
+			speed = run ? Speed.run : Speed.walk;
 		}
 	}
 
@@ -78,7 +78,7 @@ public class LocalPlayer extends Entity {
 	private void updateLeftStick() {
 		if (this.stickLeft.len() != 0) {
 			this.direction = Position.getPositionDirectionFromVector(this.stickLeft);
-			setVelocity(this.direction);
+			setVelocity(this.direction.cpy().scale(this.speed));
 		}
 		else{
 		setVelocity(Direction.STOP);

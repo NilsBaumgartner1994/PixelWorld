@@ -326,7 +326,7 @@ public class Amortized2DNoise {
 
 		for (int i = 0; i < CELLSIZE2D * CELLSIZE2D / 400; i++) {
 			randomTree(cell, tiles);
-//			randomGrass(cell, tiles);
+			randomGrass(cell, tiles);
 		}
 
 		return tiles;

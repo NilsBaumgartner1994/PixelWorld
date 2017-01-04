@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Direction {
 
-	static int speed = 4;
+	static int speed = 1;
 
 	public static final Position STOP = new Position(0,0,0,0);
 	
