@@ -1,6 +1,6 @@
-package com.redagent.worldgenerator;
+package com.gof.worldgenerator;
 
-import com.redagent.world.MapTile;
+import com.gof.world.MapTile;
 
 public interface GeneratorInterface {
 

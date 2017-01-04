@@ -1,4 +1,4 @@
-package com.redagent.Inputs;
+package com.gof.Inputs;
 
 import com.badlogic.gdx.math.Vector2;
 

@@ -1,4 +1,4 @@
-package com.redagent.nature;
+package com.gof.nature;
 
 public class Tree extends Nature{
 	

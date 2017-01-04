@@ -1,7 +1,7 @@
-package com.redagent.menu;
+package com.gof.menu;
 
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.redagent.entitys.LocalPlayer;
+import com.gof.entitys.LocalPlayer;
 
 public class MenuHandler {
 

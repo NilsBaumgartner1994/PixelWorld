@@ -1,4 +1,4 @@
-package com.redagent.menu;
+package com.gof.menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.shaders.DefaultShader;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Vector3;
-import com.redagent.entitys.LocalPlayer;
+import com.gof.entitys.LocalPlayer;
 
 public class Ingame implements Menu {
 

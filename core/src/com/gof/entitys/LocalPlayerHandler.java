@@ -1,8 +1,8 @@
-package com.redagent.entitys;
+package com.gof.entitys;
 
 import java.util.HashMap;
 
-import com.redagent.game.Main;
+import com.gof.game.Main;
 
 public class LocalPlayerHandler {
 

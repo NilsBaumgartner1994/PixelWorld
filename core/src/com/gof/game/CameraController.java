@@ -1,4 +1,4 @@
-package com.redagent.game;
+package com.gof.game;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,12 +14,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Vector2;
-import com.redagent.entitys.Entity;
-import com.redagent.entitys.LocalPlayer;
-import com.redagent.physics.Body;
-import com.redagent.physics.Position;
-import com.redagent.world.MapTile;
-import com.redagent.world.TileWorld;
+import com.gof.entitys.Entity;
+import com.gof.entitys.LocalPlayer;
+import com.gof.physics.Body;
+import com.gof.physics.Position;
+import com.gof.world.MapTile;
+import com.gof.world.TileWorld;
 
 public class CameraController {
 
@@ -38,7 +38,7 @@ public class CameraController {
 	public static int zoomLevelmin = -2;
 	public static int zoomLevelmax = 3;
 
-	public static float xAmount = 8;
+	public static int xAmount = 8;
 	// private int xAmountMax = 100;
 	public static int xAmountMax = 250;
 	public static int xAmountMin = 1;
@@ -49,7 +49,7 @@ public class CameraController {
 
 	public CameraController(int width, int height) {
 		resize(width, height);
-		camera.setPosition(0,0);
+		camera.setPosition(0, 0);
 
 		font = new BitmapFont();
 		font.setColor(Color.BLACK);
@@ -59,22 +59,6 @@ public class CameraController {
 		setScreenSize(width, height);
 		initCamera();
 		initFrameBuffer();
-	}
-
-	public float getXAmount() {
-		return xAmount;
-	}
-
-	public float getOnePixelSize() {
-		return getTileSizeByScreenSize() / MapTile.tileWidth;
-	}
-
-	public float getTileSizeByScreenSize() {
-		return this.width / xAmount;
-	}
-
-	public float getYAmount() {
-		return this.height / getTileSizeByScreenSize();
 	}
 
 	private void setScreenSize(int width, int height) {
@@ -123,10 +107,13 @@ public class CameraController {
 
 		int xcenter = camera.getPosition().x;
 		int ycenter = camera.getPosition().y;
+		
+		int numerator = getZoomLevelScaleFactorNumerator();
+		int denumerator = getZoomLevelScaleFactorDenumerator();
 
 		int safetytiles = 3;
-		int breite = (int) (this.width / (MapTile.tileWidth * getZoomLevelScaleFactor())) + safetytiles;
-		int höhe = (int) (this.height / (MapTile.tileHeight * getZoomLevelScaleFactor())) + safetytiles;
+		int breite = ((this.width/ MapTile.tileWidth)* numerator) / denumerator + safetytiles;
+		int höhe = ((this.height/ MapTile.tileHeight )* numerator) / denumerator + safetytiles;
 
 		for (int a = -höhe + 1; a < höhe; a++) {
 			for (int b = -breite + 1; b < breite; b++) {
@@ -138,33 +125,29 @@ public class CameraController {
 			}
 		}
 
-		float size = getTileSizeByScreenSize();
-		float scale = getOnePixelSize();
-
 		Collections.sort(area);
 		drawGround(area);
-
-		
 
 		fboBatch.end();
 		fbo.end();
 	}
 
 	private void drawGround(List<MapTile> area) {
-		float size = getTileSizeByScreenSize();
-		float scale = getOnePixelSize();
+		
+		int numerator = getZoomLevelScaleFactorNumerator();
+		int denumerator = getZoomLevelScaleFactorDenumerator();
 
-		float tileWidth = MapTile.tileWidth * getZoomLevelScaleFactor();
-		float tileHeight = MapTile.tileHeight * getZoomLevelScaleFactor();
-		float tileWidthHalf = tileWidth / 2.0f;
-		float tileHeightHalf = tileHeight / 2.0f;
+		int tileWidth = MapTile.tileWidth * numerator / denumerator;
+		int tileHeight = MapTile.tileHeight * numerator / denumerator;
+		int tileWidthHalf = tileWidth / 2;
+		int tileHeightHalf = tileHeight / 2;
 
 		MapTile bigger = area.get(area.size() / 2);
 
 		for (MapTile tile : area) {
 			Sprite sprite = new Sprite(tile.getMaterialTexture());
-			float x = globalPosToScreenPosX(tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf);
-			float y = globalPosToScreenPosY(tile.getGlobalX(), tile.getGlobalY(), tileHeightHalf);
+			int x = globalPosToScreenPosX(tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf);
+			int y = globalPosToScreenPosY(tile.getGlobalX(), tile.getGlobalY(), tileHeightHalf);
 
 			if (tile == bigger) {
 				Color save = fboBatch.getColor();
@@ -174,8 +157,8 @@ public class CameraController {
 
 				sprite.setPosition(x, y);
 				sprite.setOrigin(tileWidthHalf, tileHeightHalf);
-				sprite.setSize(sprite.getWidth() * getZoomLevelScaleFactor(),
-						sprite.getHeight() * getZoomLevelScaleFactor());
+				sprite.setSize(sprite.getWidth() * numerator / denumerator,
+						sprite.getHeight() * numerator / denumerator);
 
 				fboBatch.draw(sprite, sprite.getX(), sprite.getY(), sprite.getOriginX(), sprite.getOriginY(),
 						sprite.getWidth(), sprite.getHeight(), sprite.getScaleX(), sprite.getScaleY(),
@@ -187,8 +170,8 @@ public class CameraController {
 
 				sprite.setPosition(x, y);
 				sprite.setOrigin(tileWidthHalf, tileHeightHalf);
-				sprite.setSize(sprite.getWidth() * getZoomLevelScaleFactor(),
-						sprite.getHeight() * getZoomLevelScaleFactor());
+				sprite.setSize(sprite.getWidth() * numerator / denumerator,
+						sprite.getHeight() * numerator / denumerator);
 
 				fboBatch.draw(sprite, sprite.getX(), sprite.getY(), sprite.getOriginX(), sprite.getOriginY(),
 						sprite.getWidth(), sprite.getHeight(), sprite.getScaleX(), sprite.getScaleY(),
@@ -197,34 +180,44 @@ public class CameraController {
 		}
 	}
 
-	private float getZoomLevelScaleFactor() {
-		return (float) Math.pow(2, zoomLevel);
+	private int getZoomLevelScaleFactorDenumerator() {
+		double amount = Math.pow(2, zoomLevel);
+		if (amount < 1) {
+			return 1;
+		}
+
+		return (int) amount;
 	}
 
-	private float globalPosToScreenPosX(int globalX, int globalY, float tileWidthHalf) {
+	private int getZoomLevelScaleFactorNumerator() {
+		double amount = Math.pow(2, zoomLevel);
+		if (amount < 1) {
+			return (int) (1.0 / amount);
+		}
 
-		float oldY = (globalY - camera.getPosition().y);
-		float oldX = (globalX - camera.getPosition().x);
-
-		return (oldX - oldY) * tileWidthHalf + this.width / 2;
+		return 1;
 	}
 
-	private int screenPosToGlobalPosX(float screenX) {
-		float size = getTileSizeByScreenSize();
-		return (int) (screenX / size + camera.getPosition().x - getXAmount() / 2);
+	private int globalPosToScreenPosX(int globalX, int globalY, int tileWidthHalf) {
+
+		int oldY = (globalY - camera.getPosition().y);
+		int oldX = (globalX - camera.getPosition().x);
+
+		int oldYF = (-camera.getPosition().yFraction);
+		int oldXF = (-camera.getPosition().xFraction);
+
+		return (oldX - oldY) * tileWidthHalf + oldXF / 2 + this.width / 2;
 	}
 
-	private float globalPosToScreenPosY(int globalX, int globalY, float tileHeightHalf) {
+	private int globalPosToScreenPosY(int globalX, int globalY, int tileHeightHalf) {
 
-		float oldY = (globalY - camera.getPosition().y);
-		float oldX = (globalX - camera.getPosition().x);
+		int oldY = (globalY - camera.getPosition().y);
+		int oldX = (globalX - camera.getPosition().x);
 
-		return (oldX + oldY) * tileHeightHalf + this.height / 2;
-	}
+		int oldYF = (-camera.getPosition().yFraction);
+		int oldXF = (-camera.getPosition().xFraction);
 
-	private int screenPosToGlobalPosY(float screenY) {
-		float size = getTileSizeByScreenSize();
-		return (int) (screenY / size + camera.getPosition().y - getYAmount() / 2);
+		return (oldX + oldY) * tileHeightHalf + oldXF / 4 + this.height / 2;
 	}
 
 	static int line;
@@ -256,9 +249,10 @@ public class CameraController {
 				LocalPlayer p = (LocalPlayer) track;
 				drawInformationLine("Player: " + Main.getInstance().playerHandler.getPlayerNumber(p));
 			}
-			drawInformationLine("Zoom: xAmount:" + getXAmount());
+			drawInformationLine("Zoom: " + zoomLevel);
 			drawInformationLine("Body Chunk: " + standOn.chunk.x + "|" + standOn.chunk.y);
-			drawInformationLine("Body Position: " + bodyPos.x + "|" + bodyPos.y);
+			drawInformationLine("Body Position: " + bodyPos.x + ":" + bodyPos.xFraction + "|" + bodyPos.y + ":"
+					+ bodyPos.yFraction);
 
 			drawInformationLine("Stand On: " + standOn.material.texture);
 			if (standOn.nature != null) {
@@ -266,12 +260,6 @@ public class CameraController {
 			}
 			// drawInformationLine("Dir: " +
 			// track.body.getLinearVelocity().toString());
-
-			Vector2 mousePos = Main.getInstance().inputHandler.keyboardHandler.mouse.pos.cpy();
-
-			drawInformationLine("Mouse Pos: " + mousePos.toString());
-			drawInformationLine(
-					"Mouse Pos Gloabl: " + screenPosToGlobalPosX(mousePos.x) + "," + screenPosToGlobalPosY(mousePos.y));
 
 			fboBatch.end();
 			fbo.end();
@@ -308,7 +296,7 @@ public class CameraController {
 		fboBatch.dispose();
 	}
 
-	public void changeDistance(float amount) {
+	public void changeDistance(int amount) {
 		zoomLevel += amount;
 		if (zoomLevel < zoomLevelmin)
 			zoomLevel = zoomLevelmin;

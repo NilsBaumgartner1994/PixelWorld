@@ -1,14 +1,16 @@
-package com.redagent.physics;
+package com.gof.physics;
 
-import com.redagent.game.Main;
+import com.gof.game.Main;
 
 public class Body implements Comparable<Body> {
 
 	Position position;
 	Position velocity;
 	Position acceleration;
+	
+	com.badlogic.gdx.physics.box2d.Body body;
 
-	public Body(Position position, Position velocity, Position acceleration) {
+	public Body(Position position, Position velocity, Position acceleration) {		
 		setPosition(position);
 		setVelocity(velocity);
 		setAcceleration(acceleration);
@@ -45,15 +47,15 @@ public class Body implements Comparable<Body> {
 
 	public void calcPhysicStep(float deltaTime) {
 		// float accelerationValue = getValueOfVector(acceleration);
-		float velocityValue = getValueOfVector(velocity);
+//		float velocityValue = getValueOfVector(velocity);
+//
+//		// float accelerationAddition
+//		//
+//		// if(accelerationValue)
+//
+//		float velocityAdd = velocityValue * deltaTime;
 
-		// float accelerationAddition
-		//
-		// if(accelerationValue)
-
-		float velocityAdd = velocityValue * deltaTime;
-
-		setPosition(getPosition().add(getVelocity().setLength(velocityAdd)));
+		setPosition(getPosition().add(velocity));
 	}
 
 	public float getValueOfVector(Position vec) {

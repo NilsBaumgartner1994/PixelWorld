@@ -1,4 +1,4 @@
-package com.redagent.Inputs;
+package com.gof.Inputs;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -116,6 +116,12 @@ public class InputHandler implements InputProcessor, GestureListener {
 	@Override
 	public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
 		return gestureHandler.pinch(initialPointer1, initialPointer2, pointer1, pointer2);
+	}
+
+	@Override
+	public void pinchStop() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

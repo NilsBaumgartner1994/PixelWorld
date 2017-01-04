@@ -1,4 +1,4 @@
-package com.redagent.menu;
+package com.gof.menu;
 
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 

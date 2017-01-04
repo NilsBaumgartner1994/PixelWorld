@@ -1,8 +1,7 @@
-package com.redagent.physics;
+package com.gof.physics;
 
 import com.badlogic.gdx.math.Vector2;
-import com.redagent.game.Main;
-import com.redagent.world.MapTile;
+import com.gof.world.MapTile;
 
 public class Position implements Comparable<Position> {
 
@@ -31,6 +30,15 @@ public class Position implements Comparable<Position> {
 	}
 
 	public Position calcOverflow() {
+		if(xFraction<0){
+			xFraction+=fractionMax_x;
+			this.x--;
+		}
+		if(yFraction<0){
+			yFraction+=fractionMax_y;
+			this.x--;
+		}
+		
 		this.x = this.x + xFraction / fractionMax_x;
 		this.y = this.y + yFraction / fractionMax_y;
 		this.xFraction = this.xFraction % fractionMax_x;

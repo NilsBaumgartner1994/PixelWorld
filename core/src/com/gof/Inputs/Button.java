@@ -1,4 +1,4 @@
-package com.redagent.Inputs;
+package com.gof.Inputs;
 
 public class Button {
 	

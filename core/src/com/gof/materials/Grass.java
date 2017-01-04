@@ -1,4 +1,4 @@
-package com.redagent.materials;
+package com.gof.materials;
 
 public class Grass extends Material {
 

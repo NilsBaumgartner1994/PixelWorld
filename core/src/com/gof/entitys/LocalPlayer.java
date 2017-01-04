@@ -1,19 +1,20 @@
-package com.redagent.entitys;
+package com.gof.entitys;
 
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.redagent.game.CameraController;
-import com.redagent.game.Main;
-import com.redagent.helper.VectorHelper;
-import com.redagent.materials.Water;
-import com.redagent.menu.MenuHandler;
-import com.redagent.physics.Direction;
-import com.redagent.physics.Speed;
-import com.redagent.world.MapTile;
-import com.redagent.world.TileWorld;
+import com.gof.game.CameraController;
+import com.gof.game.Main;
+import com.gof.helper.VectorHelper;
+import com.gof.materials.Water;
+import com.gof.menu.MenuHandler;
+import com.gof.physics.Direction;
+import com.gof.physics.Position;
+import com.gof.physics.Speed;
+import com.gof.world.MapTile;
+import com.gof.world.TileWorld;
 
 public class LocalPlayer extends Entity {
 
@@ -35,14 +36,13 @@ public class LocalPlayer extends Entity {
 	
 	private boolean sneaking;
 
-	public int direction;
+	public Position direction;
 
 	public LocalPlayer(String name) {
 		super(51721, 50811);
-		speed = Speed.walkSpeed;
+//		speed = Speed.walkSpeed;
 		this.name = name;
 		menuHandler = new MenuHandler(this);
-		direction = Direction.SOUTH;
 		sneaking = false;
 		initCamera();
 		resetInputVariables();
@@ -51,14 +51,14 @@ public class LocalPlayer extends Entity {
 	public void sneak(boolean sneak){
 		sneaking = sneak;
 		if(sneaking){
-			speed = Speed.sneakSpeed;
+//			speed = Speed.sneakSpeed;
 		}
 	}
 
 	public void run(boolean run) {
 		// true : false
 		if (!sneaking) {
-			speed = run ? Speed.runSpeed : Speed.walkSpeed;
+//			speed = run ? Speed.runSpeed : Speed.walkSpeed;
 		}
 	}
 
@@ -77,12 +77,12 @@ public class LocalPlayer extends Entity {
 	
 	private void updateLeftStick() {
 		if (this.stickLeft.len() != 0) {
-			this.direction = VectorHelper.getDirFromVector(this.stickLeft);
+			this.direction = Position.getPositionDirectionFromVector(this.stickLeft);
+			setVelocity(this.direction);
 		}
-
-		Vector2 dir = this.stickLeft.cpy();
-		dir.scl(speed);
-		setVelocity(dir);
+		else{
+		setVelocity(Direction.STOP);
+		}
 	}
 
 	public void resetInputVariables() {

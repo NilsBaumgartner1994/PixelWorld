@@ -1,4 +1,4 @@
-package com.redagent.game;
+package com.gof.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -8,10 +8,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
-import com.redagent.Inputs.InputHandler;
-import com.redagent.entitys.LocalPlayer;
-import com.redagent.entitys.LocalPlayerHandler;
-import com.redagent.world.TileWorld;
+import com.gof.Inputs.InputHandler;
+import com.gof.entitys.LocalPlayer;
+import com.gof.entitys.LocalPlayerHandler;
+import com.gof.world.TileWorld;
 
 public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -82,14 +82,10 @@ public class Main extends ApplicationAdapter {
 		inputHandler.updateInputLogic();
 		
 		camera.update();
-		// Step the physics simulation forward at a rate of 60hz
-//		world.step(1f / 60f, 6, 2);
-		
 		updateEntitysInputs();
-//		updateCloudPositions();
-
-		float deltaTime = Gdx.graphics.getDeltaTime();
-		updatePhysics(deltaTime);
+		
+		// Step the physics simulation forward at a rate of 60hz
+		updatePhysics(1f / 60f);
 		
 		
 		Gdx.gl.glClearColor(1, 1, 1, 1);

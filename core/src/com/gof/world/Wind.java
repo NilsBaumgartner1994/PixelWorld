@@ -11,7 +11,7 @@
 /// Demo by Pablo Nuñez.
 /// Last updated January 31, 2014.
 
-package com.redagent.world;
+package com.gof.world;
 
 public class Wind {
 

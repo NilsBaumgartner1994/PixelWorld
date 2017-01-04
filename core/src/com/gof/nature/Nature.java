@@ -1,7 +1,7 @@
-package com.redagent.nature;
+package com.gof.nature;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.redagent.game.ResourceLoader;
+import com.gof.game.ResourceLoader;
 
 public class Nature{
 	

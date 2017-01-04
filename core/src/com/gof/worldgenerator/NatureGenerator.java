@@ -1,11 +1,11 @@
-package com.redagent.worldgenerator;
+package com.gof.worldgenerator;
 
 import java.util.Random;
 
-import com.redagent.game.Main;
-import com.redagent.world.Amortized2DNoise;
-import com.redagent.world.Chunk;
-import com.redagent.world.TileWorld;
+import com.gof.game.Main;
+import com.gof.world.Amortized2DNoise;
+import com.gof.world.Chunk;
+import com.gof.world.TileWorld;
 
 public class NatureGenerator implements GeneratorInterface {
 

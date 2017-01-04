@@ -1,8 +1,8 @@
-package com.redagent.materials;
+package com.gof.materials;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.redagent.game.ResourceLoader;
-import com.redagent.nature.Nature;
+import com.gof.game.ResourceLoader;
+import com.gof.nature.Nature;
 
 public class Material extends Nature{
 	

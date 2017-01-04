@@ -1,7 +1,4 @@
-package com.redagent.helper;
-
-import com.badlogic.gdx.math.Vector2;
-import com.redagent.physics.Direction;
+package com.gof.helper;
 
 public class VectorHelper {
 

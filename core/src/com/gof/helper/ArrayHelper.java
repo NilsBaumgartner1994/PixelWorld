@@ -1,4 +1,4 @@
-package com.redagent.helper;
+package com.gof.helper;
 
 public class ArrayHelper {
 

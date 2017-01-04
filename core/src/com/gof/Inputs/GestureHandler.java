@@ -1,11 +1,11 @@
-package com.redagent.Inputs;
+package com.gof.Inputs;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
-import com.redagent.game.Main;
+import com.gof.game.Main;
 
 public class GestureHandler implements GestureListener {
 
@@ -68,6 +68,12 @@ public class GestureHandler implements GestureListener {
 	public boolean touchDown(float x, float y, int pointer, int button) {
 		Main.log(getClass(), "touch");
 		return false;
+	}
+
+	@Override
+	public void pinchStop() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

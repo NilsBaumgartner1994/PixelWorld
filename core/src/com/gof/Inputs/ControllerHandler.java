@@ -1,4 +1,4 @@
-package com.redagent.Inputs;
+package com.gof.Inputs;
 
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
@@ -6,8 +6,8 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.redagent.entitys.LocalPlayer;
-import com.redagent.game.Main;
+import com.gof.entitys.LocalPlayer;
+import com.gof.game.Main;
 
 public class ControllerHandler implements ControllerListener {
 

@@ -1,21 +1,21 @@
-package com.redagent.world;
+package com.gof.world;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.redagent.entitys.Entity;
-import com.redagent.helper.ArrayHelper;
-import com.redagent.materials.Material;
-import com.redagent.nature.Nature;
-import com.redagent.physics.Direction;
-import com.redagent.physics.Position;
+import com.gof.entitys.Entity;
+import com.gof.helper.ArrayHelper;
+import com.gof.materials.Material;
+import com.gof.nature.Nature;
+import com.gof.physics.Direction;
+import com.gof.physics.Position;
 
 public class MapTile extends Entity {
 
-	public final static int tileWidth = 128;
-	public final static int tileHeight = 64;
+	public final static int tileWidth = 120;
+	public final static int tileHeight = 60;
 
 	public int direction;
 	private boolean solid;
@@ -25,10 +25,9 @@ public class MapTile extends Entity {
 
 	public Chunk chunk;
 
-	public MapTile(Chunk c, int x, int y, boolean solid, int direction, Material m) {
+	public MapTile(Chunk c, int x, int y, boolean solid, Material m) {
 		super(x, y);
 		this.chunk = c;
-		setDirection(direction);
 		setSolid(solid);
 		this.material = m;
 	}

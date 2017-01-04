@@ -1,11 +1,11 @@
-package com.redagent.world;
+package com.gof.world;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.math.Vector2;
-import com.redagent.worldgenerator.GeneratorInterface;
-import com.redagent.worldgenerator.NatureGenerator;
+import com.gof.worldgenerator.GeneratorInterface;
+import com.gof.worldgenerator.NatureGenerator;
 
 public class TileWorld {
 

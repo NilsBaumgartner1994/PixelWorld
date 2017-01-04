@@ -11,15 +11,15 @@
 /// Demo by Pablo Nuñez.
 /// Last updated January 31, 2014.
 
-package com.redagent.world;
+package com.gof.world;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.redagent.game.Main;
-import com.redagent.materials.Grass;
-import com.redagent.physics.Direction;
-import com.redagent.worldgenerator.NatureGenerator;
+import com.gof.game.Main;
+import com.gof.materials.Grass;
+import com.gof.physics.Direction;
+import com.gof.worldgenerator.NatureGenerator;
 
 public class Chunk {
 

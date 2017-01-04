@@ -1,11 +1,11 @@
-package com.redagent.Inputs;
+package com.gof.Inputs;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
-import com.redagent.entitys.LocalPlayer;
-import com.redagent.game.Main;
-import com.redagent.physics.Direction;
+import com.gof.entitys.LocalPlayer;
+import com.gof.game.Main;
+import com.gof.physics.Direction;
 
 public class KeyboardHandler {
 

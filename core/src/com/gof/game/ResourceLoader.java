@@ -1,4 +1,4 @@
-package com.redagent.game;
+package com.gof.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;

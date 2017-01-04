@@ -11,7 +11,7 @@
 /// Demo by Pablo Nuñez.
 /// Last updated January 31, 2014.
 
-package com.redagent.world;
+package com.gof.world;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -19,14 +19,14 @@ import java.util.Random;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.redagent.materials.Grass;
-import com.redagent.materials.Sand;
-import com.redagent.materials.Stone;
-import com.redagent.materials.Water;
-import com.redagent.nature.TallGrass;
-import com.redagent.nature.Tree;
-import com.redagent.physics.Direction;
-import com.redagent.worldgenerator.NatureGenerator;
+import com.gof.materials.Grass;
+import com.gof.materials.Sand;
+import com.gof.materials.Stone;
+import com.gof.materials.Water;
+import com.gof.nature.TallGrass;
+import com.gof.nature.Tree;
+import com.gof.physics.Direction;
+import com.gof.worldgenerator.NatureGenerator;
 
 public class Amortized2DNoise {
 	float[] uax, vax, ubx, vbx, uay, vay, uby, vby; // /< Amortized noise
@@ -291,28 +291,30 @@ public class Amortized2DNoise {
 		float seaLevel = NatureGenerator.seaLevel;
 		float sandAmount = NatureGenerator.sandAmount;
 
-		boolean onlyGrass = true;
-
 		for (int cy = 0; cy < CELLSIZE2D; cy++) {
 			for (int cx = 0; cx < CELLSIZE2D; cx++) {
-				if (onlyGrass) {
-					tiles[cx][cy] = new MapTile(c, cx, cy, false, Direction.NORTH, new Grass());
-				} else {
-
-					if (cell[cx][cy] >= seaLevel && cell[cx][cy] <= seaLevel + sandAmount) {
-						tiles[cx][cy] = new MapTile(c, cx, cy, false, Direction.NORTH, new Sand());
-					}
-					if (cell[cx][cy] > seaLevel + 0.1f && cell[cx][cy] <= seaLevel + 0.4f) {
-						tiles[cx][cy] = new MapTile(c, cx, cy, false, Direction.NORTH, new Grass());
-					}
-					if (cell[cx][cy] > seaLevel + 0.4f) {
-						tiles[cx][cy] = new MapTile(c, cx, cy, false, Direction.NORTH, new Stone());
-					}
-					if (cell[cx][cy] < seaLevel) {
-						tiles[cx][cy] = new MapTile(c, cx, cy, false, Direction.NORTH, new Water());
-					}
-
+				
+				if(cx%2==0 ^ cy%2==0){
+					tiles[cx][cy] = new MapTile(c, cx, cy, false, new Grass());
+				}else if(cx%5==0 ^ cy%5==0){
+					tiles[cx][cy] = new MapTile(c, cx, cy, false, new Water());
+				}else{
+					tiles[cx][cy] = new MapTile(c, cx, cy, false, new Sand());
 				}
+				
+//					if (cell[cx][cy] >= seaLevel && cell[cx][cy] <= seaLevel + sandAmount) {
+//						tiles[cx][cy] = new MapTile(c, cx, cy, false,  new Sand());
+//					}
+//					if (cell[cx][cy] > seaLevel + 0.1f && cell[cx][cy] <= seaLevel + 0.4f) {
+//						tiles[cx][cy] = new MapTile(c, cx, cy, false,  new Grass());
+//					}
+//					if (cell[cx][cy] > seaLevel + 0.4f) {
+//						tiles[cx][cy] = new MapTile(c, cx, cy, false,  new Stone());
+//					}
+//					if (cell[cx][cy] < seaLevel) {
+//						tiles[cx][cy] = new MapTile(c, cx, cy, false,  new Water());
+//					}
+//
 			}
 		}
 

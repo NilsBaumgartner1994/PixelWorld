@@ -1,12 +1,12 @@
-package com.redagent.entitys;
+package com.gof.entitys;
 
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.redagent.game.Main;
-import com.redagent.physics.Body;
-import com.redagent.physics.Position;
+import com.gof.game.Main;
+import com.gof.physics.Body;
+import com.gof.physics.Position;
 
 public class Entity extends Body{
 	
