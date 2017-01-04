@@ -36,7 +36,7 @@ public class Position implements Comparable<Position> {
 		}
 		if(yFraction<0){
 			yFraction+=fractionMax_y;
-			this.x--;
+			this.y--;
 		}
 		
 		this.x = this.x + xFraction / fractionMax_x;

@@ -1,7 +1,5 @@
 package com.gof.physics;
 
-import com.gof.game.Main;
-
 public class Body implements Comparable<Body> {
 
 	Position position;

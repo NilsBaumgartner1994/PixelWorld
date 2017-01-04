@@ -294,6 +294,8 @@ public class Amortized2DNoise {
 		for (int cy = 0; cy < CELLSIZE2D; cy++) {
 			for (int cx = 0; cx < CELLSIZE2D; cx++) {
 				
+				if(NatureGenerator.debug_generation){
+				
 				if(cx%2==0 ^ cy%2==0){
 					tiles[cx][cy] = new MapTile(c, cx, cy, false, new Grass());
 				}else if(cx%5==0 ^ cy%5==0){
@@ -302,25 +304,29 @@ public class Amortized2DNoise {
 					tiles[cx][cy] = new MapTile(c, cx, cy, false, new Sand());
 				}
 				
-//					if (cell[cx][cy] >= seaLevel && cell[cx][cy] <= seaLevel + sandAmount) {
-//						tiles[cx][cy] = new MapTile(c, cx, cy, false,  new Sand());
-//					}
-//					if (cell[cx][cy] > seaLevel + 0.1f && cell[cx][cy] <= seaLevel + 0.4f) {
-//						tiles[cx][cy] = new MapTile(c, cx, cy, false,  new Grass());
-//					}
-//					if (cell[cx][cy] > seaLevel + 0.4f) {
-//						tiles[cx][cy] = new MapTile(c, cx, cy, false,  new Stone());
-//					}
-//					if (cell[cx][cy] < seaLevel) {
-//						tiles[cx][cy] = new MapTile(c, cx, cy, false,  new Water());
-//					}
-//
+				}
+				else{
+				
+					if (cell[cx][cy] >= seaLevel && cell[cx][cy] <= seaLevel + sandAmount) {
+						tiles[cx][cy] = new MapTile(c, cx, cy, false, new Sand());
+					}
+					if (cell[cx][cy] > seaLevel + 0.1f && cell[cx][cy] <= seaLevel + 0.4f) {
+						tiles[cx][cy] = new MapTile(c, cx, cy, false, new Grass());
+					}
+					if (cell[cx][cy] > seaLevel + 0.4f) {
+						tiles[cx][cy] = new MapTile(c, cx, cy, false, new Stone());
+					}
+					if (cell[cx][cy] < seaLevel) {
+						tiles[cx][cy] = new MapTile(c, cx, cy, false, new Water());
+					}
+					
+				}
 			}
 		}
 
 		for (int i = 0; i < CELLSIZE2D * CELLSIZE2D / 400; i++) {
 			randomTree(cell, tiles);
-			randomGrass(cell, tiles);
+//			randomGrass(cell, tiles);
 		}
 
 		return tiles;

@@ -18,7 +18,6 @@ public class Entity extends Body{
 		super(position);
 	}
 
-
 	public List<Sprite> getSprite() {
 		return null;
 	}

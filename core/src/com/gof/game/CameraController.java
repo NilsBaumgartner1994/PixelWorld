@@ -16,6 +16,8 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Vector2;
 import com.gof.entitys.Entity;
 import com.gof.entitys.LocalPlayer;
+import com.gof.materials.Debug;
+import com.gof.materials.Material;
 import com.gof.physics.Body;
 import com.gof.physics.Position;
 import com.gof.world.MapTile;
@@ -37,11 +39,6 @@ public class CameraController {
 	public static int zoomLevel = 0;
 	public static int zoomLevelmin = -2;
 	public static int zoomLevelmax = 3;
-
-	public static int xAmount = 8;
-	// private int xAmountMax = 100;
-	public static int xAmountMax = 250;
-	public static int xAmountMin = 1;
 
 	public boolean showInformations = true;
 
@@ -107,13 +104,13 @@ public class CameraController {
 
 		int xcenter = camera.getPosition().x;
 		int ycenter = camera.getPosition().y;
-		
+
 		int numerator = getZoomLevelScaleFactorNumerator();
 		int denumerator = getZoomLevelScaleFactorDenumerator();
 
-		int safetytiles = 3;
-		int breite = ((this.width/ MapTile.tileWidth)* numerator) / denumerator + safetytiles;
-		int höhe = ((this.height/ MapTile.tileHeight )* numerator) / denumerator + safetytiles;
+		int safetytiles = 5;
+		int breite = ((this.width / MapTile.tileWidth) * numerator) / denumerator + safetytiles;
+		int höhe = ((this.height / MapTile.tileHeight) * numerator) / denumerator + safetytiles;
 
 		for (int a = -höhe + 1; a < höhe; a++) {
 			for (int b = -breite + 1; b < breite; b++) {
@@ -132,52 +129,57 @@ public class CameraController {
 		fbo.end();
 	}
 
+	int numerator = getZoomLevelScaleFactorNumerator();
+	int denumerator = getZoomLevelScaleFactorDenumerator();
+
 	private void drawGround(List<MapTile> area) {
-		
-		int numerator = getZoomLevelScaleFactorNumerator();
-		int denumerator = getZoomLevelScaleFactorDenumerator();
+		numerator = getZoomLevelScaleFactorNumerator();
+		denumerator = getZoomLevelScaleFactorDenumerator();
 
 		int tileWidth = MapTile.tileWidth * numerator / denumerator;
 		int tileHeight = MapTile.tileHeight * numerator / denumerator;
 		int tileWidthHalf = tileWidth / 2;
 		int tileHeightHalf = tileHeight / 2;
+		
+		Sprite debug = new Sprite(new Debug().getTexture());
 
 		MapTile bigger = area.get(area.size() / 2);
 
 		for (MapTile tile : area) {
-			Sprite sprite = new Sprite(tile.getMaterialTexture());
-			int x = globalPosToScreenPosX(tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf);
-			int y = globalPosToScreenPosY(tile.getGlobalX(), tile.getGlobalY(), tileHeightHalf);
+			Sprite sprite = tile.getMaterialSprite();
+			Sprite nature = tile.getNatureTexture();
+
+			Color save = fboBatch.getColor();
 
 			if (tile == bigger) {
-				Color save = fboBatch.getColor();
-
 				fboBatch.setColor(save.cpy().add(-0.5f, -0.5f, -0.5f, 0));
-				sprite = new Sprite(tile.getMaterialTexture());
-
-				sprite.setPosition(x, y);
-				sprite.setOrigin(tileWidthHalf, tileHeightHalf);
-				sprite.setSize(sprite.getWidth() * numerator / denumerator,
-						sprite.getHeight() * numerator / denumerator);
-
-				fboBatch.draw(sprite, sprite.getX(), sprite.getY(), sprite.getOriginX(), sprite.getOriginY(),
-						sprite.getWidth(), sprite.getHeight(), sprite.getScaleX(), sprite.getScaleY(),
-						tile.getRotation());
-
-				fboBatch.setColor(save);
-			} else {
-				sprite = new Sprite(tile.getMaterialTexture());
-
-				sprite.setPosition(x, y);
-				sprite.setOrigin(tileWidthHalf, tileHeightHalf);
-				sprite.setSize(sprite.getWidth() * numerator / denumerator,
-						sprite.getHeight() * numerator / denumerator);
-
-				fboBatch.draw(sprite, sprite.getX(), sprite.getY(), sprite.getOriginX(), sprite.getOriginY(),
-						sprite.getWidth(), sprite.getHeight(), sprite.getScaleX(), sprite.getScaleY(),
-						tile.getRotation());
 			}
+
+			drawSprite(sprite,tile.getGlobalX(),tile.getGlobalY(),tileWidthHalf,tileHeightHalf, tile.getRotation());
+			drawSprite(nature,tile.getGlobalX(),tile.getGlobalY(),tileWidthHalf,tileHeightHalf, tile.getRotation());
+			
+			
+			
+			if (tile == bigger) {
+				fboBatch.setColor(save);
+			}
+
 		}
+	}
+	
+	private void drawSprite(Sprite sprite, int globalX, int globalY, int tileWidthHalf, int tileHeightHalf, int rotation){
+		if(sprite==null){
+			return;
+		}
+		int x = globalPosToScreenPosX(sprite,globalX, globalY, tileWidthHalf);
+		int y = globalPosToScreenPosY(sprite,globalX, globalY, tileHeightHalf);
+		
+		sprite.setPosition(x, y);
+		sprite.setOrigin(tileWidthHalf, tileHeightHalf);
+		sprite.setSize(sprite.getWidth() * numerator / denumerator, sprite.getHeight() * numerator / denumerator);
+
+		fboBatch.draw(sprite, sprite.getX(), sprite.getY(), sprite.getOriginX(), sprite.getOriginY(),
+				sprite.getWidth(), sprite.getHeight(), sprite.getScaleX(), sprite.getScaleY(), rotation);
 	}
 
 	private int getZoomLevelScaleFactorDenumerator() {
@@ -198,26 +200,26 @@ public class CameraController {
 		return 1;
 	}
 
-	private int globalPosToScreenPosX(int globalX, int globalY, int tileWidthHalf) {
+	private int globalPosToScreenPosX(Sprite sprite,int globalX, int globalY, int tileWidthHalf) {
 
 		int oldY = (globalY - camera.getPosition().y);
 		int oldX = (globalX - camera.getPosition().x);
 
-		int oldYF = (-camera.getPosition().yFraction);
-		int oldXF = (-camera.getPosition().xFraction);
+		int oldYF = (-camera.getPosition().yFraction) * numerator / denumerator;
+		int oldXF = (-camera.getPosition().xFraction) * numerator / denumerator;
 
-		return (oldX - oldY) * tileWidthHalf + oldXF / 2 + this.width / 2;
+		return (oldX - oldY) * tileWidthHalf + oldXF / 2 - oldYF + this.width / 2 - sprite.getRegionWidth()/2* numerator / denumerator;
 	}
 
-	private int globalPosToScreenPosY(int globalX, int globalY, int tileHeightHalf) {
+	private int globalPosToScreenPosY(Sprite sprite,int globalX, int globalY, int tileHeightHalf) {
 
 		int oldY = (globalY - camera.getPosition().y);
 		int oldX = (globalX - camera.getPosition().x);
 
-		int oldYF = (-camera.getPosition().yFraction);
-		int oldXF = (-camera.getPosition().xFraction);
+		int oldYF = (-camera.getPosition().yFraction) * numerator / denumerator;
+		int oldXF = (-camera.getPosition().xFraction) * numerator / denumerator;
 
-		return (oldX + oldY) * tileHeightHalf + oldXF / 4 + this.height / 2;
+		return (oldX + oldY) * tileHeightHalf + oldXF / 4 + oldYF / 2 + this.height / 2;
 	}
 
 	static int line;

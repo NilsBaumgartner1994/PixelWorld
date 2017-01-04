@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.gof.entitys.Entity;
 import com.gof.helper.ArrayHelper;
@@ -58,15 +59,15 @@ public class MapTile extends Entity {
 		this.solid = solid;
 	}
 
-	public Texture getMaterialTexture() {
-		return material.getTexture();
+	public Sprite getMaterialSprite() {
+		return new Sprite(material.getTexture());
 	}
 
-	public Texture getNatureTexture() {
+	public Sprite getNatureTexture() {
 		if (nature == null) {
 			return null;
 		}
-		return nature.getTexture();
+		return new Sprite(nature.getTexture());
 	}
 
 	public boolean isSolid() {

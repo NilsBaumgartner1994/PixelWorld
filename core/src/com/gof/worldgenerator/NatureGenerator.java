@@ -10,6 +10,8 @@ import com.gof.world.TileWorld;
 public class NatureGenerator implements GeneratorInterface {
 
 	TileWorld world;
+	
+	public static boolean debug_generation = false;
 
 	// Altering will make it look more like continents or islands.
 	public static float seaLevel = 0.1f;
