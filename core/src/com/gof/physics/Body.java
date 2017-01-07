@@ -5,8 +5,6 @@ public class Body implements Comparable<Body> {
 	Position position;
 	Position velocity;
 	Position acceleration;
-	
-	com.badlogic.gdx.physics.box2d.Body body;
 
 	public Body(Position position, Position velocity, Position acceleration) {		
 		setPosition(position);

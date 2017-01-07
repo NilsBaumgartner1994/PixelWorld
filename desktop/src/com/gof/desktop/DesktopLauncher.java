@@ -13,7 +13,7 @@ public class DesktopLauncher {
 	static final String hd = "hd";
 	static final String fullHD = "fullHD";
 
-	static String resolution = xga;
+	static String resolution = hd;
 
 	public static void main(String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
@@ -42,6 +42,7 @@ public class DesktopLauncher {
 		case fullHD:
 			config.width = 1920;
 			config.height = 1080;
+			config.fullscreen = true;
 			break;
 		}
 		config.title = title;
