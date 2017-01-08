@@ -27,4 +27,12 @@ public class Mouse {
 		pos.y = y;
 	}
 	
+	public int getX(){
+		return (int) pos.x;
+	}
+	
+	public int getY(){
+		return (int) pos.y;
+	}
+	
 }

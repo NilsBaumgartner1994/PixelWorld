@@ -36,7 +36,7 @@ public class CameraController {
 	private BitmapFont font;
 
 	private int width;
-	private int height;
+	public int height;
 
 	public static int zoomLevel = 0;
 	public static int zoomLevelmin = -2;
@@ -157,9 +157,8 @@ public class CameraController {
 		MapTile mouseTile = null;
 
 		if (m != null) {
-			int globalXFromMouse = ScreenPosToglobalPosX((int) m.pos.x, this.height - (int) m.pos.y);
-			int globalYFromMouse = ScreenPosToglobalPosY((int) m.pos.x, this.height - (int) m.pos.y);
-			mouseTile = TileWorld.getInstance().getMapTileFromGlobalPos(globalXFromMouse, globalYFromMouse);
+			Position globalPos = getGlobalPosFromScreenPos(m.getX(),this.height-m.getY());
+			mouseTile = TileWorld.getInstance().getMapTileFromGlobalPos(globalPos.x, globalPos.y);
 		}
 
 		if (mouseTile != null) {
@@ -254,7 +253,7 @@ public class CameraController {
 		int spriteCorrection = scaleZoom(-sprite.getRegionWidth()/2);
 		int widthCorrection = this.width/2;
 
-		return (relativeX - relativeY) * tileWidthHalf         +spriteCorrection;
+		return (relativeX - relativeY) * tileWidthHalf         +spriteCorrection  +this.width/2;
 	}
 
 	private int globalPosToScreenPosY(Sprite sprite, int globalX, int globalY, int tileHeightHalf) {
@@ -273,10 +272,16 @@ public class CameraController {
 		
 		int tileCorrection = -MapTile.tileHeight;
 
-		return (relativeX + relativeY) * tileHeightHalf  +tileCorrection;
+		return (relativeX + relativeY) * tileHeightHalf  +tileCorrection  +this.height/2;
 	}
-
-	private int ScreenPosToglobalPosX(int screenX, int screenY) {		
+	
+	private Position getGlobalPosFromScreenPos(int screenX, int screenY){
+		
+		screenX-=this.width/2;
+		screenY-=this.height/2;
+		
+		boolean xNegative = screenX<0 ? true : false;
+		boolean yNegative = screenY<0 ? true : false;
 		
 		int tileWidth = MapTile.tileWidth * numerator / denumerator;
 		int tileHeight = MapTile.tileHeight * numerator / denumerator;
@@ -288,8 +293,7 @@ public class CameraController {
 		Sprite mouse = new Sprite(new MouseMatter().getTexture());
 		
 		int spriteCorrection = scaleZoom(mouse.getRegionWidth()/2);
-		screenX+= spriteCorrection;
-		
+		screenX+= spriteCorrection;		
 		
 		int regionX =screenX/scaleZoom(mouse.getRegionWidth());
 		int regionY =screenY/scaleZoom(mouse.getRegionHeight())*2;
@@ -300,45 +304,17 @@ public class CameraController {
 		mouseMapY*=2;
 		
 		int[] region = getRegionDXFromMouseMap(mouseMapX,mouseMapY,mouse.getRegionWidth(),mouse.getRegionHeight()*2,mouse.getRegionWidth()/2);		
-		
+
 		int xCorrection = regionX+regionY/2+region[0];
-		int yCorrection = -regionX+regionY/2;
-		
-
-		return camera.getPosition().x+xCorrection;
-	}
-	
-	private int ScreenPosToglobalPosY(int screenX, int screenY) {
-		int tileWidth = MapTile.tileWidth * numerator / denumerator;
-		int tileHeight = MapTile.tileHeight * numerator / denumerator;
-		int tileWidthHalf = tileWidth / 2;
-		int tileHeightHalf = tileHeight / 2;
-
-		int oldXF = (camera.getPosition().xFraction) * numerator / denumerator;
-
-		Sprite mouse = new Sprite(new MouseMatter().getTexture());
-		
-		int spriteCorrection = scaleZoom(mouse.getRegionWidth()/2);
-		screenX+= spriteCorrection;
-		
-		
-		int regionX =screenX/scaleZoom(mouse.getRegionWidth());
-		int regionY =screenY/scaleZoom(mouse.getRegionHeight())*2;
-		
-		int mouseMapX =screenX%scaleZoom(mouse.getRegionWidth());
-		int mouseMapY =screenY%scaleZoom(mouse.getRegionHeight());
-		
-		mouseMapY*=2;
-		
-		int[] region = getRegionDXFromMouseMap(mouseMapX,mouseMapY,mouse.getRegionWidth(),mouse.getRegionHeight()*2,mouse.getRegionWidth()/2);
-		Main.log(getClass(), "regionX: "+regionX+" | regionY"+regionY+" || "+getColorNameFromRegionDXMouseMap(region));
-		
-
-		int xCorrection = regionX+regionY/2;
 		int yCorrection = -regionX+regionY/2+region[1];
 		
-
-		return camera.getPosition().y+yCorrection;
+		
+		int globalX = camera.getPosition().x+xCorrection;
+		int globalY = camera.getPosition().y+yCorrection;
+				
+		Position globalPos = new Position(globalX,globalY);
+		
+		return globalPos;
 	}
 	
 	/**
