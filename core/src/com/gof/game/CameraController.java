@@ -148,7 +148,7 @@ public class CameraController {
 
 		List<MapTile> clouds = area.get(area.size() / 2).getMoore();
 		for (MapTile cloud : clouds) {
-//			cloud.select();
+			// cloud.select();
 		}
 		TileWorld.getInstance().getMapTileFromGlobalPos(camera.getPosition().x, camera.getPosition().y).select();
 
@@ -157,7 +157,7 @@ public class CameraController {
 		MapTile mouseTile = null;
 
 		if (m != null) {
-			Position globalPos = getGlobalPosFromScreenPos(m.getX(),this.height-m.getY());
+			Position globalPos = getGlobalPosFromScreenPos(m.getX(), this.height - m.getY());
 			mouseTile = TileWorld.getInstance().getMapTileFromGlobalPos(globalPos.x, globalPos.y);
 		}
 
@@ -176,7 +176,7 @@ public class CameraController {
 			}
 
 			drawSprite(sprite, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf, tile.getRotation());
-			drawSprite(debug, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf, tile.getRotation());
+//			drawSprite(debug, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf, tile.getRotation());
 
 			drawSprite(nature, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf, tile.getRotation());
 
@@ -185,9 +185,6 @@ public class CameraController {
 			}
 
 		}
-		
-		
-
 
 		for (MapTile cloud : clouds) {
 			cloud.unselect();
@@ -196,9 +193,10 @@ public class CameraController {
 		if (mouseTile != null) {
 			mouseTile.unselect();
 		}
-		
+
 //		for (MapTile tile : area) {
-//			if (((tile.getGlobalX() % 2 == 0 && tile.getGlobalY() % 2 == 0) || ((tile.getGlobalX()+1) % 2 == 0 && (tile.getGlobalY()+1) % 2 == 0))) {
+//			if (((tile.getGlobalX() % 2 == 0 && tile.getGlobalY() % 2 == 0)
+//					|| ((tile.getGlobalX() + 1) % 2 == 0 && (tile.getGlobalY() + 1) % 2 == 0))) {
 //				drawSprite(mouse, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf,
 //						tile.getRotation());
 //			}
@@ -249,11 +247,12 @@ public class CameraController {
 
 		// return (oldX - oldY) * tileWidthHalf + oldXF / 2 - oldYF + this.width
 		// / 2 - sprite.getRegionWidth()/2* numerator / denumerator;
-		
-		int spriteCorrection = scaleZoom(-sprite.getRegionWidth()/2);
-		int widthCorrection = this.width/2;
 
-		return (relativeX - relativeY) * tileWidthHalf         +spriteCorrection  +this.width/2;
+		int spriteCorrection = scaleZoom(-sprite.getRegionWidth() / 2);
+		int widthCorrection = this.width / 2;
+		int fractionCorrection = oldXF/2 - oldYF;
+
+		return (relativeX - relativeY) * tileWidthHalf + spriteCorrection + widthCorrection  + fractionCorrection;
 	}
 
 	private int globalPosToScreenPosY(Sprite sprite, int globalX, int globalY, int tileHeightHalf) {
@@ -269,56 +268,94 @@ public class CameraController {
 
 		int relativeY = (globalY - camera.getPosition().y);
 		int relativeX = (globalX - camera.getPosition().x);
-		
-		int tileCorrection = -MapTile.tileHeight;
 
-		return (relativeX + relativeY) * tileHeightHalf  +tileCorrection  +this.height/2;
+		int tileCorrection = -MapTile.tileHeight;
+		int heightCorrection = this.height / 2;
+		int fractionCorrection = oldXF/4 + oldYF/2;
+
+		return (relativeX + relativeY) * tileHeightHalf + tileCorrection + heightCorrection + fractionCorrection;
 	}
-	
-	private Position getGlobalPosFromScreenPos(int screenX, int screenY){
+
+	private Position getGlobalPosFromScreenPos(int screenX, int screenY) {
+		int oldYF = scaleZoom(-camera.getPosition().yFraction);
+		int oldXF = scaleZoom(-camera.getPosition().xFraction);
 		
-		screenX-=this.width/2;
-		screenY-=this.height/2;
+		int fractionCorrectionX = oldXF/2 - oldYF;
+		int fractionCorrectionY = oldXF/4 + oldYF/2;
 		
-		boolean xNegative = screenX<0 ? true : false;
-		boolean yNegative = screenY<0 ? true : false;
+		screenX-=fractionCorrectionX;
+		screenY-=fractionCorrectionY;
 		
+		screenX -= this.width / 2;
+		screenY -= this.height / 2;
+
+		boolean xNegative = screenX < 0 ? true : false;
+		boolean yNegative = screenY < 0 ? true : false;
+
+		if (xNegative || yNegative) {
+			Main.log(getClass(), "Negative");
+		}
+
+		if (xNegative) {
+			screenX *= -1;
+		}
+		if (yNegative) {
+			screenY *= -1;
+		}
+
 		int tileWidth = MapTile.tileWidth * numerator / denumerator;
 		int tileHeight = MapTile.tileHeight * numerator / denumerator;
 		int tileWidthHalf = tileWidth / 2;
 		int tileHeightHalf = tileHeight / 2;
 
-		int oldXF = (camera.getPosition().xFraction) * numerator / denumerator;
-
 		Sprite mouse = new Sprite(new MouseMatter().getTexture());
-		
-		int spriteCorrection = scaleZoom(mouse.getRegionWidth()/2);
-		screenX+= spriteCorrection;		
-		
-		int regionX =screenX/scaleZoom(mouse.getRegionWidth());
-		int regionY =screenY/scaleZoom(mouse.getRegionHeight())*2;
-		
-		int mouseMapX =screenX%scaleZoom(mouse.getRegionWidth());
-		int mouseMapY =screenY%scaleZoom(mouse.getRegionHeight());
-		
-		mouseMapY*=2;
-		
-		int[] region = getRegionDXFromMouseMap(mouseMapX,mouseMapY,mouse.getRegionWidth(),mouse.getRegionHeight()*2,mouse.getRegionWidth()/2);		
 
-		int xCorrection = regionX+regionY/2+region[0];
-		int yCorrection = -regionX+regionY/2+region[1];
-		
-		
-		int globalX = camera.getPosition().x+xCorrection;
-		int globalY = camera.getPosition().y+yCorrection;
-				
-		Position globalPos = new Position(globalX,globalY);
-		
+		int spriteCorrection = scaleZoom(mouse.getRegionWidth() / 2);
+		screenX += spriteCorrection;
+
+		int regionX = screenX / scaleZoom(mouse.getRegionWidth());
+		int regionY = screenY / scaleZoom(mouse.getRegionHeight()) * 2;
+
+		int mouseMapX = screenX % scaleZoom(mouse.getRegionWidth());
+		int mouseMapY = screenY % scaleZoom(mouse.getRegionHeight());
+
+		mouseMapY *= 2;
+
+		if (xNegative) {
+			regionX *= -1;
+		}
+		if (yNegative) {
+			regionY = -1 * regionY;
+		}
+
+		if (yNegative) {
+			regionY -= 2;
+		}
+
+		int[] region = getRegionDXFromMouseMap(mouseMapX, mouseMapY, mouse.getRegionWidth(),
+				mouse.getRegionHeight() * 2, mouse.getRegionWidth() / 2, xNegative, yNegative);
+
+		if (xNegative) {
+			// region[0]*=-1;
+			// region[1]*=-1;
+		}
+		if (yNegative) {
+		}
+
+		int xCorrection = regionX + regionY / 2 + region[0];
+		int yCorrection = -regionX + regionY / 2 + region[1];
+
+		int globalX = camera.getPosition().x + xCorrection;
+		int globalY = camera.getPosition().y + yCorrection;
+
+		Position globalPos = new Position(globalX, globalY);
+
 		return globalPos;
 	}
-	
+
 	/**
 	 * Return int[dx,dy]
+	 * 
 	 * @param mouseMapX
 	 * @param mouseMapY
 	 * @param mouseMapXMax
@@ -326,46 +363,84 @@ public class CameraController {
 	 * @param maxDistance
 	 * @return
 	 */
-	private int[] getRegionDXFromMouseMap(int mouseMapX, int mouseMapY,int mouseMapXMax, int mouseMapYMax,int maxDistance){
-		int[] back = {0,0};
-		
-		int yTopD = (mouseMapY-mouseMapYMax)*-1;
-		int xRightD = (mouseMapX-mouseMapXMax)*-1;
-		
-		/* https://www.gamedev.net/resources/_/technical/game-programming/isometric-n-hexagonal-maps-part-i-r747 */
-		
-		if(mouseMapX+mouseMapY<=maxDistance ){
-//			Main.log(getClass(), "Grüner Bereich");
-			back[0]=-1;
+	private int[] getRegionDXFromMouseMap(int mouseMapX, int mouseMapY, int mouseMapXMax, int mouseMapYMax,
+			int maxDistance, boolean xNegative, boolean yNegative) {
+		int[] back = { 0, 0 };
+
+		int yTopD = (mouseMapY - mouseMapYMax) * -1;
+		int xRightD = (mouseMapX - mouseMapXMax) * -1;
+
+		/*
+		 * https://www.gamedev.net/resources/_/technical/game-programming/
+		 * isometric-n-hexagonal-maps-part-i-r747
+		 */
+
+		if (mouseMapX + mouseMapY <= maxDistance) { /* Grüner Bereich */
+
+			if (xNegative && yNegative) {
+				back[0] = 1;
+			} else 
+				if (xNegative) {
+				back[1] = -1;
+			} else if (yNegative) {
+				back[1] = 1;
+			} else {
+				back[0] = -1;
+			}
+		} else if (xRightD + mouseMapY <= maxDistance) { /* Blauer Bereich */
+			if (xNegative && yNegative) {
+				back[1] = 1;
+			} else 
+				if (xNegative) {
+				back[0] = -1;
+			} else if (yNegative) {
+				back[0] = 1;
+			} else {
+				back[1] = -1;
+			}
 		}
-		else if(xRightD+mouseMapY<=maxDistance){
-//			Main.log(getClass(), "Blauer Bereich");
-			back[1]=-1;
+
+		else if (mouseMapX + yTopD <= maxDistance) { /* Roter Bereich */
+
+			if (xNegative && yNegative) {
+				back[1] = -1;
+			} else 
+				if (xNegative) {
+				back[0] = 1;
+			} else if (yNegative) {
+				back[0] = -1;
+			} else {
+				back[1] = 1;
+			}
+		} else if (xRightD + yTopD <= maxDistance) { /* Gelber Bereich */
+			if (xNegative && yNegative) { /* Hier Grüner */
+				back[0] = -1;
+			} else /* ende Grüner Bereich */
+				if (xNegative) {
+				back[1] = 1;
+			} else if (yNegative) {
+				back[1] = -1;
+			} else {
+				back[0] = 1;
+			}
+		} else {
+			// Main.log(getClass(), "Drin");
 		}
-		else if(mouseMapX+yTopD<=maxDistance ){
-//			Main.log(getClass(), "Roter Bereich");
-			back[1]=1;
-		}
-		else if(xRightD+yTopD<=maxDistance){
-//			Main.log(getClass(), "Gelber Bereich");
-			back[0]=1;
-		}
-		else{
-//			Main.log(getClass(), "Drin");
-		}
-		
+
 		return back;
 	}
-	
-	private String getColorNameFromRegionDXMouseMap(int[] region){
-		if(region[0]==-1) return "Grün";
-		if(region[0]==1) return "Gelb";
-		if(region[1]==-1) return "Blau";
-		if(region[1]==1) return "Rot";
+
+	private String getColorNameFromRegionDXMouseMap(int[] region) {
+		if (region[0] == -1)
+			return "Grün";
+		if (region[0] == 1)
+			return "Gelb";
+		if (region[1] == -1)
+			return "Blau";
+		if (region[1] == 1)
+			return "Rot";
 		return "Drin";
 	}
-
-
 
 	static int line;
 
