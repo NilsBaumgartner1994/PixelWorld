@@ -15,8 +15,8 @@ import com.gof.physics.Position;
 
 public class MapTile extends Entity {
 
-	public final static int tileWidth = 120;
-	public final static int tileHeight = 60;
+	public final static int tileWidth = 128;
+	public final static int tileHeight = 64;
 
 	public int direction;
 	private boolean solid;
