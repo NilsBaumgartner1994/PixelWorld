@@ -342,7 +342,7 @@ public class Amortized2DNoise {
 			if (xx >= 0 && yy >= 0 && xx < CELLSIZE2D && yy < CELLSIZE2D) {
 				if (tiles[xx][yy].material.isSame(Grass.class)) {
 					if (tiles[xx][yy].nature == null) {
-						tiles[xx][yy].nature = new TallGrass();
+						tiles[xx][yy].setNature(new TallGrass());
 					}
 				}
 			}
@@ -358,7 +358,7 @@ public class Amortized2DNoise {
 			int yy = y + rand.nextInt(15) - rand.nextInt(15);
 			if (xx >= 0 && yy >= 0 && xx < CELLSIZE2D && yy < CELLSIZE2D) {
 				if (tiles[xx][yy].material.isSame(Grass.class)) {
-					tiles[xx][yy].nature = new Tree();
+					tiles[xx][yy].setNature(new Tree());
 					tiles[xx][yy].setSolid(true);
 				}
 			}

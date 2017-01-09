@@ -26,6 +26,7 @@ public class ResourceLoader{
 	
 	public static String tiles = data+"tiles/";
 	public static String nature = data+"nature/";
+	public static String gui = data+"gui/";
 	
 	public void addToLoad(String name) {
 		assets.load(Gdx.files.internal(name).path(), Texture.class);
@@ -59,6 +60,10 @@ public class ResourceLoader{
 	
 	public Texture getNatrue(String name){
 		return getTexture(nature+name+".png");
+	}
+	
+	public Texture getUI(String name){
+		return getTexture(gui+name+".png");
 	}
 	
 	public Texture getShaddow(String name){

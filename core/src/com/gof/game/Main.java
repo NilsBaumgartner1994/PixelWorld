@@ -2,8 +2,10 @@ package com.gof.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -70,6 +72,13 @@ public class Main extends ApplicationAdapter {
 
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		
+		hideMouse();
+	}
+	
+	private void hideMouse(){
+		Cursor customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("data/gui/blank.png")), 0, 0);
+		Gdx.graphics.setCursor(customCursor);
 	}
 	
 	@Override
@@ -120,6 +129,7 @@ public class Main extends ApplicationAdapter {
 		for (LocalPlayer p : players) {
 			p.cameraController.renderToFrameBuffer();
 			p.cameraController.renderToInformationBuffer();
+			p.cameraController.renderUI();
 			p.cameraController.renderToScreen();
 		}
 	}

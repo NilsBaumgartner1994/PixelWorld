@@ -2,6 +2,7 @@ package com.gof.physics;
 
 import com.badlogic.gdx.math.Vector2;
 import com.gof.world.MapTile;
+import com.gof.world.TileWorld;
 
 public class Position implements Comparable<Position> {
 
@@ -174,6 +175,14 @@ public class Position implements Comparable<Position> {
 		}
 
 		return 0;
+	}
+	
+	public MapTile getMapTile(){
+		return TileWorld.getMapTileFromGlobalPos(this.x, this.y);
+	}
+	
+	public String toString(){
+		return "X: "+this.x+" | Y: "+this.y;
 	}
 
 }

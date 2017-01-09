@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.gof.entitys.Entity;
+import com.gof.game.Main;
 import com.gof.helper.ArrayHelper;
 import com.gof.materials.Material;
 import com.gof.nature.Nature;
@@ -70,6 +71,21 @@ public class MapTile extends Entity {
 		return new Sprite(nature.getTexture());
 	}
 
+	public void setNature(Nature n) {
+		this.nature = n;
+	}
+
+	public String getNatureName() {
+		if (nature == null)
+			return "None";
+
+		return nature.texture;
+	}
+
+	public void removeNature() {
+		setNature(null);
+	}
+
 	public boolean isSolid() {
 		return this.solid;
 	}
@@ -115,160 +131,5 @@ public class MapTile extends Entity {
 		back.add(getOffset(1, 1));
 		return back;
 	}
-
-	// Bordering
-
-	// private boolean isSameMaterial(boolean[][] sameMaterial) {
-	// boolean back = true;
-	// int off = sameMaterial.length / 2;
-	// for (int x = 0; x < sameMaterial.length; x++) {
-	// for (int y = 0; y < sameMaterial[x].length; y++) {
-	// if (getOffset(x - off, y - off).material.isSame(material) !=
-	// sameMaterial[x][y]) {
-	// back = false;
-	// }
-	// }
-	// }
-	// return back;
-	// }
-	//
-	// private boolean isSameMaterial(boolean[][]... checks) {
-	// for (boolean[][] check : checks) {
-	// if (isSameMaterial(check))
-	// return true;
-	// }
-	// return false;
-	// }
-
-	// 2 5 8
-	// 1 4 7
-	// 0 3 6
-
-	// private List<boolean[][]> getInnerCorner() {
-	// boolean[][] all = { { false, true, true }, { true, true, true }, { true,
-	// true, true } };
-	//
-	// List<boolean[][]> back = new ArrayList<boolean[][]>();
-	// back.add(all);
-	//
-	// return back;
-	// }
-	//
-	// private boolean isInnerCorner(int d) {
-	// List<boolean[][]> checks = getInnerCorner();
-	// for (int i = 0; i < d; i++) {
-	// for (int x = 0; x < checks.size(); x++) {
-	// checks.set(x, ArrayHelper.rotateCounter(checks.get(x)));
-	// }
-	// }
-	// return isSameMaterial(checks.get(0));
-	// }
-	//
-	// public boolean isInnerCornerNorth() {
-	// return isInnerCorner(Direction.NORTH);
-	// }
-	//
-	// public boolean isInnerCornerEast() {
-	// return isInnerCorner(Direction.EAST);
-	// }
-	//
-	// public boolean isInnerCornerSouth() {
-	// return isInnerCorner(Direction.SOUTH);
-	// }
-	//
-	// public boolean isInnerCornerWest() {
-	// return isInnerCorner(Direction.WEST);
-	// }
-	//
-	// private List<boolean[][]> getOuterCornerTopRight() {
-	// boolean[][] three = { { false, false, true }, { false, true, true }, {
-	// true, true, true } };
-	// boolean[][] up = { { false, false, false }, { false, true, true }, {
-	// true, true, true } };
-	// boolean[][] down = { { false, false, true }, { false, true, true }, {
-	// false, true, true } };
-	// boolean[][] all = { { false, false, false }, { false, true, true }, {
-	// false, true, true } };
-	//
-	// List<boolean[][]> back = new ArrayList<boolean[][]>();
-	// back.add(three);
-	// back.add(all);
-	// back.add(up);
-	// back.add(down);
-	//
-	// return back;
-	// }
-	//
-	// private boolean isOuterCorner(int d) {
-	// List<boolean[][]> checks = getOuterCornerTopRight();
-	// for (int i = 0; i < d; i++) {
-	// for (int x = 0; x < checks.size(); x++) {
-	// checks.set(x, ArrayHelper.rotateCounter(checks.get(x)));
-	// }
-	// }
-	// return isSameMaterial(checks.get(0), checks.get(1), checks.get(2),
-	// checks.get(3));
-	// }
-	//
-	// public boolean isOuterCornerNorth() {
-	// return isOuterCorner(Direction.NORTH);
-	// }
-	//
-	// public boolean isOuterCornerSouth() {
-	// return isOuterCorner(Direction.SOUTH);
-	// }
-	//
-	// public boolean isOuterCornerEast() {
-	// return isOuterCorner(Direction.EAST);
-	// }
-	//
-	// public boolean isOuterCornerWest() {
-	// return isOuterCorner(Direction.WEST);
-	// }
-	//
-	// private List<boolean[][]> getStraightBorderSouth() {
-	// boolean[][] all = { { false, true, true }, { false, true, true, }, {
-	// false, true, true } };
-	// boolean[][] left = { { false, true, true }, { false, true, true }, {
-	// true, true, true } };
-	// boolean[][] right = { { true, true, true }, { false, true, true }, {
-	// false, true, true } };
-	// boolean[][] middle = { { true, true, true }, { false, true, true }, {
-	// true, true, true } };
-	//
-	// List<boolean[][]> back = new ArrayList<boolean[][]>();
-	// back.add(all);
-	// back.add(left);
-	// back.add(right);
-	// back.add(middle);
-	// return back;
-	// }
-	//
-	// private boolean checkStraightBorder(int d) {
-	// List<boolean[][]> checks = getStraightBorderSouth();
-	// for (int i = 0; i < d; i++) {
-	// for (int x = 0; x < checks.size(); x++) {
-	// checks.set(x, ArrayHelper.rotateCounter(checks.get(x)));
-	// }
-	// }
-	// return isSameMaterial(checks.get(0), checks.get(1), checks.get(2),
-	// checks.get(3));
-	// }
-	//
-	// public boolean isStraightBorderNorth() {
-	// return checkStraightBorder(Direction.NORTH);
-	// }
-	//
-	// public boolean isStraightBorderEast() {
-	// return checkStraightBorder(Direction.EAST);
-	// }
-	//
-	// public boolean isStraightBorderSouth() {
-	// return checkStraightBorder(Direction.SOUTH);
-	// }
-	//
-	// public boolean isStraightBorderWest() {
-	// return checkStraightBorder(Direction.WEST);
-	// }
 
 }

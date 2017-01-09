@@ -80,8 +80,8 @@ public class TileWorld {
 	public Vector2 checkGlobalPosBoundary(Vector2 v){
 		return new Vector2(checkGloablPosBoundary((int)v.x),checkGloablPosBoundary((int)v.y));
 	}
-	
-	public MapTile getMapTileFromGlobalPos(int gx, int gy){
+		
+	public static MapTile getMapTileFromGlobalPos(int gx, int gy){
 		return getMapTile(getChunkGlobalPos(gx,gy),gx%Chunk.chunkSize,gy%Chunk.chunkSize);
 	}
 
@@ -101,11 +101,11 @@ public class TileWorld {
 		return getChunk((int)globalV.x, (int)globalV.y);
 	}
 
-	public Chunk getChunkGlobalPos(int gx, int gy) {
+	public static Chunk getChunkGlobalPos(int gx, int gy) {
 		return getChunk(globalPosToChunkPos(gx), globalPosToChunkPos(gy));
 	}
 
-	public Chunk getChunk(int cx, int cy) {
+	public static Chunk getChunk(int cx, int cy) {
 		if(cx < 0 || cx > worldSize) return null;
 		if(cy < 0 || cy > worldSize) return null;		
 		return chunks[cx][cy];
@@ -115,7 +115,7 @@ public class TileWorld {
 		return chunks[c.x][c.y] = c;
 	}
 
-	public MapTile getMapTile(Chunk c, int tx, int ty) {
+	public static MapTile getMapTile(Chunk c, int tx, int ty) {
 		return getChunk(c.x, c.y).getMapTileFromLocalPos(tx, ty);
 	}
 

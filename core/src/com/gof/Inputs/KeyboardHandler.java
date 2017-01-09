@@ -46,10 +46,14 @@ public class KeyboardHandler {
 	}
 
 	boolean cloud = true;
+	
+	public LocalPlayer getPlayer(){
+		return Main.getInstance().playerHandler.getPlayerByInput(inputHandlerName);
+	}
 
 	public void updateLeftStick() {
 		Vector2 dir = new Vector2(0, 0);
-		LocalPlayer p = Main.getInstance().playerHandler.getPlayerByInput(inputHandlerName);
+		LocalPlayer p = getPlayer();
 
 		if (keyboard.isPressed(Keys.A)) {
 			dir.add(new Vector2(-1, 0)); // left
@@ -88,8 +92,10 @@ public class KeyboardHandler {
 	}
 
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		LocalPlayer p = getPlayer();
 		if (button == Input.Buttons.LEFT) {
 			mouse.left.press();
+			p.use(p.cameraController.getGlobalPosFromScreenPos(screenX, p.cameraController.height-screenY));
 		}
 		if (button == Input.Buttons.RIGHT) {
 			mouse.right.press();

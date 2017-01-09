@@ -278,7 +278,7 @@ public class CameraController {
 		return (relativeX + relativeY) * tileHeightHalf + tileCorrection + heightCorrection + fractionCorrection;
 	}
 
-	private Position getGlobalPosFromScreenPos(int screenX, int screenY) {
+	public Position getGlobalPosFromScreenPos(int screenX, int screenY) {
 		int oldYF = scaleZoom(-camera.getPosition().yFraction);
 		int oldXF = scaleZoom(-camera.getPosition().xFraction);
 		
@@ -428,19 +428,8 @@ public class CameraController {
 		return back;
 	}
 
-	private String getColorNameFromRegionDXMouseMap(int[] region) {
-		if (region[0] == -1)
-			return "Grün";
-		if (region[0] == 1)
-			return "Gelb";
-		if (region[1] == -1)
-			return "Blau";
-		if (region[1] == 1)
-			return "Rot";
-		return "Drin";
-	}
-
 	static int line;
+	
 
 	public void renderToInformationBuffer() {
 		if (showInformations) {
@@ -476,13 +465,10 @@ public class CameraController {
 
 			Mouse m = Main.getInstance().inputHandler.keyboardHandler.mouse;
 
+			
+			
 			if (m != null) {
-				// int globalXFromMouse =
-				// ScreenPosToglobalPosX((int)m.pos.x,this.height-(int)m.pos.y);
-				// int globalYFromMouse =
-				// ScreenPosToglobalPosY((int)m.pos.x,this.height-(int)m.pos.y);
-				// drawInformationLine("Mouse Trace: " + globalXFromMouse + " :
-				// " + globalYFromMouse);
+				
 			}
 
 			drawInformationLine("Stand On: " + standOn.material.texture);
@@ -504,7 +490,34 @@ public class CameraController {
 	}
 
 	public void renderUI() {
+		fbUI.begin();
 
+		Gdx.gl.glViewport(0, 0, fbUI.getWidth(), fbUI.getHeight());
+
+		// nicht clearen
+		 
+
+		fboBatch.enableBlending();
+		fboBatch.begin();
+		
+		Gdx.gl.glClearColor(0, 0, 0, 0);
+	    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
+//		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT |
+//				 GL20.GL_DEPTH_BUFFER_BIT);
+
+		Mouse m = Main.getInstance().inputHandler.keyboardHandler.mouse;
+
+		Sprite hand = new Sprite(ResourceLoader.getInstance().getUI("hand_select"));
+		
+		if (m != null) {
+			hand.setPosition(m.getX()-scaleZoom(hand.getRegionWidth())/2, this.height-m.getY()-scaleZoom(hand.getRegionHeight())/2);
+			fboBatch.draw(hand, hand.getX(), hand.getY(), hand.getOriginX(), hand.getOriginY(), hand.getWidth(),
+					hand.getHeight(), hand.getScaleX(), hand.getScaleY(), hand.getRotation());
+		}
+
+		fboBatch.end();
+		fbUI.end();
 	}
 
 	public void renderToScreen() {

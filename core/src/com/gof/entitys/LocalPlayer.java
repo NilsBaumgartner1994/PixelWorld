@@ -33,24 +33,33 @@ public class LocalPlayer extends Entity {
 	public MenuHandler menuHandler;
 
 	private int speed;
-	
+
 	private boolean sneaking;
 
 	public Position direction;
 
+	public Inventory inventory;
+
+	public boolean use = false;
+	public final long USECOOLDOWN = 1000L;
+	public long lastUse = System.currentTimeMillis();
+	public Position usePosition;
+
 	public LocalPlayer(String name) {
 		super(51721, 50811);
-//		speed = Speed.walkSpeed;
+		// speed = Speed.walkSpeed;
 		this.name = name;
+
 		menuHandler = new MenuHandler(this);
 		sneaking = false;
+		initInventory();
 		initCamera();
 		resetInputVariables();
 	}
 
-	public void sneak(boolean sneak){
+	public void sneak(boolean sneak) {
 		sneaking = sneak;
-		if(sneaking){
+		if (sneaking) {
 			speed = Speed.sneak;
 		}
 	}
@@ -62,26 +71,47 @@ public class LocalPlayer extends Entity {
 		}
 	}
 
+	public void initInventory() {
+		this.inventory = new Inventory();
+	}
+
 	public void initCamera() {
 		cameraController = new CameraController(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		cameraController.setTrack(this);
 	}
 
-	public void setLeftStick(Vector2 dir) {		
+	public void setLeftStick(Vector2 dir) {
 		this.stickLeft = dir.cpy();
 	}
-	
-	public void setRightStick(Vector2 dir){
+
+	public void setRightStick(Vector2 dir) {
 
 	}
-	
+
+	public void use(Position pos) {
+		if (this.lastUse + USECOOLDOWN < System.currentTimeMillis()) {
+			this.use = true;
+			this.lastUse = System.currentTimeMillis();
+			this.usePosition = pos.cpy();
+//			Main.log(getClass(), "Use Called");
+		}
+	}
+
+	private void updateUse() {
+		if(this.use){
+			this.use = false;
+			this.lastUse = System.currentTimeMillis();
+			Main.log(getClass(), "Position: "+usePosition.toString());
+			this.usePosition.getMapTile().removeNature();
+		}
+	}
+
 	private void updateLeftStick() {
 		if (this.stickLeft.len() != 0) {
 			this.direction = Position.getPositionDirectionFromVector(this.stickLeft);
 			setVelocity(this.direction.cpy().scale(this.speed));
-		}
-		else{
-		setVelocity(Direction.STOP);
+		} else {
+			setVelocity(Direction.STOP);
 		}
 	}
 
@@ -97,6 +127,7 @@ public class LocalPlayer extends Entity {
 
 	public void updateMyGameObjects() {
 		updateLeftStick();
+		updateUse();
 	}
 
 }
