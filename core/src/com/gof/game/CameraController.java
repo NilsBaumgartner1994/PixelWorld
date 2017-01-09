@@ -106,9 +106,11 @@ public class CameraController {
 
 		int xcenter = camera.getPosition().x;
 		int ycenter = camera.getPosition().y;
+		
+		int safetytiles = 7;
 
-		int breite = this.width / scaleZoom(MapTile.tileWidth);
-		int höhe = this.height / scaleZoom(MapTile.tileHeight);
+		int breite = this.width / scaleZoom(MapTile.tileWidth)+safetytiles;
+		int höhe = this.height / scaleZoom(MapTile.tileHeight)+safetytiles;
 
 		for (int a = -höhe + 1; a < höhe; a++) {
 			for (int b = -breite + 1; b < breite; b++) {
@@ -291,10 +293,6 @@ public class CameraController {
 
 		boolean xNegative = screenX < 0 ? true : false;
 		boolean yNegative = screenY < 0 ? true : false;
-
-		if (xNegative || yNegative) {
-			Main.log(getClass(), "Negative");
-		}
 
 		if (xNegative) {
 			screenX *= -1;
