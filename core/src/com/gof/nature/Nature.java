@@ -2,26 +2,14 @@ package com.gof.nature;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.gof.game.ResourceLoader;
+import com.gof.materials.Material;
 
-public class Nature{
+public class Nature extends Material{
 	
-	public String texture;
-	
+	@Override
 	public Texture getTexture(){
-		if(texture==null) return ResourceLoader.getInstance().getTile("error");
+		if(texture==null) return ResourceLoader.getInstance().getNatrue("error");
 		return ResourceLoader.getInstance().getNatrue(texture);
-	}
-	
-	public void setTexture(String tex){
-		this.texture = tex;
-	}
-	
-	public boolean isSame(Nature m){
-		return this.getClass()==m.getClass();
-	}
-	
-	public boolean isSame(Class<?> m){
-		return this.getClass()==m;
-	}
+	}	
 	
 }

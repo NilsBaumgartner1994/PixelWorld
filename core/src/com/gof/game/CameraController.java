@@ -25,6 +25,9 @@ import com.gof.physics.Position;
 import com.gof.world.MapTile;
 import com.gof.world.TileWorld;
 
+import items.AbstractItem;
+import items.Item;
+
 public class CameraController {
 
 	public Body camera;
@@ -43,11 +46,14 @@ public class CameraController {
 	public static int zoomLevelmax = 3;
 
 	public boolean showInformations = true;
+	
+	LocalPlayer player;
 
 	private Entity track;
 
-	public CameraController(int width, int height) {
+	public CameraController(LocalPlayer localPlayer, int width, int height) {
 		resize(width, height);
+		this.player = localPlayer;
 		camera.setPosition(0, 0);
 
 		font = new BitmapFont();
@@ -106,11 +112,11 @@ public class CameraController {
 
 		int xcenter = camera.getPosition().x;
 		int ycenter = camera.getPosition().y;
-		
+
 		int safetytiles = 7;
 
-		int breite = this.width / scaleZoom(MapTile.tileWidth)+safetytiles;
-		int höhe = this.height / scaleZoom(MapTile.tileHeight)+safetytiles;
+		int breite = this.width / scaleZoom(MapTile.tileWidth) + safetytiles;
+		int höhe = this.height / scaleZoom(MapTile.tileHeight) + safetytiles;
 
 		for (int a = -höhe + 1; a < höhe; a++) {
 			for (int b = -breite + 1; b < breite; b++) {
@@ -177,10 +183,13 @@ public class CameraController {
 				fboBatch.setColor(save.cpy().add(-0.5f, -0.5f, -0.5f, 0));
 			}
 
-			drawSprite(sprite, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf, tile.getRotation());
-//			drawSprite(debug, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf, tile.getRotation());
+			drawTileSprite(sprite, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf,
+					tile.getRotation());
+			// drawSprite(debug, tile.getGlobalX(), tile.getGlobalY(),
+			// tileWidthHalf, tileHeightHalf, tile.getRotation());
 
-			drawSprite(nature, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf, tile.getRotation());
+			drawTileSprite(nature, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf,
+					tile.getRotation());
 
 			if (tile.isSelected()) {
 				fboBatch.setColor(save);
@@ -196,16 +205,18 @@ public class CameraController {
 			mouseTile.unselect();
 		}
 
-//		for (MapTile tile : area) {
-//			if (((tile.getGlobalX() % 2 == 0 && tile.getGlobalY() % 2 == 0)
-//					|| ((tile.getGlobalX() + 1) % 2 == 0 && (tile.getGlobalY() + 1) % 2 == 0))) {
-//				drawSprite(mouse, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf,
-//						tile.getRotation());
-//			}
-//		}
+		// for (MapTile tile : area) {
+		// if (((tile.getGlobalX() % 2 == 0 && tile.getGlobalY() % 2 == 0)
+		// || ((tile.getGlobalX() + 1) % 2 == 0 && (tile.getGlobalY() + 1) % 2
+		// == 0))) {
+		// drawSprite(mouse, tile.getGlobalX(), tile.getGlobalY(),
+		// tileWidthHalf, tileHeightHalf,
+		// tile.getRotation());
+		// }
+		// }
 	}
 
-	private void drawSprite(Sprite sprite, int globalX, int globalY, int tileWidthHalf, int tileHeightHalf,
+	private void drawTileSprite(Sprite sprite, int globalX, int globalY, int tileWidthHalf, int tileHeightHalf,
 			int rotation) {
 		if (sprite == null) {
 			return;
@@ -216,9 +227,14 @@ public class CameraController {
 		sprite.setPosition(x, y);
 		sprite.setOrigin(tileWidthHalf, tileHeightHalf);
 		sprite.setSize(sprite.getWidth() * numerator / denumerator, sprite.getHeight() * numerator / denumerator);
+		sprite.setRotation(rotation);
 
+		drawSprite(sprite);
+	}
+
+	private void drawSprite(Sprite sprite) {
 		fboBatch.draw(sprite, sprite.getX(), sprite.getY(), sprite.getOriginX(), sprite.getOriginY(), sprite.getWidth(),
-				sprite.getHeight(), sprite.getScaleX(), sprite.getScaleY(), rotation);
+				sprite.getHeight(), sprite.getScaleX(), sprite.getScaleY(), sprite.getRotation());
 	}
 
 	private int getZoomLevelScaleFactorDenumerator() {
@@ -252,9 +268,9 @@ public class CameraController {
 
 		int spriteCorrection = scaleZoom(-sprite.getRegionWidth() / 2);
 		int widthCorrection = this.width / 2;
-		int fractionCorrection = oldXF/2 - oldYF;
+		int fractionCorrection = oldXF / 2 - oldYF;
 
-		return (relativeX - relativeY) * tileWidthHalf + spriteCorrection + widthCorrection  + fractionCorrection;
+		return (relativeX - relativeY) * tileWidthHalf + spriteCorrection + widthCorrection + fractionCorrection;
 	}
 
 	private int globalPosToScreenPosY(Sprite sprite, int globalX, int globalY, int tileHeightHalf) {
@@ -273,7 +289,7 @@ public class CameraController {
 
 		int tileCorrection = -MapTile.tileHeight;
 		int heightCorrection = this.height / 2;
-		int fractionCorrection = oldXF/4 + oldYF/2;
+		int fractionCorrection = oldXF / 4 + oldYF / 2;
 
 		return (relativeX + relativeY) * tileHeightHalf + tileCorrection + heightCorrection + fractionCorrection;
 	}
@@ -281,13 +297,13 @@ public class CameraController {
 	public Position getGlobalPosFromScreenPos(int screenX, int screenY) {
 		int oldYF = scaleZoom(-camera.getPosition().yFraction);
 		int oldXF = scaleZoom(-camera.getPosition().xFraction);
-		
-		int fractionCorrectionX = oldXF/2 - oldYF;
-		int fractionCorrectionY = oldXF/4 + oldYF/2;
-		
-		screenX-=fractionCorrectionX;
-		screenY-=fractionCorrectionY;
-		
+
+		int fractionCorrectionX = oldXF / 2 - oldYF;
+		int fractionCorrectionY = oldXF / 4 + oldYF / 2;
+
+		screenX -= fractionCorrectionX;
+		screenY -= fractionCorrectionY;
+
 		screenX -= this.width / 2;
 		screenY -= this.height / 2;
 
@@ -377,8 +393,7 @@ public class CameraController {
 
 			if (xNegative && yNegative) {
 				back[0] = 1;
-			} else 
-				if (xNegative) {
+			} else if (xNegative) {
 				back[1] = -1;
 			} else if (yNegative) {
 				back[1] = 1;
@@ -388,8 +403,7 @@ public class CameraController {
 		} else if (xRightD + mouseMapY <= maxDistance) { /* Blauer Bereich */
 			if (xNegative && yNegative) {
 				back[1] = 1;
-			} else 
-				if (xNegative) {
+			} else if (xNegative) {
 				back[0] = -1;
 			} else if (yNegative) {
 				back[0] = 1;
@@ -402,8 +416,7 @@ public class CameraController {
 
 			if (xNegative && yNegative) {
 				back[1] = -1;
-			} else 
-				if (xNegative) {
+			} else if (xNegative) {
 				back[0] = 1;
 			} else if (yNegative) {
 				back[0] = -1;
@@ -414,7 +427,7 @@ public class CameraController {
 			if (xNegative && yNegative) { /* Hier Grüner */
 				back[0] = -1;
 			} else /* ende Grüner Bereich */
-				if (xNegative) {
+			if (xNegative) {
 				back[1] = 1;
 			} else if (yNegative) {
 				back[1] = -1;
@@ -429,7 +442,6 @@ public class CameraController {
 	}
 
 	static int line;
-	
 
 	public void renderToInformationBuffer() {
 		if (showInformations) {
@@ -465,10 +477,8 @@ public class CameraController {
 
 			Mouse m = Main.getInstance().inputHandler.keyboardHandler.mouse;
 
-			
-			
 			if (m != null) {
-				
+
 			}
 
 			drawInformationLine("Stand On: " + standOn.material.texture);
@@ -489,29 +499,61 @@ public class CameraController {
 		line++;
 	}
 
-	public void renderUI() {
+	public void drawIconBar() {
+		Sprite framebar = new Sprite(ResourceLoader.getInstance().getIcon("framebar"));
+		framebar.setPosition(this.width/2-framebar.getRegionWidth()/2, 10);
+		drawSprite(framebar);
+		
+		Sprite iconFrame = new Sprite(ResourceLoader.getInstance().getIcon("frame"));
+		Sprite activIconFrame = new Sprite(ResourceLoader.getInstance().getIcon("frame_activ"));
+
+		int invPos = 0;
+		for (int i = -4; i < 4; i++) {
+			Sprite drawFrame = player.inventory.isActivSlot(invPos) ? activIconFrame : iconFrame;
+			
+			
+			int xPos = this.width/2+(i*iconFrame.getRegionWidth()+i*10+5);
+			int yPos = 10+framebar.getRegionHeight()/2-activIconFrame.getRegionHeight()/2;
+			
+			drawFrame.setPosition(xPos, yPos);
+			drawSprite(drawFrame);
+			
+			AbstractItem item = player.inventory.getItem(invPos);
+			if(item!=null){
+				Sprite itemIcon = new Sprite(item.getTexture());
+				itemIcon.setPosition(xPos, yPos);
+				drawSprite(itemIcon);
+			}
+			
+			invPos++;
+		}
+	}
+
+	public void renderGUI() {
 		fbUI.begin();
 
 		Gdx.gl.glViewport(0, 0, fbUI.getWidth(), fbUI.getHeight());
 
 		// nicht clearen
-		 
 
 		fboBatch.enableBlending();
 		fboBatch.begin();
-		
+
 		Gdx.gl.glClearColor(0, 0, 0, 0);
-	    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-//		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT |
-//				 GL20.GL_DEPTH_BUFFER_BIT);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		// Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT |
+		// GL20.GL_DEPTH_BUFFER_BIT);
+
+		drawIconBar();
 
 		Mouse m = Main.getInstance().inputHandler.keyboardHandler.mouse;
 
 		Sprite hand = new Sprite(ResourceLoader.getInstance().getUI("hand_select"));
-		
+
 		if (m != null) {
-			hand.setPosition(m.getX()-scaleZoom(hand.getRegionWidth())/2, this.height-m.getY()-scaleZoom(hand.getRegionHeight())/2);
+			hand.setPosition(m.getX() - scaleZoom(hand.getRegionWidth()) / 2,
+					this.height - m.getY() - scaleZoom(hand.getRegionHeight()) / 2);
 			fboBatch.draw(hand, hand.getX(), hand.getY(), hand.getOriginX(), hand.getOriginY(), hand.getWidth(),
 					hand.getHeight(), hand.getScaleX(), hand.getScaleY(), hand.getRotation());
 		}

@@ -105,22 +105,16 @@ public class KeyboardHandler {
 	}
 
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		// Vector3 dir = new Vector3(1, 0, 0);
-		// Player p =
-		// Main.getInstance().playerHandler.getPlayerByInput(inputHandlerName);
-		//
-		// float yaw = getYawInDegreeOfModelWithMouse(screenX, screenY,
-		// p.getObjPos());
-		// dir = dir.rotate(yaw, 0, 1, 0);
-		//
-		// p.stickRight = dir;
-
+		mouseMoved(screenX,screenY);
+		touchDown(screenX,screenY,pointer,Input.Buttons.LEFT);
+		
+		
 		return true;
 	}
 
 	public boolean scrolled(int amount) {
 		LocalPlayer p = Main.getInstance().playerHandler.getPlayerByInput(inputHandlerName);
-		p.cameraController.changeDistance(amount);
+		p.inventory.setActivSlot(p.inventory.getActivSlot()+amount);
 		return true;
 	}
 

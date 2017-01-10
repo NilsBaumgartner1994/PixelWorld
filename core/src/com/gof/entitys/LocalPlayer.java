@@ -8,13 +8,21 @@ import com.badlogic.gdx.math.Vector2;
 import com.gof.game.CameraController;
 import com.gof.game.Main;
 import com.gof.helper.VectorHelper;
+import com.gof.materials.Material;
 import com.gof.materials.Water;
 import com.gof.menu.MenuHandler;
+import com.gof.nature.Nature;
+import com.gof.nature.TallGrass;
+import com.gof.nature.Tree;
 import com.gof.physics.Direction;
 import com.gof.physics.Position;
 import com.gof.physics.Speed;
 import com.gof.world.MapTile;
 import com.gof.world.TileWorld;
+
+import items.AbstractItem;
+import items.Item;
+import items.Tool;
 
 public class LocalPlayer extends Entity {
 
@@ -41,7 +49,7 @@ public class LocalPlayer extends Entity {
 	public Inventory inventory;
 
 	public boolean use = false;
-	public final long USECOOLDOWN = 1000L;
+	public final long USECOOLDOWN = 1000 / 3L;
 	public long lastUse = System.currentTimeMillis();
 	public Position usePosition;
 
@@ -73,10 +81,13 @@ public class LocalPlayer extends Entity {
 
 	public void initInventory() {
 		this.inventory = new Inventory();
+		this.inventory.addItem(new Item(new Tree()));
+		this.inventory.addItem(new Item(new TallGrass()));
+		this.inventory.addItem(new Tool());
 	}
 
 	public void initCamera() {
-		cameraController = new CameraController(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		cameraController = new CameraController(this, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		cameraController.setTrack(this);
 	}
 
@@ -93,16 +104,27 @@ public class LocalPlayer extends Entity {
 			this.use = true;
 			this.lastUse = System.currentTimeMillis();
 			this.usePosition = pos.cpy();
-//			Main.log(getClass(), "Use Called");
+			// Main.log(getClass(), "Use Called");
 		}
 	}
 
 	private void updateUse() {
-		if(this.use){
+		if (this.use) {
 			this.use = false;
 			this.lastUse = System.currentTimeMillis();
-			Main.log(getClass(), "Position: "+usePosition.toString());
-			this.usePosition.getMapTile().removeNature();
+
+			AbstractItem activItem = this.inventory.getActivItem();
+			if (activItem instanceof Item) {
+				Item item = (Item) activItem;
+				if (item.isNature()) {
+					this.usePosition.getMapTile().setNature(item.getNature());
+				}
+			}
+			if (activItem instanceof Tool) {
+				Tool tool = (Tool) activItem;
+				this.usePosition.getMapTile().removeNature();
+			}
+
 		}
 	}
 
