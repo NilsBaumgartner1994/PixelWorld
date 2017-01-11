@@ -9,11 +9,8 @@ public class Body implements Comparable<Body> {
 	Position acceleration;
 	
 	MapTile referrsTo;
-	
-	Navigation nav;
 
 	public Body(Position position, Position velocity, Position acceleration) {	
-		this.nav = new Navigation();
 		setPosition(position);
 		setVelocity(velocity);
 		setAcceleration(acceleration);
@@ -80,7 +77,7 @@ public class Body implements Comparable<Body> {
 //
 //		float velocityAdd = velocityValue * deltaTime;
 
-		setPosition(getPosition().add(velocity));
+		setPosition(getPosition().addAndSet(velocity));
 	}
 
 	public float getValueOfVector(Position vec) {
@@ -97,7 +94,7 @@ public class Body implements Comparable<Body> {
 	}
 
 	public Body addVelocity(Position velocityAdiition) {
-		return setVelocity(getVelocity().add(velocityAdiition));
+		return setVelocity(getVelocity().addAndSet(velocityAdiition));
 	}
 
 	public Body setAcceleration(Position acceleration) {

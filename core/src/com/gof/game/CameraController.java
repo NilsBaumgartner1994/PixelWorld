@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Vector2;
 import com.gof.Inputs.Mouse;
 import com.gof.entitys.Entity;
+import com.gof.entitys.EntityType;
 import com.gof.entitys.LocalPlayer;
 import com.gof.materials.Debug;
 import com.gof.materials.Material;
@@ -466,7 +467,7 @@ public class CameraController {
 			line = 1;
 			drawInformationLine("FPS: " + Gdx.graphics.getFramesPerSecond());
 
-			if (track instanceof LocalPlayer) {
+			if (track.getEntityType()==EntityType.PLAYER) {
 				LocalPlayer p = (LocalPlayer) track;
 				drawInformationLine("Player: " + Main.getInstance().playerHandler.getPlayerNumber(p));
 			}

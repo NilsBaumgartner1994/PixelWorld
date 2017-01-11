@@ -29,7 +29,7 @@ import items.Inventory;
 import items.Item;
 import items.Tool;
 
-public class LocalPlayer extends Entity {
+public class LocalPlayer extends Entity{
 
 	public String name;
 
@@ -45,8 +45,6 @@ public class LocalPlayer extends Entity {
 	public CameraController cameraController;
 	public MenuHandler menuHandler;
 
-	private int speed;
-
 	private boolean sneaking;
 
 	public Position direction;
@@ -59,7 +57,7 @@ public class LocalPlayer extends Entity {
 	public Position usePosition;
 
 	public LocalPlayer(String name) {
-		super(51721, 50811);
+		super(51721, 50811, EntityType.PLAYER);
 		// speed = Speed.walkSpeed;
 		this.name = name;
 
@@ -140,9 +138,7 @@ public class LocalPlayer extends Entity {
 	private void updateLeftStick() {
 		if (this.stickLeft.len() != 0) {
 			this.direction = Position.getPositionDirectionFromVector(this.stickLeft);
-			setVelocity(this.direction.cpy().scale(this.speed));
-		} else {
-			setVelocity(Direction.STOP);
+			this.setDestinyByOffset(this.direction.cpy().scaleAndSet(this.speed));
 		}
 	}
 
@@ -151,7 +147,6 @@ public class LocalPlayer extends Entity {
 		stickRight = new Vector2();
 	}
 
-	@Override
 	public List<Sprite> getSprite() {
 		return PlayerSpriteCreator.getPlayerSprite(this);
 	}

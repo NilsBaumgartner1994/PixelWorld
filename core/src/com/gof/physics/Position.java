@@ -55,39 +55,43 @@ public class Position implements Comparable<Position> {
 		return new Position(this.x, this.xFraction, this.y, this.yFraction);
 	}
 
-	public Position add(int x, int xFraction, int y, int yFraction) {
+	public Position addAndSet(int x, int xFraction, int y, int yFraction) {
 		return set(this.x + x, this.xFraction + xFraction, this.y + y, this.yFraction + yFraction);
 	}
 
-	public Position add(Position p) {
-		return add(p.x, p.xFraction, p.y, p.yFraction);
+	public Position addAndSet(Position p) {
+		return addAndSet(p.x, p.xFraction, p.y, p.yFraction);
+	}
+	
+	public Position subAndSet(Position p){
+		return addAndSet(p.scaleAndSet(-1));
 	}
 
-	public Position scale(int scale_x, int scale_y) {
+	public Position scaleAndSet(int scale_x, int scale_y) {
 		return set((this.x * scale_x), (this.xFraction * scale_x), (this.y * scale_x), (this.yFraction * scale_x));
 	}
 
-	public Position scale(int scale) {
-		return scale(scale, scale);
+	public Position scaleAndSet(int scale) {
+		return scaleAndSet(scale, scale);
 	}
 
-	public Position scale(Position p) {
-		return scale(p.x, p.y);
+	public Position scaleAndSet(Position p) {
+		return scaleAndSet(p.x, p.y);
 	}
 
-	public Position scale(float scale_x, float scale_y) {
+	public Position scaleAndSet(float scale_x, float scale_y) {
 		return set((int) (this.x * scale_x), (int) (this.xFraction * scale_x), (int) (this.y * scale_x),
 				(int) (this.yFraction * scale_x));
 	}
 
-	public Position scale(float scale) {
-		return scale(scale);
+	public Position scaleAndSet(float scale) {
+		return scaleAndSet(scale);
 	}
 
 	public Position distance(Position other) {
 		Position me = this.cpy();
 		Position ot = other.cpy();
-		return me.add(ot.scale(-1));
+		return me.addAndSet(ot.scaleAndSet(-1));
 	}
 
 	public float lengthValue() {
@@ -186,7 +190,7 @@ public class Position implements Comparable<Position> {
 	}
 	
 	public String toString(){
-		return "X: "+this.x+" | Y: "+this.y;
+		return "X: "+this.x+","+this.xFraction+" | Y: "+this.y+","+this.yFraction;
 	}
 
 }

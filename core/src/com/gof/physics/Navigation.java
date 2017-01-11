@@ -1,18 +1,19 @@
 package com.gof.physics;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Navigation {
 	
 	List<Position> path;
 	
-	public Navigation(){
-		this.path = new ArrayList<Position>();
-	}
-	
 	public Navigation(List<Position> path){
 		this.path = path;
+	}
+	
+	public Navigation(Position path){
+		this(Arrays.asList(path));		
 	}
 	
 	public Position nextDestiny(){
@@ -34,6 +35,12 @@ public class Navigation {
 	
 	public void setPath(List<Position> newPath){
 		this.path = newPath;
+	}
+	
+	public void setPath(Position singleTarget){
+		List <Position> newPath = new ArrayList<Position>();
+		newPath.add(singleTarget);
+		setPath(newPath);
 	}
 	
 	public void removeDestiny(int position){
