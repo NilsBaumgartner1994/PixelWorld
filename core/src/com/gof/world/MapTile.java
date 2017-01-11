@@ -3,18 +3,15 @@ package com.gof.world;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector2;
 import com.gof.entitys.Entity;
-import com.gof.game.Main;
-import com.gof.helper.ArrayHelper;
 import com.gof.materials.Material;
 import com.gof.nature.Nature;
+import com.gof.physics.Body;
 import com.gof.physics.Direction;
 import com.gof.physics.Position;
 
-public class MapTile extends Entity {
+public class MapTile extends Position {
 
 	public final static int tileWidth = 128;
 	public final static int tileHeight = 64;
@@ -23,15 +20,31 @@ public class MapTile extends Entity {
 	private boolean solid;
 
 	public Material material;
+	
+	private boolean shaddow;
+
 	public Nature nature;
 
 	public Chunk chunk;
+	
+	public List<Body> entitys;
 
 	public MapTile(Chunk c, int x, int y, boolean solid, Material m) {
 		super(x, y);
+		entitys = new ArrayList<Body>();
 		this.chunk = c;
 		setSolid(solid);
 		this.material = m;
+	}
+	
+	public void registerBody(Body body){
+		if(!entitys.contains(body)){
+			entitys.add(body);
+		}
+	}
+	
+	public void unregisterBody(Body body){
+		entitys.remove(body);
 	}
 
 	private MapTile getOffset(int xi, int yi) {
@@ -70,6 +83,10 @@ public class MapTile extends Entity {
 		}
 		return new Sprite(nature.getTexture());
 	}
+	
+	public void setMaterial(Material m){
+		this.material = m;
+	}
 
 	public void setNature(Nature n) {
 		this.nature = n;
@@ -92,6 +109,22 @@ public class MapTile extends Entity {
 
 	public void setDirection(int dir) {
 		this.direction = dir;
+	}
+	
+	private void setShaddow(boolean selected){
+		this.shaddow = selected;
+	}
+	
+	public boolean isInShaddow(){
+		return this.shaddow;
+	}
+	
+	public void select(){
+		setShaddow(true);
+	}
+	
+	public void unselect(){
+		setShaddow(false);
 	}
 
 	public MapTile getTileInDirection(Position direction) {

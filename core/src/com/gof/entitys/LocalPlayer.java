@@ -8,7 +8,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.gof.game.CameraController;
 import com.gof.game.Main;
 import com.gof.helper.VectorHelper;
+import com.gof.materials.Debug;
+import com.gof.materials.Grass;
 import com.gof.materials.Material;
+import com.gof.materials.MaterialError;
+import com.gof.materials.Stone;
 import com.gof.materials.Water;
 import com.gof.menu.MenuHandler;
 import com.gof.nature.Nature;
@@ -21,6 +25,7 @@ import com.gof.world.MapTile;
 import com.gof.world.TileWorld;
 
 import items.AbstractItem;
+import items.Inventory;
 import items.Item;
 import items.Tool;
 
@@ -49,7 +54,7 @@ public class LocalPlayer extends Entity {
 	public Inventory inventory;
 
 	public boolean use = false;
-	public final long USECOOLDOWN = 1000 / 3L;
+	public final long USECOOLDOWN = 1000 / 10L;
 	public long lastUse = System.currentTimeMillis();
 	public Position usePosition;
 
@@ -84,6 +89,7 @@ public class LocalPlayer extends Entity {
 		this.inventory.addItem(new Item(new Tree()));
 		this.inventory.addItem(new Item(new TallGrass()));
 		this.inventory.addItem(new Tool());
+		this.inventory.addItem(new Item(new Grass()));
 	}
 
 	public void initCamera() {
@@ -118,6 +124,9 @@ public class LocalPlayer extends Entity {
 				Item item = (Item) activItem;
 				if (item.isNature()) {
 					this.usePosition.getMapTile().setNature(item.getNature());
+				}
+				else{
+					this.usePosition.getMapTile().setMaterial(item.getMaterial());
 				}
 			}
 			if (activItem instanceof Tool) {

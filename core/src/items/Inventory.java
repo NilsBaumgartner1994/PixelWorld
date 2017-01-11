@@ -1,4 +1,4 @@
-package com.gof.entitys;
+package items;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,9 +7,6 @@ import java.util.List;
 
 import com.gof.game.Main;
 import com.gof.materials.MaterialError;
-
-import items.AbstractItem;
-import items.Item;
 
 public class Inventory {
 

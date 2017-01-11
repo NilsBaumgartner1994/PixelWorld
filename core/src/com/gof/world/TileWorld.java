@@ -10,7 +10,7 @@ import com.gof.worldgenerator.NatureGenerator;
 public class TileWorld {
 
 	private static TileWorld instance;
-	private GeneratorInterface generator;
+	private static GeneratorInterface generator;
 
 	// Number of cells
 	public static int worldSize = 100;
@@ -59,9 +59,7 @@ public class TileWorld {
 		List<MapTile> back = new ArrayList<MapTile>();
 		for (int y = yTop; y > yBottom - 1; y--) {
 			for (int x = xLeft; x < xRight + 1; x++) {
-				if (!exsistChunkTile(x, y)) {
-					generator.generateChunkAt(x, y);
-				}
+				
 				Chunk ch = getChunk(x, y);
 				List<MapTile> chunkBack = ch.getMapTilesFromGlobalPos(xs, ys, xe, ye);
 				back.addAll(chunkBack);
@@ -92,22 +90,24 @@ public class TileWorld {
 	public boolean exsistMapTile(int gx, int gy) {
 		return getChunk(globalPosToChunkPos(gx), globalPosToChunkPos(gy)) != null;
 	}
-
-	public boolean exsistChunkTile(int cx, int cy) {
-		return getChunk(cx, cy) != null;
-	}
 	
 	public Chunk getChunkGlobalPos(Vector2 globalV) {
 		return getChunk((int)globalV.x, (int)globalV.y);
 	}
 
 	public static Chunk getChunkGlobalPos(int gx, int gy) {
+		
 		return getChunk(globalPosToChunkPos(gx), globalPosToChunkPos(gy));
 	}
 
 	public static Chunk getChunk(int cx, int cy) {
 		if(cx < 0 || cx > worldSize) return null;
-		if(cy < 0 || cy > worldSize) return null;		
+		if(cy < 0 || cy > worldSize) return null;	
+		
+		Chunk c = chunks[cx][cy];
+		if (c==null) {
+			generator.generateChunkAt(cx, cy);
+		}
 		return chunks[cx][cy];
 	}
 

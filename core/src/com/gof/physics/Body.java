@@ -1,12 +1,19 @@
 package com.gof.physics;
 
-public class Body implements Comparable<Body> {
+import com.gof.world.MapTile;
 
+public class Body implements Comparable<Body> {
+	
 	Position position;
 	Position velocity;
 	Position acceleration;
+	
+	MapTile referrsTo;
+	
+	Navigation nav;
 
-	public Body(Position position, Position velocity, Position acceleration) {		
+	public Body(Position position, Position velocity, Position acceleration) {	
+		this.nav = new Navigation();
 		setPosition(position);
 		setVelocity(velocity);
 		setAcceleration(acceleration);
@@ -27,11 +34,6 @@ public class Body implements Comparable<Body> {
 	public Position getPosition() {
 		return position.cpy();
 	}
-
-	public Body setPosition(Position newpos) {
-		this.position = newpos.cpy();
-		return this;
-	}
 	
 	public Body setPosition(int x, int y){
 		return setPosition(new Position(x,y));
@@ -41,6 +43,33 @@ public class Body implements Comparable<Body> {
 		return setPosition(b.position);
 	}
 
+	public Body setPosition(Position newpos) {
+		registerBodyOnMapTile(newpos);
+		
+		this.position = newpos.cpy();
+		
+		return this;
+	}
+	
+	private void registerBodyOnMapTile(Position newpos){
+		MapTile newReffer = newpos.getMapTile();
+		
+		if(this.position==null){
+			linkToMapTile(newReffer);
+		}else{
+			MapTile oldReffer = this.position.getMapTile();
+			
+			if(!(newReffer.getGlobalX()==oldReffer.getGlobalX() && newReffer.getGlobalY()==oldReffer.getGlobalY())){
+				oldReffer.unregisterBody(this);
+				linkToMapTile(newReffer);
+			}			
+		}	
+	}
+	
+	private void linkToMapTile(MapTile newReffer){
+		newReffer.registerBody(this);
+	}
+	
 	public void calcPhysicStep(float deltaTime) {
 		// float accelerationValue = getValueOfVector(acceleration);
 //		float velocityValue = getValueOfVector(velocity);

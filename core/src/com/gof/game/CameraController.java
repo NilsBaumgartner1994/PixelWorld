@@ -179,7 +179,7 @@ public class CameraController {
 
 			Color save = fboBatch.getColor();
 
-			if (tile.isSelected()) {
+			if (tile.isInShaddow()) {
 				fboBatch.setColor(save.cpy().add(-0.5f, -0.5f, -0.5f, 0));
 			}
 
@@ -191,7 +191,7 @@ public class CameraController {
 			drawTileSprite(nature, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf,
 					tile.getRotation());
 
-			if (tile.isSelected()) {
+			if (tile.isInShaddow()) {
 				fboBatch.setColor(save);
 			}
 

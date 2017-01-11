@@ -46,6 +46,10 @@ public class Position implements Comparable<Position> {
 		this.yFraction = this.yFraction % fractionMax_y;
 		return this;
 	}
+	
+	public Position getPosition(){
+		return cpy();
+	}
 
 	public Position cpy() {
 		return new Position(this.x, this.xFraction, this.y, this.yFraction);
