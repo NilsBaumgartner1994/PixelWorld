@@ -47,7 +47,7 @@ public class CameraController {
 	public static int zoomLevelmax = 3;
 
 	public boolean showInformations = true;
-	
+
 	LocalPlayer player;
 
 	private Entity track;
@@ -147,8 +147,8 @@ public class CameraController {
 		numerator = getZoomLevelScaleFactorNumerator();
 		denumerator = getZoomLevelScaleFactorDenumerator();
 
-		int tileWidth = MapTile.tileWidth * numerator / denumerator;
-		int tileHeight = MapTile.tileHeight * numerator / denumerator;
+		int tileWidth = scaleZoom(MapTile.tileWidth);
+		int tileHeight = scaleZoom(MapTile.tileHeight);
 		int tileWidthHalf = tileWidth / 2;
 		int tileHeightHalf = tileHeight / 2;
 
@@ -186,8 +186,8 @@ public class CameraController {
 
 			drawTileSprite(sprite, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf,
 					tile.getRotation());
-			// drawSprite(debug, tile.getGlobalX(), tile.getGlobalY(),
-			// tileWidthHalf, tileHeightHalf, tile.getRotation());
+//			drawTileSprite(debug,  tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf,
+//						tile.getRotation());
 
 			drawTileSprite(nature, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf,
 					tile.getRotation());
@@ -206,15 +206,13 @@ public class CameraController {
 			mouseTile.unselect();
 		}
 
-		// for (MapTile tile : area) {
-		// if (((tile.getGlobalX() % 2 == 0 && tile.getGlobalY() % 2 == 0)
-		// || ((tile.getGlobalX() + 1) % 2 == 0 && (tile.getGlobalY() + 1) % 2
-		// == 0))) {
-		// drawSprite(mouse, tile.getGlobalX(), tile.getGlobalY(),
-		// tileWidthHalf, tileHeightHalf,
-		// tile.getRotation());
-		// }
-		// }
+//		for (MapTile tile : area) {
+//			if (((tile.getGlobalX() % 2 == 0 && tile.getGlobalY() % 2 == 0)
+//					|| ((tile.getGlobalX() + 1) % 2 == 0 && (tile.getGlobalY() + 1) % 2 == 0))) {
+//				drawTileSprite(mouse, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf,
+//						tile.getRotation());
+//			}
+//		}
 	}
 
 	private void drawTileSprite(Sprite sprite, int globalX, int globalY, int tileWidthHalf, int tileHeightHalf,
@@ -264,9 +262,6 @@ public class CameraController {
 		int oldYF = scaleZoom(-camera.getPosition().yFraction);
 		int oldXF = scaleZoom(-camera.getPosition().xFraction);
 
-		// return (oldX - oldY) * tileWidthHalf + oldXF / 2 - oldYF + this.width
-		// / 2 - sprite.getRegionWidth()/2* numerator / denumerator;
-
 		int spriteCorrection = scaleZoom(-sprite.getRegionWidth() / 2);
 		int widthCorrection = this.width / 2;
 		int fractionCorrection = oldXF / 2 - oldYF;
@@ -282,13 +277,10 @@ public class CameraController {
 		int oldYF = (-camera.getPosition().yFraction) * numerator / denumerator;
 		int oldXF = (-camera.getPosition().xFraction) * numerator / denumerator;
 
-		// return (oldX + oldY) * tileHeightHalf + oldXF / 4 + oldYF / 2 +
-		// this.height / 2;
-
 		int relativeY = (globalY - camera.getPosition().y);
 		int relativeX = (globalX - camera.getPosition().x);
 
-		int tileCorrection = -MapTile.tileHeight;
+		int tileCorrection = scaleZoom(-MapTile.tileHeight);
 		int heightCorrection = this.height / 2;
 		int fractionCorrection = oldXF / 4 + oldYF / 2;
 
@@ -318,11 +310,6 @@ public class CameraController {
 			screenY *= -1;
 		}
 
-		int tileWidth = MapTile.tileWidth * numerator / denumerator;
-		int tileHeight = MapTile.tileHeight * numerator / denumerator;
-		int tileWidthHalf = tileWidth / 2;
-		int tileHeightHalf = tileHeight / 2;
-
 		Sprite mouse = new Sprite(new MouseMatter().getTexture());
 
 		int spriteCorrection = scaleZoom(mouse.getRegionWidth() / 2);
@@ -332,9 +319,7 @@ public class CameraController {
 		int regionY = screenY / scaleZoom(mouse.getRegionHeight()) * 2;
 
 		int mouseMapX = screenX % scaleZoom(mouse.getRegionWidth());
-		int mouseMapY = screenY % scaleZoom(mouse.getRegionHeight());
-
-		mouseMapY *= 2;
+		int mouseMapY = screenY % scaleZoom(mouse.getRegionHeight()) *2;
 
 		if (xNegative) {
 			regionX *= -1;
@@ -347,8 +332,8 @@ public class CameraController {
 			regionY -= 2;
 		}
 
-		int[] region = getRegionDXFromMouseMap(mouseMapX, mouseMapY, mouse.getRegionWidth(),
-				mouse.getRegionHeight() * 2, mouse.getRegionWidth() / 2, xNegative, yNegative);
+		int[] region = getRegionDXFromMouseMap(mouseMapX, mouseMapY, scaleZoom(mouse.getRegionWidth()),
+				scaleZoom(mouse.getRegionHeight() * 2), scaleZoom(mouse.getRegionWidth() / 2), xNegative, yNegative);
 
 		if (xNegative) {
 			// region[0]*=-1;
@@ -467,7 +452,7 @@ public class CameraController {
 			line = 1;
 			drawInformationLine("FPS: " + Gdx.graphics.getFramesPerSecond());
 
-			if (track.getEntityType()==EntityType.PLAYER) {
+			if (track.getEntityType() == EntityType.PLAYER) {
 				LocalPlayer p = (LocalPlayer) track;
 				drawInformationLine("Player: " + Main.getInstance().playerHandler.getPlayerNumber(p));
 			}
@@ -502,30 +487,29 @@ public class CameraController {
 
 	public void drawIconBar() {
 		Sprite framebar = new Sprite(ResourceLoader.getInstance().getIcon("framebar"));
-		framebar.setPosition(this.width/2-framebar.getRegionWidth()/2, 10);
+		framebar.setPosition(this.width / 2 - framebar.getRegionWidth() / 2, 10);
 		drawSprite(framebar);
-		
+
 		Sprite iconFrame = new Sprite(ResourceLoader.getInstance().getIcon("frame"));
 		Sprite activIconFrame = new Sprite(ResourceLoader.getInstance().getIcon("frame_activ"));
 
 		int invPos = 0;
 		for (int i = -4; i < 4; i++) {
 			Sprite drawFrame = player.inventory.isActivSlot(invPos) ? activIconFrame : iconFrame;
-			
-			
-			int xPos = this.width/2+(i*iconFrame.getRegionWidth()+i*10+5);
-			int yPos = 10+framebar.getRegionHeight()/2-activIconFrame.getRegionHeight()/2;
-			
+
+			int xPos = this.width / 2 + (i * iconFrame.getRegionWidth() + i * 10 + 5);
+			int yPos = 10 + framebar.getRegionHeight() / 2 - activIconFrame.getRegionHeight() / 2;
+
 			drawFrame.setPosition(xPos, yPos);
 			drawSprite(drawFrame);
-			
+
 			AbstractItem item = player.inventory.getItem(invPos);
-			if(item!=null){
+			if (item != null) {
 				Sprite itemIcon = new Sprite(item.getTexture());
 				itemIcon.setPosition(xPos, yPos);
 				drawSprite(itemIcon);
 			}
-			
+
 			invPos++;
 		}
 	}
@@ -553,8 +537,8 @@ public class CameraController {
 		Sprite hand = new Sprite(ResourceLoader.getInstance().getUI("hand_select"));
 
 		if (m != null) {
-			hand.setPosition(m.getX() - scaleZoom(hand.getRegionWidth()) / 2,
-					this.height - m.getY() - scaleZoom(hand.getRegionHeight()) / 2);
+			hand.setPosition(m.getX() - hand.getRegionWidth() / 2,
+					this.height - m.getY() - hand.getRegionHeight() / 2);
 			fboBatch.draw(hand, hand.getX(), hand.getY(), hand.getOriginX(), hand.getOriginY(), hand.getWidth(),
 					hand.getHeight(), hand.getScaleX(), hand.getScaleY(), hand.getRotation());
 		}

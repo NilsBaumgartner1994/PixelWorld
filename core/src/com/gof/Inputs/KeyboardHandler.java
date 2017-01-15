@@ -113,12 +113,19 @@ public class KeyboardHandler {
 	}
 
 	public boolean scrolled(int amount) {
-		LocalPlayer p = Main.getInstance().playerHandler.getPlayerByInput(inputHandlerName);
+		LocalPlayer p = this.getPlayer();
 		p.inventory.setActivSlot(p.inventory.getActivSlot()+amount);
 		return true;
 	}
 
 	public boolean keyTyped(char character) {
+		LocalPlayer p = this.getPlayer();
+		switch(character){
+		case '+' : p.cameraController.changeDistance(-1); break;
+		case '-' : p.cameraController.changeDistance(1); break;
+		default : break;
+		
+		}
 		return true;
 	}
 

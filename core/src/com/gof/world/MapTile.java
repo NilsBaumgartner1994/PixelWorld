@@ -60,6 +60,10 @@ public class MapTile extends Position {
 	public int getRotation() {
 		return direction * 90;
 	}
+	
+	public Position getGlobalPosition(){
+		return new Position(getGlobalX(),getGlobalY());
+	}
 
 	public int getGlobalX() {
 		return (int) (chunk.x * Chunk.chunkSize + this.getPosition().x);

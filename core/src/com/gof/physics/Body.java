@@ -5,27 +5,27 @@ import com.gof.world.MapTile;
 public class Body implements Comparable<Body> {
 	
 	Position position;
-	Position velocity;
+	Speed velocity;
 	Position acceleration;
 	
 	MapTile referrsTo;
 
-	public Body(Position position, Position velocity, Position acceleration) {	
+	public Body(Position position, Speed velocity, Position acceleration) {	
 		setPosition(position);
 		setVelocity(velocity);
 		setAcceleration(acceleration);
 	}
 	
 	public Body(){
-		this(new Position(0, 0),new Position(0, 0),new Position(0, 0));
+		this(new Position(),new Speed(),new Position());
 	}
 
 	public Body(Position position) {
-		this(position, new Position(0, 0), new Position(0, 0));
+		this(position, new Speed(), new Position());
 	}
 
-	public Body(Position position, Position velocity) {
-		this(position, velocity, new Position(0, 0));
+	public Body(Position position, Speed velocity) {
+		this(position, velocity, new Position());
 	}
 
 	public Position getPosition() {
@@ -67,34 +67,26 @@ public class Body implements Comparable<Body> {
 		newReffer.registerBody(this);
 	}
 	
-	public void calcPhysicStep(float deltaTime) {
-		// float accelerationValue = getValueOfVector(acceleration);
-//		float velocityValue = getValueOfVector(velocity);
-//
-//		// float accelerationAddition
-//		//
-//		// if(accelerationValue)
-//
-//		float velocityAdd = velocityValue * deltaTime;
-
-		setPosition(getPosition().addAndSet(velocity));
+	/**
+	 * One Second are 60 steps
+	 * @param deltaTime
+	 */
+	public void calcPhysicStep(int steps) {
+		Position vel = velocity.calcStep(steps);
+		setPosition(getPosition().addAndSet(vel));
 	}
 
 	public float getValueOfVector(Position vec) {
-		return vec.lengthValue();
+		return vec.heightCompareLength();
 	}
 
-	public Body setVelocity(Position velocity) {
+	public Body setVelocity(Speed velocity) {
 		this.velocity = velocity.cpy();
 		return this;
 	}
 
-	public Position getVelocity() {
+	public Speed getVelocity() {
 		return this.velocity.cpy();
-	}
-
-	public Body addVelocity(Position velocityAdiition) {
-		return setVelocity(getVelocity().addAndSet(velocityAdiition));
 	}
 
 	public Body setAcceleration(Position acceleration) {

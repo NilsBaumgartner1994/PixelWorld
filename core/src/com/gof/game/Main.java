@@ -22,7 +22,7 @@ public class Main extends ApplicationAdapter {
 	ResourceLoader resourceLoader;
 	TileWorld tileWorld;
 
-	public static void log(Class<?> c, String log) {
+	public static void log(Class<?> c, String log) {		
 		System.out.println(c.getSimpleName() + ": " + log);
 	}
 
@@ -85,16 +85,38 @@ public class Main extends ApplicationAdapter {
 	public void resize(int width, int height) {
 //	    viewport.update(width, height);
 	}
+	
+	float renderTime = 0;
+	float refreshRate = 1/60f;
+	
+	float timeSpeed = 1f;
 
 	@Override
 	public void render() {
+		float deltaTime = Gdx.graphics.getDeltaTime();
+		
+		deltaTime*=timeSpeed;
+		
+		renderTime+=deltaTime;
+		
+		
+		
+		int steps = 0;
+		if(renderTime>=refreshRate){
+			steps = (int) (renderTime/refreshRate);
+		}
+		renderTime%=refreshRate;
+		
 		inputHandler.updateInputLogic();
+		
+//		Main.log(getClass(), "RenderTime: "+renderTime+" | DeltaTime: "+deltaTime+" | Steps: "+steps);
 		
 		camera.update();
 		updateEntitysInputs();
 		
 		// Step the physics simulation forward at a rate of 60hz
-		updatePhysics(1f / 60f);
+		
+		updatePhysics(steps);
 		
 		
 		Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -111,15 +133,17 @@ public class Main extends ApplicationAdapter {
 		}
 	}
 	
-	public void updatePhysics(float deltaTime) {
-		updateEntitysBodys(deltaTime);
+	public void updatePhysics(int steps) {
+		updateEntitysBodys(steps);
 	}
 	
-	public void updateEntitysBodys(float deltaTime) {
+	public void updateEntitysBodys(int steps) {
 		LocalPlayer[] players = playerHandler.getPlayers();
+		
+//		Main.log(getClass(), "DeltaTime: "+deltaTime+" 1/60="+frac*60);
 
 		for (LocalPlayer p : players) {
-			p.calcPhysicStep(deltaTime);
+			p.calcPhysicStep(steps);
 		}
 	}
 

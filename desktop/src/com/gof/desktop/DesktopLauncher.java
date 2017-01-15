@@ -19,8 +19,8 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		
 		config.vSyncEnabled = false;
-		config.backgroundFPS = 60;
-		config.foregroundFPS = 60;
+		config.backgroundFPS = 0;
+		config.foregroundFPS = 0;
 		
 		switch (resolution) {
 		case iphone:

@@ -50,14 +50,14 @@ public class LocalPlayer extends Entity{
 	public Position direction;
 
 	public Inventory inventory;
-
+	
 	public boolean use = false;
 	public final long USECOOLDOWN = 1000 / 10L;
 	public long lastUse = System.currentTimeMillis();
 	public Position usePosition;
 
 	public LocalPlayer(String name) {
-		super(51721, 50811, EntityType.PLAYER);
+		super(51721,MapTile.tileWidth/2, 50811,MapTile.tileHeight/2, EntityType.PLAYER);
 		// speed = Speed.walkSpeed;
 		this.name = name;
 
@@ -138,7 +138,14 @@ public class LocalPlayer extends Entity{
 	private void updateLeftStick() {
 		if (this.stickLeft.len() != 0) {
 			this.direction = Position.getPositionDirectionFromVector(this.stickLeft);
-			this.setDestinyByOffset(this.direction.cpy().scaleAndSet(this.speed));
+			Position oneBlockDir = this.direction.cpy().scaleAndSet(MapTile.tileHeight);
+			
+//			Main.log(getClass(), "Pos: "+this.getPosition().toString());
+			Position nextBlock = this.getPosition().cpy().addAndSet(oneBlockDir);
+			
+			nextBlock = nextBlock.getMapTile().getGlobalPosition().addAndSet(0, MapTile.tileWidth/2, 0, MapTile.tileHeight/2);
+			
+			this.nav.setPath(nextBlock);
 		}
 	}
 

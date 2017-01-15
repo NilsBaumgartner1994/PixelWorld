@@ -11,8 +11,8 @@ public class Position implements Comparable<Position> {
 	public int xFraction;
 	public int yFraction;
 
-	public int fractionMax_x = MapTile.tileWidth;
-	public int fractionMax_y = MapTile.tileHeight;
+	public static final int fractionMax_x = MapTile.tileWidth;
+	public static final int fractionMax_y = MapTile.tileHeight;
 
 	public Position(int x, int xFraction, int y, int yFraction) {
 		set(x, xFraction, y, yFraction);
@@ -28,6 +28,10 @@ public class Position implements Comparable<Position> {
 
 	public Position(int x, int y) {
 		this(x, 0, y, 0);
+	}
+	
+	public Position(){
+		this(0,0);
 	}
 
 	public Position calcOverflow() {
@@ -94,8 +98,20 @@ public class Position implements Comparable<Position> {
 		return me.addAndSet(ot.scaleAndSet(-1));
 	}
 
-	public float lengthValue() {
+	public float heightCompareLength() {
 		return this.x + this.y + fractionLength();
+	}
+	
+	public float lengthX(){
+		return this.x + fractionLengthX();
+	}
+	
+	public float lengthY(){
+		return this.y + fractionLengthY();
+	}
+	
+	public float length() {
+		return Math.abs(lengthX())+Math.abs(lengthY());
 	}
 
 	public Position rotate(float degree) {
@@ -123,7 +139,7 @@ public class Position implements Comparable<Position> {
 	}
 
 	private int getFractionDivisor() {
-		int divisor = this.fractionMax_x * this.fractionMax_y;
+		int divisor = fractionMax_x * fractionMax_y;
 		return (divisor == 0) ? 1 : divisor;
 	}
 
@@ -134,13 +150,21 @@ public class Position implements Comparable<Position> {
 	private int getFractionYComparable() {
 		return this.yFraction * fractionMax_x;
 	}
-
-	private float fractionLength() {
+	
+	private float fractionLengthX(){
 		int xComp = getFractionXComparable();
+		int comp = getFractionDivisor();
+		return (1.0f * xComp) / comp;
+	}
+	
+	private float fractionLengthY(){
 		int yComp = getFractionYComparable();
 		int comp = getFractionDivisor();
+		return (1.0f * yComp) / comp;
+	}
 
-		return (1.0f * (xComp + yComp)) / comp;
+	private float fractionLength() {
+		return fractionLengthX() + fractionLengthY();
 	}
 	
 	public static Position getPositionDirectionFromVector(Vector2 v) {
@@ -157,8 +181,8 @@ public class Position implements Comparable<Position> {
 
 	@Override
 	public int compareTo(Position o) {
-		float me = lengthValue();
-		float other = o.lengthValue();
+		float me = heightCompareLength();
+		float other = o.heightCompareLength();
 
 		if (me > other) {
 			return -1;
