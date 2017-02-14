@@ -117,9 +117,9 @@ public class CameraController {
 		int safetytiles = 7;
 
 		int breite = this.width / scaleZoom(MapTile.tileWidth) + safetytiles;
-		int höhe = this.height / scaleZoom(MapTile.tileHeight) + safetytiles;
+		int hoehe = this.height / scaleZoom(MapTile.tileHeight) + safetytiles;
 
-		for (int a = -höhe + 1; a < höhe; a++) {
+		for (int a = -hoehe + 1; a < hoehe; a++) {
 			for (int b = -breite + 1; b < breite; b++) {
 				if ((b & 1) != (a & 1))
 					continue;
@@ -375,7 +375,7 @@ public class CameraController {
 		 * isometric-n-hexagonal-maps-part-i-r747
 		 */
 
-		if (mouseMapX + mouseMapY <= maxDistance) { /* Grüner Bereich */
+		if (mouseMapX + mouseMapY <= maxDistance) { /* Grï¿½ner Bereich */
 
 			if (xNegative && yNegative) {
 				back[0] = 1;
@@ -410,9 +410,9 @@ public class CameraController {
 				back[1] = 1;
 			}
 		} else if (xRightD + yTopD <= maxDistance) { /* Gelber Bereich */
-			if (xNegative && yNegative) { /* Hier Grüner */
+			if (xNegative && yNegative) { /* Hier Grï¿½ner */
 				back[0] = -1;
-			} else /* ende Grüner Bereich */
+			} else /* ende Grï¿½ner Bereich */
 			if (xNegative) {
 				back[1] = 1;
 			} else if (yNegative) {
