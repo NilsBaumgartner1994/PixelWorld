@@ -134,6 +134,7 @@ public class Main extends ApplicationAdapter {
 	}
 	
 	public void updatePhysics(int steps) {
+		this.tileWorld.time.addTicks(steps);
 		updateEntitysBodys(steps);
 	}
 	

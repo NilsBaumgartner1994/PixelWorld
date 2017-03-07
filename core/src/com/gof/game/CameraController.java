@@ -180,9 +180,13 @@ public class CameraController {
 
 			Color save = fboBatch.getColor();
 
-			if (tile.isInShaddow()) {
-				fboBatch.setColor(save.cpy().add(-0.5f, -0.5f, -0.5f, 0));
-			}
+//			if (tile.isInShaddow()) {
+//				fboBatch.setColor(save.cpy().add(-0.5f, -0.5f, -0.5f, 0));
+//			}
+			
+			float light = TileWorld.getInstance().time.getLightIntense();
+			
+			fboBatch.setColor(save.cpy().add(-light, -light, -light, 0));
 
 			drawTileSprite(sprite, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf,
 					tile.getRotation());
@@ -195,6 +199,8 @@ public class CameraController {
 			if (tile.isInShaddow()) {
 				fboBatch.setColor(save);
 			}
+			
+			fboBatch.setColor(save);
 
 		}
 
@@ -451,7 +457,8 @@ public class CameraController {
 
 			line = 1;
 			drawInformationLine("FPS: " + Gdx.graphics.getFramesPerSecond());
-
+			float light = TileWorld.getInstance().time.getLightIntense();
+			drawInformationLine("Time: "+TileWorld.getInstance().time.getTicks()+" - Light: "+light);
 			if (track.getEntityType() == EntityType.PLAYER) {
 				LocalPlayer p = (LocalPlayer) track;
 				drawInformationLine("Player: " + Main.getInstance().playerHandler.getPlayerNumber(p));

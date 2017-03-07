@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.math.Vector2;
+import com.gof.physics.WorldTime;
 import com.gof.worldgenerator.GeneratorInterface;
 import com.gof.worldgenerator.NatureGenerator;
 
@@ -16,11 +17,14 @@ public class TileWorld {
 	public static int worldSize = 100;
 
 	public static Chunk chunks[][];
+	
+	public WorldTime time;
 
 	public TileWorld() {
 		instance = this;
 		chunks = new Chunk[worldSize][worldSize];
 		setGenerator(new NatureGenerator(this));
+		time = new WorldTime(0);
 	}
 
 	public static TileWorld getInstance() {
