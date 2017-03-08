@@ -22,6 +22,7 @@ public class MapTile extends Position {
 	public Material material;
 	
 	private boolean shaddow;
+	
 
 	public Nature nature;
 
