@@ -20,8 +20,16 @@ public class WorldTime {
 	
 	private final float MINLIGHT = 0.3f;
 	
+	// 06:00 --> -90°
+	// 12:00 --> 0°
+	// 18:00 --> 90°
+	public int getShaddowAngle(){
+		return (int) (360-(360*getTickPercent()+180)%360);
+	}
+	
 	public float getLightIntense(){
-		return (float) ((1-MINLIGHT)*(0.5f+0.5f*Math.sin(2*Math.PI*getTickPercent())));
+		return 0;
+//		return (float) ((1-MINLIGHT)*(0.5f+0.5f*Math.sin(2*Math.PI*getTickPercent())));
 	}
 
 	public void addTicks(int delta) {

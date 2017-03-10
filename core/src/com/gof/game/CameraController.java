@@ -128,9 +128,14 @@ public class CameraController {
 				area.add(TileWorld.getInstance().getMapTileFromGlobalPos(xcenter + x, ycenter + y));
 			}
 		}
+		
+		numerator = getZoomLevelScaleFactorNumerator();
+		denumerator = getZoomLevelScaleFactorDenumerator();
 
 		Collections.sort(area);
 		drawGround(area);
+		drawNature(area);
+		drawNatureShaddow(area);
 
 		fboBatch.end();
 		fbo.end();
@@ -143,23 +148,46 @@ public class CameraController {
 	int numerator = getZoomLevelScaleFactorNumerator();
 	int denumerator = getZoomLevelScaleFactorDenumerator();
 
-	private void drawGround(List<MapTile> area) {
-		numerator = getZoomLevelScaleFactorNumerator();
-		denumerator = getZoomLevelScaleFactorDenumerator();
+	private void drawNatureShaddow(List<MapTile> area){
+		
+	}
+	
+	private void drawNature(List<MapTile> area) {
+		int tileWidth = scaleZoom(MapTile.tileWidth);
+		int tileHeight = scaleZoom(MapTile.tileHeight);
+		int tileWidthHalf = tileWidth / 2;
+		int tileHeightHalf = tileHeight / 2;
+		
+		int shaddowRotation = TileWorld.getInstance().time.getShaddowAngle();
 
+		for (MapTile tile : area) {
+			Sprite nature = tile.getNatureTexture();
+
+			Color save = fboBatch.getColor();
+
+			float light = TileWorld.getInstance().time.getLightIntense();
+
+			fboBatch.setColor(save.cpy().add(-light, -light, -light, 0));
+
+			drawTileSprite(nature, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf,
+					shaddowRotation);
+
+			if (tile.isInShaddow()) {
+				fboBatch.setColor(save);
+			}
+
+			fboBatch.setColor(save);
+
+		}
+	}
+
+	private void drawGround(List<MapTile> area) {
 		int tileWidth = scaleZoom(MapTile.tileWidth);
 		int tileHeight = scaleZoom(MapTile.tileHeight);
 		int tileWidthHalf = tileWidth / 2;
 		int tileHeightHalf = tileHeight / 2;
 
 		Sprite debug = new Sprite(new Debug().getTexture());
-		Sprite mouse = new Sprite(new MouseMatter().getTexture());
-
-		List<MapTile> clouds = area.get(area.size() / 2).getMoore();
-		for (MapTile cloud : clouds) {
-			// cloud.select();
-		}
-		TileWorld.getInstance().getMapTileFromGlobalPos(camera.getPosition().x, camera.getPosition().y).select();
 
 		Mouse m = Main.getInstance().inputHandler.keyboardHandler.mouse;
 
@@ -170,55 +198,29 @@ public class CameraController {
 			mouseTile = TileWorld.getInstance().getMapTileFromGlobalPos(globalPos.x, globalPos.y);
 		}
 
-		if (mouseTile != null) {
-			mouseTile.select();
-		}
-
 		for (MapTile tile : area) {
 			Sprite sprite = tile.getMaterialSprite();
-			Sprite nature = tile.getNatureTexture();
-
 			Color save = fboBatch.getColor();
 
-//			if (tile.isInShaddow()) {
-//				fboBatch.setColor(save.cpy().add(-0.5f, -0.5f, -0.5f, 0));
-//			}
-			
+			// if (tile.isInShaddow()) {
+			// fboBatch.setColor(save.cpy().add(-0.5f, -0.5f, -0.5f, 0));
+			// }
+
 			float light = TileWorld.getInstance().time.getLightIntense();
-			
+
 			fboBatch.setColor(save.cpy().add(-light, -light, -light, 0));
 
 			drawTileSprite(sprite, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf,
 					tile.getRotation());
-//			drawTileSprite(debug,  tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf,
-//						tile.getRotation());
-
-			drawTileSprite(nature, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf,
-					tile.getRotation());
-
+			
 			if (tile.isInShaddow()) {
 				fboBatch.setColor(save);
 			}
-			
+
 			fboBatch.setColor(save);
 
 		}
 
-		for (MapTile cloud : clouds) {
-			cloud.unselect();
-		}
-
-		if (mouseTile != null) {
-			mouseTile.unselect();
-		}
-
-//		for (MapTile tile : area) {
-//			if (((tile.getGlobalX() % 2 == 0 && tile.getGlobalY() % 2 == 0)
-//					|| ((tile.getGlobalX() + 1) % 2 == 0 && (tile.getGlobalY() + 1) % 2 == 0))) {
-//				drawTileSprite(mouse, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf,
-//						tile.getRotation());
-//			}
-//		}
 	}
 
 	private void drawTileSprite(Sprite sprite, int globalX, int globalY, int tileWidthHalf, int tileHeightHalf,
@@ -325,7 +327,7 @@ public class CameraController {
 		int regionY = screenY / scaleZoom(mouse.getRegionHeight()) * 2;
 
 		int mouseMapX = screenX % scaleZoom(mouse.getRegionWidth());
-		int mouseMapY = screenY % scaleZoom(mouse.getRegionHeight()) *2;
+		int mouseMapY = screenY % scaleZoom(mouse.getRegionHeight()) * 2;
 
 		if (xNegative) {
 			regionX *= -1;
@@ -458,7 +460,8 @@ public class CameraController {
 			line = 1;
 			drawInformationLine("FPS: " + Gdx.graphics.getFramesPerSecond());
 			float light = TileWorld.getInstance().time.getLightIntense();
-			drawInformationLine("Time: "+TileWorld.getInstance().time.getTicks()+" - Light: "+light);
+			drawInformationLine("Time: " + TileWorld.getInstance().time.getTicks() + " - Light: " + light);
+			drawInformationLine("ShaddowAngle: " + TileWorld.getInstance().time.getShaddowAngle());
 			if (track.getEntityType() == EntityType.PLAYER) {
 				LocalPlayer p = (LocalPlayer) track;
 				drawInformationLine("Player: " + Main.getInstance().playerHandler.getPlayerNumber(p));
@@ -544,8 +547,7 @@ public class CameraController {
 		Sprite hand = new Sprite(ResourceLoader.getInstance().getUI("hand_select"));
 
 		if (m != null) {
-			hand.setPosition(m.getX() - hand.getRegionWidth() / 2,
-					this.height - m.getY() - hand.getRegionHeight() / 2);
+			hand.setPosition(m.getX() - hand.getRegionWidth() / 2, this.height - m.getY() - hand.getRegionHeight() / 2);
 			fboBatch.draw(hand, hand.getX(), hand.getY(), hand.getOriginX(), hand.getOriginY(), hand.getWidth(),
 					hand.getHeight(), hand.getScaleX(), hand.getScaleY(), hand.getRotation());
 		}
