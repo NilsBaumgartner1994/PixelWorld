@@ -23,6 +23,7 @@ import com.gof.materials.Material;
 import com.gof.materials.MouseMatter;
 import com.gof.physics.Body;
 import com.gof.physics.Position;
+import com.gof.shaders.ShaddowShader;
 import com.gof.world.MapTile;
 import com.gof.world.TileWorld;
 
@@ -134,8 +135,8 @@ public class CameraController {
 
 		Collections.sort(area);
 		drawGround(area);
-		drawNature(area);
 		drawNatureShaddow(area);
+		drawNature(area);
 
 		fboBatch.end();
 		fbo.end();
@@ -149,10 +150,6 @@ public class CameraController {
 	int denumerator = getZoomLevelScaleFactorDenumerator();
 
 	private void drawNatureShaddow(List<MapTile> area){
-		
-	}
-	
-	private void drawNature(List<MapTile> area) {
 		int tileWidth = scaleZoom(MapTile.tileWidth);
 		int tileHeight = scaleZoom(MapTile.tileHeight);
 		int tileWidthHalf = tileWidth / 2;
@@ -160,17 +157,43 @@ public class CameraController {
 		
 		int shaddowRotation = TileWorld.getInstance().time.getShaddowAngle();
 
+		fboBatch.setShader(new ShaddowShader());
+		Color save = fboBatch.getColor().cpy();
+		
+		
+		float intense = TileWorld.getInstance().time.getLightIntense();
+		float shaddowLength = TileWorld.getInstance().time.getShaddowLength();
+		Color shaddow = new Color(new Color(0,0,0,intense));
+		fboBatch.setColor(shaddow);
+		
+		
+		for (MapTile tile : area) {
+			Sprite nature = tile.getNatureTexture();
+			if(nature!=null){
+
+				nature.setScale(1, shaddowLength);
+			drawTileSprite(nature, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf,
+					shaddowRotation);
+			}
+		}		
+		
+		fboBatch.setShader(null);
+		fboBatch.setColor(save);
+	}
+	
+	private void drawNature(List<MapTile> area) {
+		int tileWidth = scaleZoom(MapTile.tileWidth);
+		int tileHeight = scaleZoom(MapTile.tileHeight);
+		int tileWidthHalf = tileWidth / 2;
+		int tileHeightHalf = tileHeight / 2;
+
 		for (MapTile tile : area) {
 			Sprite nature = tile.getNatureTexture();
 
 			Color save = fboBatch.getColor();
 
-			float light = TileWorld.getInstance().time.getLightIntense();
-
-			fboBatch.setColor(save.cpy().add(-light, -light, -light, 0));
-
 			drawTileSprite(nature, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf,
-					shaddowRotation);
+					tile.getRotation());
 
 			if (tile.isInShaddow()) {
 				fboBatch.setColor(save);
@@ -206,10 +229,6 @@ public class CameraController {
 			// fboBatch.setColor(save.cpy().add(-0.5f, -0.5f, -0.5f, 0));
 			// }
 
-			float light = TileWorld.getInstance().time.getLightIntense();
-
-			fboBatch.setColor(save.cpy().add(-light, -light, -light, 0));
-
 			drawTileSprite(sprite, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf,
 					tile.getRotation());
 			
@@ -232,7 +251,8 @@ public class CameraController {
 		int y = globalPosToScreenPosY(sprite, globalX, globalY, tileHeightHalf);
 
 		sprite.setPosition(x, y);
-		sprite.setOrigin(tileWidthHalf, tileHeightHalf);
+//		sprite.setOrigin(tileWidthHalf, tileHeightHalf);
+		sprite.setOrigin(scaleZoom(90),scaleZoom(240-145));
 		sprite.setSize(sprite.getWidth() * numerator / denumerator, sprite.getHeight() * numerator / denumerator);
 		sprite.setRotation(rotation);
 
