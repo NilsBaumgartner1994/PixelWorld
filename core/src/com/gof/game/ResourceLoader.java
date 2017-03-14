@@ -64,7 +64,7 @@ public class ResourceLoader {
 		return getTexture(nature + name + ".png");
 	}
 
-	public Texture getUI(String name) {
+	public Texture getGUI(String name) {
 		return getTexture(gui + name + ".png");
 	}
 

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
@@ -48,6 +49,8 @@ public class CameraController {
 	public static int zoomLevelmax = 3;
 
 	public boolean showInformations = true;
+	
+	GlyphLayout layout;
 
 	LocalPlayer player;
 
@@ -60,6 +63,7 @@ public class CameraController {
 
 		font = new BitmapFont();
 		font.setColor(Color.BLACK);
+		layout = new GlyphLayout();
 	}
 
 	public void resize(int width, int height) {
@@ -561,20 +565,60 @@ public class CameraController {
 		// GL20.GL_DEPTH_BUFFER_BIT);
 
 		drawIconBar();
+		drawOptionMenu();
+		drawMouseIcon();
+		
 
+		fboBatch.end();
+		fbUI.end();
+	}
+	
+	private void drawOptionMenu(){
+		
+		Sprite title = new Sprite(ResourceLoader.getInstance().getGUI("menu_title"));
+		
+		int marginTop = 50;
+		int xpos = this.width/2-title.getRegionWidth()/2;
+		int yposStart = this.height-title.getRegionHeight()-marginTop;
+
+		String[] labels = {"Resume","Options","Quit"};
+		
+		Color oldColor = font.getColor().cpy();
+		font.setColor(Color.FIREBRICK);
+		
+		int ypos = yposStart;
+		for(String label : labels){
+			title.setPosition(xpos, ypos);
+			fboBatch.draw(title, title.getX(), title.getY(), title.getOriginX(), title.getOriginY(), title.getWidth(),
+					title.getHeight(), title.getScaleX(), title.getScaleY(), title.getRotation());
+			
+			layout.setText(font, label);
+			int stringWidth = (int) layout.width;
+			int stringHeight = (int) layout.height;
+			font.draw(fboBatch, label, this.width/2-stringWidth/2, ypos+title.getRegionHeight()/2+stringHeight/2);
+			
+			
+			ypos-=title.getRegionHeight();
+		}
+		
+		font.setColor(oldColor);
+		
+		
+	}
+	
+	private void drawMouseIcon(){
 		Mouse m = Main.getInstance().inputHandler.keyboardHandler.mouse;
 
-		Sprite hand = new Sprite(ResourceLoader.getInstance().getUI("hand_select"));
+		Sprite hand = new Sprite(ResourceLoader.getInstance().getGUI("hand_select"));
 
 		if (m != null) {
 			hand.setPosition(m.getX() - hand.getRegionWidth() / 2, this.height - m.getY() - hand.getRegionHeight() / 2);
 			fboBatch.draw(hand, hand.getX(), hand.getY(), hand.getOriginX(), hand.getOriginY(), hand.getWidth(),
 					hand.getHeight(), hand.getScaleX(), hand.getScaleY(), hand.getRotation());
 		}
-
-		fboBatch.end();
-		fbUI.end();
 	}
+	
+	
 
 	public void renderToScreen() {
 		fboBatch.begin();
