@@ -576,10 +576,15 @@ public class CameraController {
 	private void drawOptionMenu(){
 		
 		Sprite title = new Sprite(ResourceLoader.getInstance().getGUI("menu_title"));
+		Sprite chain = new Sprite(ResourceLoader.getInstance().getGUI("menu_chain"));
+		Sprite post_title = new Sprite(ResourceLoader.getInstance().getGUI("menu_information_top"));
+		Sprite post_top = new Sprite(ResourceLoader.getInstance().getGUI("menu_information_post_top"));
+		Sprite post_middle = new Sprite(ResourceLoader.getInstance().getGUI("menu_information_post_middle"));
+		Sprite post_bottom = new Sprite(ResourceLoader.getInstance().getGUI("menu_information_post_bottom"));
 		
 		int marginTop = 50;
 		int xpos = this.width/2-title.getRegionWidth()/2;
-		int yposStart = this.height-title.getRegionHeight()-marginTop;
+		int yposStart = this.height-marginTop;
 
 		String[] labels = {"Resume","Options","Quit"};
 		
@@ -588,22 +593,35 @@ public class CameraController {
 		
 		int ypos = yposStart;
 		for(String label : labels){
+			
+			ypos-=title.getRegionHeight();
 			title.setPosition(xpos, ypos);
-			fboBatch.draw(title, title.getX(), title.getY(), title.getOriginX(), title.getOriginY(), title.getWidth(),
-					title.getHeight(), title.getScaleX(), title.getScaleY(), title.getRotation());
+			drawSprite(title);
 			
 			layout.setText(font, label);
 			int stringWidth = (int) layout.width;
 			int stringHeight = (int) layout.height;
 			font.draw(fboBatch, label, this.width/2-stringWidth/2, ypos+title.getRegionHeight()/2+stringHeight/2);
 			
+			ypos=drawSpriteAndSubtractYpos(chain,xpos,ypos);
+			ypos=drawSpriteAndSubtractYpos(post_title,xpos,ypos);
+			ypos=drawSpriteAndSubtractYpos(post_top,xpos,ypos);
+			ypos=drawSpriteAndSubtractYpos(post_middle,xpos,ypos);
+			ypos=drawSpriteAndSubtractYpos(post_bottom,xpos,ypos);
 			
-			ypos-=title.getRegionHeight();
+			
 		}
 		
 		font.setColor(oldColor);
 		
 		
+	}
+	
+	private int drawSpriteAndSubtractYpos(Sprite s, int xpos, int ypos){
+		ypos-=s.getRegionHeight();
+		s.setPosition(xpos, ypos);
+		drawSprite(s);
+		return ypos;
 	}
 	
 	private void drawMouseIcon(){
