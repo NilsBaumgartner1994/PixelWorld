@@ -8,7 +8,7 @@
 /// without any warranty.
 ///
 /// Created by Ian Parberry, September 2013.
-/// Demo by Pablo Nuñez.
+/// Demo by Pablo Nuï¿½ez.
 /// Last updated January 31, 2014.
 
 package com.gof.world;
