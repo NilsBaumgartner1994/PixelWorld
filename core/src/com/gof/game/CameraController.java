@@ -18,12 +18,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.gof.Inputs.Mouse;
 import com.gof.entitys.Entity;
 import com.gof.entitys.EntityType;
-import com.gof.entitys.LocalPlayer;
+import com.gof.entitys.Human;
 import com.gof.materials.Debug;
 import com.gof.materials.Material;
 import com.gof.materials.MouseMatter;
 import com.gof.physics.Body;
 import com.gof.physics.Position;
+import com.gof.profiles.User;
 import com.gof.shaders.ShaddowShader;
 import com.gof.world.MapTile;
 import com.gof.world.TileWorld;
@@ -38,10 +39,10 @@ public class CameraController {
 	private FrameBuffer fbo;
 	private FrameBuffer fbUI;
 
-	private SpriteBatch fboBatch;
-	private BitmapFont font;
+	public SpriteBatch fboBatch;
+	public BitmapFont font;
 
-	private int width;
+	public int width;
 	public int height;
 
 	public static int zoomLevel = 0;
@@ -49,16 +50,16 @@ public class CameraController {
 	public static int zoomLevelmax = 3;
 
 	public boolean showInformations = true;
-	
-	GlyphLayout layout;
 
-	LocalPlayer player;
+	public GlyphLayout layout;
 
 	private Entity track;
 
-	public CameraController(LocalPlayer localPlayer, int width, int height) {
+	private User user;
+
+	public CameraController(User localUser, int width, int height) {
 		resize(width, height);
-		this.player = localPlayer;
+		this.user = localUser;
 		camera.setPosition(0, 0);
 
 		font = new BitmapFont();
@@ -101,6 +102,17 @@ public class CameraController {
 
 		fboBatch.begin();
 
+		TileWorld world = user.activGameWorld;
+		if (world != null) {
+			world.activateChunk(world.getChunkGlobalPos(camera.getPosition().x, camera.getPosition().y));
+			drawTileWorld(world);
+		}
+
+		fboBatch.end();
+		fbo.end();
+	}
+
+	public void drawTileWorld(TileWorld world) {
 		if (track != null) {
 			camera.setPosition(track);
 		}
@@ -112,7 +124,7 @@ public class CameraController {
 		int xEnd = xStart + amountToShow * 2;
 		int yEnd = yStart + amountToShow * 2;
 
-		List<MapTile> area = TileWorld.getInstance().getArea(xStart, yStart, xEnd, yEnd);
+		List<MapTile> area = world.getArea(xStart, yStart, xEnd, yEnd);
 
 		area = new ArrayList<MapTile>();
 
@@ -130,20 +142,20 @@ public class CameraController {
 					continue;
 				int x = (a + b) / 2;
 				int y = (a - b) / 2;
-				area.add(TileWorld.getInstance().getMapTileFromGlobalPos(xcenter + x, ycenter + y));
+				MapTile m = world.getMapTileFromGlobalPos(xcenter + x, ycenter + y);
+				if (m != null) {
+					area.add(m);
+				}
 			}
 		}
-		
+
 		numerator = getZoomLevelScaleFactorNumerator();
 		denumerator = getZoomLevelScaleFactorDenumerator();
 
 		Collections.sort(area);
-		drawGround(area);
-		drawNatureShaddow(area);
+		drawGround(area, world);
+		drawNatureShaddow(area, world);
 		drawNature(area);
-
-		fboBatch.end();
-		fbo.end();
 	}
 
 	public int scaleZoom(int orginalPixel) {
@@ -153,38 +165,36 @@ public class CameraController {
 	int numerator = getZoomLevelScaleFactorNumerator();
 	int denumerator = getZoomLevelScaleFactorDenumerator();
 
-	private void drawNatureShaddow(List<MapTile> area){
+	private void drawNatureShaddow(List<MapTile> area, TileWorld world) {
 		int tileWidth = scaleZoom(MapTile.tileWidth);
 		int tileHeight = scaleZoom(MapTile.tileHeight);
 		int tileWidthHalf = tileWidth / 2;
 		int tileHeightHalf = tileHeight / 2;
-		
-		int shaddowRotation = TileWorld.getInstance().time.getShaddowAngle();
+
+		int shaddowRotation = world.time.getShaddowAngle();
 
 		fboBatch.setShader(new ShaddowShader());
 		Color save = fboBatch.getColor().cpy();
-		
-		
-		float intense = TileWorld.getInstance().time.getLightIntense();
-		float shaddowLength = TileWorld.getInstance().time.getShaddowLength();
-		Color shaddow = new Color(new Color(0,0,0,intense));
+
+		float intense = world.time.getLightIntense();
+		float shaddowLength = world.time.getShaddowLength();
+		Color shaddow = new Color(new Color(0, 0, 0, intense));
 		fboBatch.setColor(shaddow);
-		
-		
+
 		for (MapTile tile : area) {
 			Sprite nature = tile.getNatureTexture();
-			if(nature!=null){
+			if (nature != null) {
 
 				nature.setScale(1, shaddowLength);
-			drawTileSprite(nature, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf,
-					shaddowRotation);
+				drawTileSprite(nature, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf,
+						shaddowRotation);
 			}
-		}		
-		
+		}
+
 		fboBatch.setShader(null);
 		fboBatch.setColor(save);
 	}
-	
+
 	private void drawNature(List<MapTile> area) {
 		int tileWidth = scaleZoom(MapTile.tileWidth);
 		int tileHeight = scaleZoom(MapTile.tileHeight);
@@ -208,7 +218,7 @@ public class CameraController {
 		}
 	}
 
-	private void drawGround(List<MapTile> area) {
+	private void drawGround(List<MapTile> area, TileWorld world) {
 		int tileWidth = scaleZoom(MapTile.tileWidth);
 		int tileHeight = scaleZoom(MapTile.tileHeight);
 		int tileWidthHalf = tileWidth / 2;
@@ -222,7 +232,7 @@ public class CameraController {
 
 		if (m != null) {
 			Position globalPos = getGlobalPosFromScreenPos(m.getX(), this.height - m.getY());
-			mouseTile = TileWorld.getInstance().getMapTileFromGlobalPos(globalPos.x, globalPos.y);
+			mouseTile = world.getMapTileFromGlobalPos(globalPos.x, globalPos.y);
 		}
 
 		for (MapTile tile : area) {
@@ -230,12 +240,12 @@ public class CameraController {
 			Color save = fboBatch.getColor();
 
 			// if (tile.isInShaddow()) {
-			// fboBatch.setColor(save.cpy().add(-0.5f, -0.5f, -0.5f, 0));
+			fboBatch.setColor(save.cpy().add(-0.5f, -0.5f, -0.5f, 0));
 			// }
 
 			drawTileSprite(sprite, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf,
 					tile.getRotation());
-			
+
 			if (tile.isInShaddow()) {
 				fboBatch.setColor(save);
 			}
@@ -255,15 +265,15 @@ public class CameraController {
 		int y = globalPosToScreenPosY(sprite, globalX, globalY, tileHeightHalf);
 
 		sprite.setPosition(x, y);
-//		sprite.setOrigin(tileWidthHalf, tileHeightHalf);
-		sprite.setOrigin(scaleZoom(90),scaleZoom(240-145));
+		// sprite.setOrigin(tileWidthHalf, tileHeightHalf);
+		sprite.setOrigin(scaleZoom(90), scaleZoom(240 - 145));
 		sprite.setSize(sprite.getWidth() * numerator / denumerator, sprite.getHeight() * numerator / denumerator);
 		sprite.setRotation(rotation);
 
 		drawSprite(sprite);
 	}
 
-	private void drawSprite(Sprite sprite) {
+	public void drawSprite(Sprite sprite) {
 		fboBatch.draw(sprite, sprite.getX(), sprite.getY(), sprite.getOriginX(), sprite.getOriginY(), sprite.getWidth(),
 				sprite.getHeight(), sprite.getScaleX(), sprite.getScaleY(), sprite.getRotation());
 	}
@@ -477,23 +487,16 @@ public class CameraController {
 			// int x = (int) camera.position.x;
 			// int y = (int) camera.position.y;
 
-			Position bodyPos = track.getPosition();
-
-			MapTile standOn = TileWorld.getInstance().getMapTileFromGlobalPos((int) bodyPos.x, (int) bodyPos.y);
-
 			line = 1;
 			drawInformationLine("FPS: " + Gdx.graphics.getFramesPerSecond());
-			float light = TileWorld.getInstance().time.getLightIntense();
-			drawInformationLine("Time: " + TileWorld.getInstance().time.getTicks() + " - Light: " + light);
-			drawInformationLine("ShaddowAngle: " + TileWorld.getInstance().time.getShaddowAngle());
-			if (track.getEntityType() == EntityType.PLAYER) {
-				LocalPlayer p = (LocalPlayer) track;
-				drawInformationLine("Player: " + Main.getInstance().playerHandler.getPlayerNumber(p));
-			}
+
+			drawInformationLine("Player: " + Main.getInstance().userHandler.getUserNumber(this.user));
 			drawInformationLine("Zoom: " + zoomLevel);
-			drawInformationLine("Body Chunk: " + standOn.chunk.x + "|" + standOn.chunk.y);
-			drawInformationLine("Body Position: " + bodyPos.x + ":" + bodyPos.xFraction + "|" + bodyPos.y + ":"
-					+ bodyPos.yFraction);
+
+			TileWorld world = this.user.activGameWorld;
+			if (world != null) {
+				drawTileWorldInformations(world);
+			}
 
 			Mouse m = Main.getInstance().inputHandler.keyboardHandler.mouse;
 
@@ -501,15 +504,26 @@ public class CameraController {
 
 			}
 
+			fboBatch.end();
+			fbo.end();
+		}
+	}
+
+	private void drawTileWorldInformations(TileWorld world) {
+		float light = world.time.getLightIntense();
+		drawInformationLine("Time: " + world.time.getTicks() + " - Light: " + light);
+		drawInformationLine("ShaddowAngle: " + world.time.getShaddowAngle());
+
+		if (track != null) {
+			Position bodyPos = track.getPosition();
+			drawInformationLine("Body Position: " + bodyPos.x + ":" + bodyPos.xFraction + "|" + bodyPos.y + ":"
+					+ bodyPos.yFraction);
+			MapTile standOn = world.getMapTileFromGlobalPos((int) bodyPos.x, (int) bodyPos.y);
+			drawInformationLine("Body Chunk: " + standOn.chunk.x + "|" + standOn.chunk.y);
 			drawInformationLine("Stand On: " + standOn.material.texture);
 			if (standOn.nature != null) {
 				drawInformationLine("Nature: " + standOn.nature.texture);
 			}
-			// drawInformationLine("Dir: " +
-			// track.body.getLinearVelocity().toString());
-
-			fboBatch.end();
-			fbo.end();
 		}
 	}
 
@@ -528,24 +542,27 @@ public class CameraController {
 		Sprite activIconFrame = new Sprite(ResourceLoader.getInstance().getIcon("frame_activ"));
 
 		int invPos = 0;
-		for (int i = -4; i < 4; i++) {
-			Sprite drawFrame = player.inventory.isActivSlot(invPos) ? activIconFrame : iconFrame;
-
-			int xPos = this.width / 2 + (i * iconFrame.getRegionWidth() + i * 10 + 5);
-			int yPos = 10 + framebar.getRegionHeight() / 2 - activIconFrame.getRegionHeight() / 2;
-
-			drawFrame.setPosition(xPos, yPos);
-			drawSprite(drawFrame);
-
-			AbstractItem item = player.inventory.getItem(invPos);
-			if (item != null) {
-				Sprite itemIcon = new Sprite(item.getTexture());
-				itemIcon.setPosition(xPos, yPos);
-				drawSprite(itemIcon);
-			}
-
-			invPos++;
-		}
+		// for (int i = -4; i < 4; i++) {
+		// Sprite drawFrame = user.inventory.isActivSlot(invPos) ?
+		// activIconFrame : iconFrame;
+		//
+		// int xPos = this.width / 2 + (i * iconFrame.getRegionWidth() + i * 10
+		// + 5);
+		// int yPos = 10 + framebar.getRegionHeight() / 2 -
+		// activIconFrame.getRegionHeight() / 2;
+		//
+		// drawFrame.setPosition(xPos, yPos);
+		// drawSprite(drawFrame);
+		//
+		// AbstractItem item = user.inventory.getItem(invPos);
+		// if (item != null) {
+		// Sprite itemIcon = new Sprite(item.getTexture());
+		// itemIcon.setPosition(xPos, yPos);
+		// drawSprite(itemIcon);
+		// }
+		//
+		// invPos++;
+		// }
 	}
 
 	public void renderGUI() {
@@ -565,66 +582,25 @@ public class CameraController {
 		// GL20.GL_DEPTH_BUFFER_BIT);
 
 		drawIconBar();
-		drawOptionMenu();
+		drawMenu();
 		drawMouseIcon();
-		
 
 		fboBatch.end();
 		fbUI.end();
 	}
 	
-	private void drawOptionMenu(){
-		
-		Sprite title = new Sprite(ResourceLoader.getInstance().getGUI("menu_title"));
-		Sprite chain = new Sprite(ResourceLoader.getInstance().getGUI("menu_chain"));
-		Sprite post_title = new Sprite(ResourceLoader.getInstance().getGUI("menu_information_top"));
-		Sprite post_top = new Sprite(ResourceLoader.getInstance().getGUI("menu_information_post_top"));
-		Sprite post_middle = new Sprite(ResourceLoader.getInstance().getGUI("menu_information_post_middle"));
-		Sprite post_bottom = new Sprite(ResourceLoader.getInstance().getGUI("menu_information_post_bottom"));
-		
-		int marginTop = 50;
-		int xpos = this.width/2-title.getRegionWidth()/2;
-		int yposStart = this.height-marginTop;
-
-		String[] labels = {"Resume","Options","Quit"};
-		
-		Color oldColor = font.getColor().cpy();
-		font.setColor(Color.FIREBRICK);
-		
-		int ypos = yposStart;
-		for(String label : labels){
-			
-			ypos-=title.getRegionHeight();
-			title.setPosition(xpos, ypos);
-			drawSprite(title);
-			
-			layout.setText(font, label);
-			int stringWidth = (int) layout.width;
-			int stringHeight = (int) layout.height;
-			font.draw(fboBatch, label, this.width/2-stringWidth/2, ypos+title.getRegionHeight()/2+stringHeight/2);
-			
-			ypos=drawSpriteAndSubtractYpos(chain,xpos,ypos);
-			ypos=drawSpriteAndSubtractYpos(post_title,xpos,ypos);
-			ypos=drawSpriteAndSubtractYpos(post_top,xpos,ypos);
-			ypos=drawSpriteAndSubtractYpos(post_middle,xpos,ypos);
-			ypos=drawSpriteAndSubtractYpos(post_bottom,xpos,ypos);
-			
-			
-		}
-		
-		font.setColor(oldColor);
-		
-		
+	public void drawMenu(){
+		this.user.menuHandler.renderActivMenu();
 	}
-	
-	private int drawSpriteAndSubtractYpos(Sprite s, int xpos, int ypos){
-		ypos-=s.getRegionHeight();
+
+	public int drawSpriteAndSubtractYpos(Sprite s, int xpos, int ypos) {
+		ypos -= s.getRegionHeight();
 		s.setPosition(xpos, ypos);
 		drawSprite(s);
 		return ypos;
 	}
-	
-	private void drawMouseIcon(){
+
+	private void drawMouseIcon() {
 		Mouse m = Main.getInstance().inputHandler.keyboardHandler.mouse;
 
 		Sprite hand = new Sprite(ResourceLoader.getInstance().getGUI("hand_select"));
@@ -635,8 +611,6 @@ public class CameraController {
 					hand.getHeight(), hand.getScaleX(), hand.getScaleY(), hand.getRotation());
 		}
 	}
-	
-	
 
 	public void renderToScreen() {
 		fboBatch.begin();

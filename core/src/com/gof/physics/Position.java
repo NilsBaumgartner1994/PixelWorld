@@ -209,10 +209,6 @@ public class Position implements Comparable<Position> {
 		return 0;
 	}
 	
-	public MapTile getMapTile(){
-		return TileWorld.getMapTileFromGlobalPos(this.x, this.y);
-	}
-	
 	public String toString(){
 		return "X: "+this.x+","+this.xFraction+" | Y: "+this.y+","+this.yFraction;
 	}

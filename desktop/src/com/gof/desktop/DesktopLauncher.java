@@ -7,13 +7,7 @@ import com.gof.game.Main;
 public class DesktopLauncher {
 	public static String title = "God of Forest";
 
-	static final String iphone = "iphone";
-	static final String svga = "svga";
-	static final String xga = "xga";
-	static final String hd = "hd";
-	static final String fullHD = "fullHD";
-
-	static String resolution = xga;
+	static Resolutions resolution = Resolutions.XGA;
 
 	public static void main(String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
@@ -23,23 +17,23 @@ public class DesktopLauncher {
 		config.foregroundFPS = 0;
 		
 		switch (resolution) {
-		case iphone:
+		case IPHONE:
 			config.width = 568;
 			config.height = 300;
 			break;
-		case svga:
-			config.width = 800;
-			config.height = 600;
+		case IPHONE7:
+			config.width = 1334;
+			config.height = 750;
 			break;
-		case xga:
+		case XGA:
 			config.width = 1024;
 			config.height = 768;
 			break;
-		case hd:
+		case HD:
 			config.width = 1360;
 			config.height = 768;
 			break;
-		case fullHD:
+		case FULLHD:
 			config.width = 1920;
 			config.height = 1080;
 			config.fullscreen = true;

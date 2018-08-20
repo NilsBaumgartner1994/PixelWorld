@@ -1,6 +1,9 @@
 package com.gof.menu;
 
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.gof.Inputs.GamePad;
+import com.gof.Inputs.GamePadButtons;
+import com.gof.entitys.Human;
 
 public class Ingame implements Menu {
 
@@ -11,40 +14,18 @@ public class Ingame implements Menu {
 	}
 
 	@Override
-	public void up() {
-		// TODO Auto-generated method stub
-
+	public void update(GamePad gamepad) {
+		if(gamepad.getButton(GamePadButtons.ESC).isPressed()){
+			menuHandler.setActivMenu(menuHandler.pauseMenu);
+		}
+		Human human = this.menuHandler.user.human;
+		human.setLeftStick(gamepad.getLeftStick());
 	}
 
 	@Override
-	public void down() {
+	public void render() {
 		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void left() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void right() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void render(ModelBatch batch) {
-		// TODO Auto-generated method stub
-//		batch.begin(menuHandler.p.cameraController.camera);
-//		batch.render(GameClass.instances, environment);
-//		batch.end();
-	}
-
-	@Override
-	public void setAsActivMenu() {
-		this.menuHandler.activMenu = this;
+		
 	}
 
 }

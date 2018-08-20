@@ -1,17 +1,18 @@
 package com.gof.physics;
 
+import com.gof.game.Main;
 import com.gof.world.MapTile;
 
 public class Body implements Comparable<Body> {
 	
-	Position position;
+	protected Position position;
 	Speed velocity;
 	Position acceleration;
 	
 	MapTile referrsTo;
 
-	public Body(Position position, Speed velocity, Position acceleration) {	
-		setPosition(position);
+	public Body(Position position, Speed velocity, Position acceleration) {
+		this.position = position.cpy();
 		setVelocity(velocity);
 		setAcceleration(acceleration);
 	}
@@ -40,32 +41,13 @@ public class Body implements Comparable<Body> {
 		return setPosition(b.position);
 	}
 
-	public Body setPosition(Position newpos) {
-		registerBodyOnMapTile(newpos);
-		
+	protected Body setPosition(Position newpos) {
 		this.position = newpos.cpy();
 		
 		return this;
 	}
 	
-	private void registerBodyOnMapTile(Position newpos){
-		MapTile newReffer = newpos.getMapTile();
-		
-		if(this.position==null){
-			linkToMapTile(newReffer);
-		}else{
-			MapTile oldReffer = this.position.getMapTile();
-			
-			if(!(newReffer.getGlobalX()==oldReffer.getGlobalX() && newReffer.getGlobalY()==oldReffer.getGlobalY())){
-				oldReffer.unregisterBody(this);
-				linkToMapTile(newReffer);
-			}			
-		}	
-	}
 	
-	private void linkToMapTile(MapTile newReffer){
-		newReffer.registerBody(this);
-	}
 	
 	/**
 	 * One Second are 60 steps

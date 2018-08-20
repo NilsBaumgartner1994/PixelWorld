@@ -5,14 +5,26 @@ public class Button {
 	private boolean isPressed;
 	private long pressed;
 	private long released;
+	private boolean isTyped;
 	
 	public Button(){
-		isPressed = false;
-		resetTimes();
+		reset();
 	}
 	
 	public boolean isPressed(){
 		return isPressed;
+	}
+	
+	public void setState(boolean pressed){
+		if(pressed){
+			press();
+		} else{
+			release();
+		}
+	}
+	
+	public void typed(){
+		this.isTyped = true;
 	}
 	
 	public void press(){
@@ -69,7 +81,11 @@ public class Button {
 		this.released=-1;
 	}
 	
-	
+	public void reset(){
+		isPressed = false;
+		isTyped = false;
+		resetTimes();
+	}
 	
 	
 }

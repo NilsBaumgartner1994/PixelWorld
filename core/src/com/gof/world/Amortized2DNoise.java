@@ -35,7 +35,7 @@ public class Amortized2DNoise {
 	float[][] workspace; // /< Temporary workspace.
 	int size; // /< Size of workspace.
 
-	public static int CELLSIZE2D = Chunk.chunkSize;
+	public static int CELLSIZE2D = Chunk.CHUNKSIZE;
 
 	Pixmap pixmap;
 

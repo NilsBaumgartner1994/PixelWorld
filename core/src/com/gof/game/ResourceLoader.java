@@ -12,7 +12,7 @@ public class ResourceLoader {
 
 	public ResourceLoader() {
 		instance = this;
-		assets = new AssetManager();
+		assets = Main.getInstance().assets;
 	}
 
 	public static ResourceLoader getInstance() {
@@ -28,7 +28,8 @@ public class ResourceLoader {
 	public static String nature = data + "nature/";
 	public static String gui = data + "gui/";
 	public static String icons = data + "icons/";
-
+	
+	
 	public void addToLoad(String name) {
 		assets.load(Gdx.files.internal(name).path(), Texture.class);
 	}

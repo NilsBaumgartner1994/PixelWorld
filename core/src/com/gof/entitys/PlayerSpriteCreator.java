@@ -10,7 +10,7 @@ import com.gof.physics.Direction;
 
 public class PlayerSpriteCreator{
 
-	public static List<Sprite> getPlayerSprite(LocalPlayer p){
+	public static List<Sprite> getPlayerSprite(Human p){
 //		int dir = p.direction;
 //		boolean east = dir==Direction.EAST;
 //		if(east) dir=Direction.WEST;

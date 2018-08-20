@@ -3,22 +3,32 @@ package com.gof.physics;
 public class WorldTime {
 
 	public static final int MAXTICKS = 24 * 60;
-
+	public static final float MINLIGHT = 0.3f;
+	public static final float MAXDAYSHADDOW = 0.7f;
+	
 	private int ticks;
+	private int days;
+	
+	public WorldTime(int ticks, int days){
+		this.ticks = ticks;
+		this.days = days;
+	}
 
 	public WorldTime(int ticks) {
-		this.ticks = ticks;
+		this(ticks,0);
 	}
 
 	public int getTicks() {
 		return this.ticks;
 	}
+	
+	public float getMaxTicks(){
+		return MAXTICKS*1f;
+	}
 
 	public float getTickPercent() {
 		return getTicks() * 1f / MAXTICKS * 1f;
 	}
-
-	private final float MINLIGHT = 0.3f;
 
 	// 06:00 --> -90°
 	// 12:00 --> 0°
@@ -31,8 +41,6 @@ public class WorldTime {
 		return (1-getSunHighStand())+0.5f;
 	}
 	
-	public static final float MAXDAYSHADDOW = 0.7f;
-
 	public float getLightIntense() {
 		return getSunHighStand()*MAXDAYSHADDOW;
 	}
@@ -51,9 +59,21 @@ public class WorldTime {
 			return 0;
 		}
 	}
+	
+	public void addDays(int delta){
+		this.days+=delta;
+	}
+	
+	public int getDays(){
+		return this.days;
+	}
 
 	public void addTicks(int delta) {
-		this.ticks = (this.ticks + delta) % WorldTime.MAXTICKS;
+		this.ticks+=delta;
+		if(this.ticks>=this.getMaxTicks()){
+			this.ticks %= WorldTime.MAXTICKS;
+			this.addDays(1);
+		}
 	}
 
 }

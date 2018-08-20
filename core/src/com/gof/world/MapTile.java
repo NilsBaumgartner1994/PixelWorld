@@ -28,23 +28,23 @@ public class MapTile extends Position {
 
 	public Chunk chunk;
 	
-	public List<Body> entitys;
+	public List<Entity> entitys;
 
 	public MapTile(Chunk c, int x, int y, boolean solid, Material m) {
 		super(x, y);
-		entitys = new ArrayList<Body>();
+		entitys = new ArrayList<Entity>();
 		this.chunk = c;
 		setSolid(solid);
 		this.material = m;
 	}
 	
-	public void registerBody(Body body){
+	public void registerEntity(Entity body){
 		if(!entitys.contains(body)){
 			entitys.add(body);
 		}
 	}
 	
-	public void unregisterBody(Body body){
+	public void unregisterEntity(Body body){
 		entitys.remove(body);
 	}
 
@@ -52,7 +52,7 @@ public class MapTile extends Position {
 		xi = (int) (this.getPosition().x + xi);
 		yi = (int) (this.getPosition().y + yi);
 
-		if (xi < 0 || xi > Chunk.chunkSize || yi < 0 || yi > Chunk.chunkSize) {
+		if (xi < 0 || xi > Chunk.CHUNKSIZE || yi < 0 || yi > Chunk.CHUNKSIZE) {
 			return null;
 		}
 		return chunk.getMapTileFromLocalPos(xi, yi);
@@ -67,11 +67,11 @@ public class MapTile extends Position {
 	}
 
 	public int getGlobalX() {
-		return (int) (chunk.x * Chunk.chunkSize + this.getPosition().x);
+		return (int) (chunk.x * Chunk.CHUNKSIZE + this.getPosition().x);
 	}
 
 	public int getGlobalY() {
-		return (int) (chunk.y * Chunk.chunkSize + this.getPosition().y);
+		return (int) (chunk.y * Chunk.CHUNKSIZE + this.getPosition().y);
 	}
 
 	public void setSolid(boolean solid) {

@@ -8,7 +8,7 @@
 /// without any warranty.
 ///
 /// Created by Ian Parberry, September 2013.
-/// Demo by Pablo Nuñez.
+/// Demo by Pablo Nuï¿½ez.
 /// Last updated January 31, 2014.
 
 package com.gof.world;
@@ -16,8 +16,10 @@ package com.gof.world;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gof.entitys.Entity;
 import com.gof.game.Main;
 import com.gof.materials.Grass;
+import com.gof.physics.Body;
 import com.gof.physics.Direction;
 import com.gof.worldgenerator.NatureGenerator;
 
@@ -26,26 +28,38 @@ public class Chunk {
 	public int x;
 	public int y;
 
-	public static final int chunkSize = 1024;
-	
+	public static final int CHUNKSIZE = 1024;
+
 	MapTile[][] tiles;
+	List<Entity> entitys;
 
 	public void create(int _x, int _y, Amortized2DNoise noise) {
 
-		tiles = new MapTile[chunkSize][chunkSize];
+		tiles = new MapTile[CHUNKSIZE][CHUNKSIZE];
+		entitys = new ArrayList<Entity>();
 
 		x = _x;
 		y = _y;
 
-		float[][] cell2 = new float[chunkSize][chunkSize];
-		for (int i = 0; i < chunkSize; i++) {
-			for (int j = 0; j < chunkSize; j++) {
+		float[][] cell2 = new float[CHUNKSIZE][CHUNKSIZE];
+		for (int i = 0; i < CHUNKSIZE; i++) {
+			for (int j = 0; j < CHUNKSIZE; j++) {
 				cell2[i][j] = 0.0f;
 			}
 		}
 
 		Main.log(getClass(), "Generation: start");
 		tiles = noise.Generate2DNoise(this, tiles, cell2, NatureGenerator.octave0, NatureGenerator.octave1, y, x);
+	}
+
+	public void registerEntity(Entity body) {
+		if (!entitys.contains(body)) {
+			entitys.add(body);
+		}
+	}
+
+	public void unregisterEntity(Body body) {
+		entitys.remove(body);
 	}
 
 	public List<MapTile> getMapTilesFromGlobalPos(int gxs, int gys, int gxe, int gye) {
@@ -61,18 +75,18 @@ public class Chunk {
 	}
 
 	public int getGloabalPosX() {
-		return x * chunkSize;
+		return x * CHUNKSIZE;
 	}
 
 	public int getGloabalPosY() {
-		return y * chunkSize;
+		return y * CHUNKSIZE;
 	}
 
 	private int checkBoundarys(int c) {
 		if (c < 0)
 			c = 0;
-		if (c > chunkSize-1)
-			c = chunkSize-1;
+		if (c > CHUNKSIZE - 1)
+			c = CHUNKSIZE - 1;
 		return c;
 	}
 
@@ -84,27 +98,27 @@ public class Chunk {
 
 		int xLeft = xs;
 		int xRight = xe;
-		if(xLeft>xRight){
+		if (xLeft > xRight) {
 			int h = xLeft;
 			xLeft = xRight;
 			xRight = h;
 		}
-		
+
 		int yBottom = ys;
 		int yTop = ye;
-		if(yBottom>yTop){
+		if (yBottom > yTop) {
 			int h = yBottom;
 			yBottom = yTop;
 			yTop = h;
 		}
-		
-		return getMapTilesFromLocalPosRightCoord(xLeft,yTop,xRight,yBottom);
+
+		return getMapTilesFromLocalPosRightCoord(xLeft, yTop, xRight, yBottom);
 	}
-	
-	private List<MapTile> getMapTilesFromLocalPosRightCoord(int xLeft, int yTop, int xRight, int yBottom){
+
+	private List<MapTile> getMapTilesFromLocalPosRightCoord(int xLeft, int yTop, int xRight, int yBottom) {
 		List<MapTile> back = new ArrayList<MapTile>();
 		for (int y = yTop; y >= yBottom; y--) {
-		for (int x = xLeft; x <= xRight; x++) {
+			for (int x = xLeft; x <= xRight; x++) {
 				back.add(tiles[x][y]);
 			}
 		}
@@ -112,10 +126,13 @@ public class Chunk {
 	}
 
 	public List<MapTile> getAllMapTiles() {
-		return getMapTilesFromLocalPos(0, 0, chunkSize, chunkSize);
+		return getMapTilesFromLocalPos(0, 0, CHUNKSIZE, CHUNKSIZE);
 	}
 
 	public MapTile getMapTileFromLocalPos(int x, int y) {
+		if (x < 0 || x >= CHUNKSIZE || y < 0 || y >= CHUNKSIZE) {
+			return null;
+		}
 		return tiles[x][y];
 	}
 }

@@ -3,9 +3,10 @@ package com.gof.Inputs;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
-import com.gof.entitys.LocalPlayer;
+import com.gof.entitys.Human;
 import com.gof.game.Main;
 import com.gof.physics.Direction;
+import com.gof.profiles.User;
 
 public class KeyboardHandler {
 
@@ -22,38 +23,15 @@ public class KeyboardHandler {
 
 	public void updateInputLogic() {
 		updateLeftStick();
-		updateABXY();
-		updateMouseInputs();
 	}
-
-	public void updateMouseInputs() {
-		// Player p =
-		// Main.getInstance().playerHandler.getPlayerByInput(inputHandlerName);
-		// p.shoot = mouseLeft;
-		// p.rightClick = mouseRight;
-	}
-
-	public void updateABXY() {
-		// Player p =
-		// Main.getInstance().playerHandler.getPlayerByInput(inputHandlerName);
-		// p.jump = keys[Keys.SPACE];
-		//
-		// if(keys[Keys.Z]){
-		// for(int i=0;i<100; i++){
-		// Main.getInstance().aiHandler.createAI("AI."+i);
-		// }
-		// }
-	}
-
-	boolean cloud = true;
 	
-	public LocalPlayer getPlayer(){
-		return Main.getInstance().playerHandler.getPlayerByInput(inputHandlerName);
+	public User getUser(){
+		return Main.getInstance().userHandler.getUserByInput(inputHandlerName);
 	}
 
 	public void updateLeftStick() {
 		Vector2 dir = new Vector2(0, 0);
-		LocalPlayer p = getPlayer();
+		User u = getUser();
 
 		if (keyboard.isPressed(Keys.A)) {
 			dir.add(new Vector2(-1, 0)); // left
@@ -67,12 +45,11 @@ public class KeyboardHandler {
 		if (keyboard.isPressed(Keys.S)) {
 			dir.add(new Vector2(0, -1)); // down
 		}
+		u.gamepad.setLeftStick(dir);
 		
-
-		p.run(keyboard.isPressed(Keys.SHIFT_LEFT, Keys.SHIFT_RIGHT));
-		p.sneak(keyboard.isPressed(Keys.CONTROL_LEFT, Keys.CONTROL_RIGHT));
-
-		p.setLeftStick(dir);
+		u.gamepad.setButtonState(GamePadButtons.SHIFT, keyboard.isPressed(Keys.SHIFT_LEFT, Keys.SHIFT_RIGHT));
+		u.gamepad.setButtonState(GamePadButtons.CTRL, keyboard.isPressed(Keys.CONTROL_LEFT, Keys.CONTROL_RIGHT));
+		u.gamepad.setButtonState(GamePadButtons.ESC, keyboard.isPressed(Keys.ESCAPE));
 	}
 
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
@@ -92,10 +69,10 @@ public class KeyboardHandler {
 	}
 
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		LocalPlayer p = getPlayer();
+		User u = getUser();
 		if (button == Input.Buttons.LEFT) {
 			mouse.left.press();
-			p.use(p.cameraController.getGlobalPosFromScreenPos(screenX, p.cameraController.height-screenY));
+//			p.use(u.cameraController.getGlobalPosFromScreenPos(screenX, u.cameraController.height-screenY));
 		}
 		if (button == Input.Buttons.RIGHT) {
 			mouse.right.press();
@@ -113,18 +90,17 @@ public class KeyboardHandler {
 	}
 
 	public boolean scrolled(int amount) {
-		LocalPlayer p = this.getPlayer();
-		p.inventory.setActivSlot(p.inventory.getActivSlot()+amount);
+//		Human p = this.getPlayer();
+//		p.inventory.setActivSlot(p.inventory.getActivSlot()+amount);
 		return true;
 	}
 
 	public boolean keyTyped(char character) {
-		LocalPlayer p = this.getPlayer();
+		User u = this.getUser();
 		switch(character){
-		case '+' : p.cameraController.changeDistance(-1); break;
-		case '-' : p.cameraController.changeDistance(1); break;
-		default : break;
-		
+			case '+' : u.cameraController.changeDistance(-1); break;
+			case '-' : u.cameraController.changeDistance(1); break;
+			default : break;
 		}
 		return true;
 	}

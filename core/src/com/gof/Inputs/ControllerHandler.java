@@ -6,7 +6,7 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.gof.entitys.LocalPlayer;
+import com.gof.entitys.Human;
 import com.gof.game.Main;
 
 public class ControllerHandler implements ControllerListener {
@@ -17,15 +17,15 @@ public class ControllerHandler implements ControllerListener {
 
 	public void updateInputLogic() {
 		for (Controller controller : Controllers.getControllers()) {
-			LocalPlayer p = Main.getInstance().playerHandler.getPlayerByInput("controller:" + controller.hashCode());
-			updateLeftStick(p,controller);
-			updateRightStick(p,controller);
-			updateABXY(p,controller);
-			updateTrigger(p,controller);
+//			Human p = Main.getInstance().userHandler.getPlayerByInput("controller:" + controller.hashCode());
+//			updateLeftStick(p,controller);
+//			updateRightStick(p,controller);
+//			updateABXY(p,controller);
+//			updateTrigger(p,controller);
 		}
 	}
 	
-	public void updateLeftStick(LocalPlayer p, Controller controller) {
+	public void updateLeftStick(Human p, Controller controller) {
 		float dy = -controller.getAxis(XBox360Pad.AXIS_LEFT_Y);
 		float dx = controller.getAxis(XBox360Pad.AXIS_LEFT_X);
 		
@@ -34,7 +34,7 @@ public class ControllerHandler implements ControllerListener {
 		p.stickLeftDown = controller.getButton(XBox360Pad.BUTTON_L3);
 	}
 	
-	public void updateRightStick(LocalPlayer p, Controller controller) {
+	public void updateRightStick(Human p, Controller controller) {
 		float dy = controller.getAxis(XBox360Pad.AXIS_RIGHT_Y);
 		float dx = controller.getAxis(XBox360Pad.AXIS_RIGHT_X);
 
@@ -42,7 +42,7 @@ public class ControllerHandler implements ControllerListener {
 		p.stickRightDown = controller.getButton(XBox360Pad.BUTTON_R3);
 	}
 	
-	public void updateTrigger(LocalPlayer p, Controller controller){
+	public void updateTrigger(Human p, Controller controller){
 		float leftTrigger = controller.getAxis(XBox360Pad.AXIS_LEFT_TRIGGER);
 		if(leftTrigger<2E-5){
 			leftTrigger=0;
@@ -57,7 +57,7 @@ public class ControllerHandler implements ControllerListener {
 		
 	}
 
-	public void updateABXY(LocalPlayer p, Controller controller) {
+	public void updateABXY(Human p, Controller controller) {
 			
 	}
 
@@ -105,14 +105,14 @@ public class ControllerHandler implements ControllerListener {
 		// TODO Auto-generated method stub
 		Main.log(getClass(), "pov: " + povCode + " with " + value);
 		
-		LocalPlayer p = Main.getInstance().playerHandler.getPlayerByInput("controller:" + controller.hashCode());
-
-		if (value == XBox360Pad.BUTTON_DPAD_DOWN) {
-			p.cameraController.distanceIncrease();
-		}
-		if (value == XBox360Pad.BUTTON_DPAD_UP) {
-			p.cameraController.distanceDecrease();
-		}
+//		Human p = Main.getInstance().userHandler.getPlayerByInput("controller:" + controller.hashCode());
+//
+//		if (value == XBox360Pad.BUTTON_DPAD_DOWN) {
+//			p.cameraController.distanceIncrease();
+//		}
+//		if (value == XBox360Pad.BUTTON_DPAD_UP) {
+//			p.cameraController.distanceDecrease();
+//		}
 
 		return false;
 	}
