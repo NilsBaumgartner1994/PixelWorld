@@ -24,10 +24,10 @@ import com.gof.physics.Speed;
 import com.gof.world.MapTile;
 import com.gof.world.TileWorld;
 
-import items.AbstractItem;
-import items.Inventory;
-import items.Item;
-import items.Tool;
+import com.gof.items.AbstractItem;
+import com.gof.items.Inventory;
+import com.gof.items.Item;
+import com.gof.items.Tool;
 
 public class Human extends Entity{
 

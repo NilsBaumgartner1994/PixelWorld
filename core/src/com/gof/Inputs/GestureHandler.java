@@ -1,4 +1,4 @@
-package com.gof.Inputs;
+package com.gof.inputs;
 
 import java.util.HashMap;
 import java.util.Map;

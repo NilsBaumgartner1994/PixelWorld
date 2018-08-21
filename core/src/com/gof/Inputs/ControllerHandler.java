@@ -1,4 +1,4 @@
-package com.gof.Inputs;
+package com.gof.inputs;
 
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;

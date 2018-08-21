@@ -1,14 +1,14 @@
 package com.gof.menu;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.gof.Inputs.GamePad;
-import com.gof.Inputs.GamePadButtons;
+import com.gof.inputs.GamePad;
+import com.gof.inputs.GamePadButtons;
 import com.gof.entitys.Human;
 import com.gof.game.CameraController;
 import com.gof.game.ResourceLoader;
 import com.gof.profiles.User;
 
-import items.AbstractItem;
+import com.gof.items.AbstractItem;
 
 public class Ingame implements Menu {
 

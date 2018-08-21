@@ -1,7 +1,7 @@
 package com.gof.menu;
 
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.gof.Inputs.GamePad;
+import com.gof.inputs.GamePad;
 import com.gof.entitys.Human;
 import com.gof.game.CameraController;
 import com.gof.profiles.User;

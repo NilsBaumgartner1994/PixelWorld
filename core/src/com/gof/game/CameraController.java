@@ -15,7 +15,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Vector2;
-import com.gof.Inputs.Mouse;
+import com.gof.inputs.Mouse;
 import com.gof.entitys.Entity;
 import com.gof.entitys.EntityType;
 import com.gof.entitys.Human;
@@ -29,8 +29,8 @@ import com.gof.shaders.ShaddowShader;
 import com.gof.world.MapTile;
 import com.gof.world.TileWorld;
 
-import items.AbstractItem;
-import items.Item;
+import com.gof.items.AbstractItem;
+import com.gof.items.Item;
 
 public class CameraController {
 

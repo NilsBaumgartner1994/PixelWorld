@@ -2,11 +2,10 @@ package com.gof.menu;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.gof.Inputs.GamePad;
-import com.gof.Inputs.GamePadButtons;
 import com.gof.game.CameraController;
 import com.gof.game.ResourceLoader;
+import com.gof.inputs.GamePad;
+import com.gof.inputs.GamePadButtons;
 
 public class PauseMenu implements Menu {
 

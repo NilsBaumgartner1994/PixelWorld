@@ -1,4 +1,4 @@
-package items;
+package com.gof.items;
 
 import com.gof.materials.Material;
 import com.gof.nature.Nature;

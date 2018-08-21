@@ -1,4 +1,4 @@
-package com.gof.Inputs;
+package com.gof.inputs;
 
 //This code was taken from http://www.java-gaming.org/index.php?topic=29223.0
 //With thanks that is!

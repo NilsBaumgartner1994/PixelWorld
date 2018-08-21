@@ -1,4 +1,4 @@
-package items;
+package com.gof.items;
 
 public class Tool extends AbstractItem{
 	

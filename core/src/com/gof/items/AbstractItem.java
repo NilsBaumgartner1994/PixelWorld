@@ -1,4 +1,4 @@
-package items;
+package com.gof.items;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.gof.game.ResourceLoader;

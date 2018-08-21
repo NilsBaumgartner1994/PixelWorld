@@ -1,8 +1,8 @@
 package com.gof.profiles;
 
 import com.badlogic.gdx.Gdx;
-import com.gof.Inputs.GamePad;
-import com.gof.Inputs.GamePadButtons;
+import com.gof.inputs.GamePad;
+import com.gof.inputs.GamePadButtons;
 import com.gof.entitys.Human;
 import com.gof.game.CameraController;
 import com.gof.game.Main;

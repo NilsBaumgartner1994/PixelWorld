@@ -1,4 +1,4 @@
-package items;
+package com.gof.items;
 
 import java.util.ArrayList;
 import java.util.Arrays;
