@@ -18,13 +18,18 @@ import java.util.List;
 
 import com.gof.entitys.Entity;
 import com.gof.game.Main;
+import com.gof.game.SaveAndLoadable;
 import com.gof.materials.Grass;
 import com.gof.physics.Body;
 import com.gof.physics.Direction;
 import com.gof.worldgenerator.NatureGenerator;
 
-public class Chunk {
+public class Chunk extends SaveAndLoadable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1265662013911180482L;
 	public int x;
 	public int y;
 
@@ -32,6 +37,12 @@ public class Chunk {
 
 	MapTile[][] tiles;
 	List<Entity> entitys;
+	
+	public void save(TileWorld world){
+		System.out.println("Saving: "+x+"-"+y+".chunk");
+		saveToInternal(TileWorld.WORLDS+world.name+"/"+x+"-"+y+".chunk");
+		System.out.println("Saved to: "+TileWorld.WORLDS+world.name+"/"+x+"-"+y+".chunk");
+	}
 
 	public void create(int _x, int _y, Amortized2DNoise noise) {
 

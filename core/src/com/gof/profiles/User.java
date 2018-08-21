@@ -19,7 +19,10 @@ public class User {
 	public MenuHandler menuHandler;
 
 	public User() {
-		this.profile = new UserProfile();
+		new UserProfile().save();
+		this.profile = UserProfile.load("Default");
+		System.out.println(this.profile.name);
+		
 		this.gamepad = new GamePad();
 		this.menuHandler = new MenuHandler(this);
 

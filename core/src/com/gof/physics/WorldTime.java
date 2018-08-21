@@ -1,7 +1,13 @@
 package com.gof.physics;
 
-public class WorldTime {
+import java.io.Serializable;
 
+public class WorldTime implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7714975513050895190L;
 	public static final int MAXTICKS = 24 * 60;
 	public static final float MINLIGHT = 0.3f;
 	public static final float MAXDAYSHADDOW = 0.7f;

@@ -9,8 +9,13 @@ import com.gof.world.TileWorld;
 
 public class NatureGenerator implements GeneratorInterface {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7778561222591949339L;
+
 	TileWorld world;
-	
+
 	public static boolean debug_generation = false;
 
 	// Altering will make it look more like continents or islands.
@@ -33,11 +38,11 @@ public class NatureGenerator implements GeneratorInterface {
 
 	@Override
 	public void generateChunkAt(int cx, int cy) {
-		Main.log(getClass(), "Chunk("+cx+"|"+cy+"): generating");
+		Main.log(getClass(), "Chunk(" + cx + "|" + cy + "): generating");
 		Chunk c = new Chunk();
 		c.create(cx, cy, noise);
 		world.setChunk(c);
-		Main.log(getClass(), "Chunk("+cx+"|"+cy+"): ready");
+		Main.log(getClass(), "Chunk(" + cx + "|" + cy + "): ready");
 	}
 
 }

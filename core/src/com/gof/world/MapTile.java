@@ -1,5 +1,6 @@
 package com.gof.world;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,22 +12,25 @@ import com.gof.physics.Body;
 import com.gof.physics.Direction;
 import com.gof.physics.Position;
 
-public class MapTile extends Position {
+public class MapTile extends Position implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 216668977777721960L;
 	public final static int tileWidth = 128;
 	public final static int tileHeight = 64;
 
-	public int direction;
+	public short direction;
 	private boolean solid;
 
 	public Material material;
 	
 	private boolean shaddow;
-	
 
 	public Nature nature;
 
-	public Chunk chunk;
+	public transient Chunk chunk;
 	
 	public List<Entity> entitys;
 
@@ -112,7 +116,7 @@ public class MapTile extends Position {
 		return this.solid;
 	}
 
-	public void setDirection(int dir) {
+	public void setDirection(short dir) {
 		this.direction = dir;
 	}
 	

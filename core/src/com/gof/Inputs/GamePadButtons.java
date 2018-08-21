@@ -5,6 +5,6 @@ package com.gof.Inputs;
 
 public enum GamePadButtons {
 	
-	BACK,START,A,B,SHIFT,CTRL,PLUS,MINUS,ESC;
+	BACK,START,A,B,X,Y,SHIFT,CTRL,ESC,UP,DOWN,LEFT,RIGHT,L1,L2,R1,R2;
 	
 }

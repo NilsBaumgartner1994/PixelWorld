@@ -18,18 +18,17 @@ public class PauseMenu implements Menu {
 
 	@Override
 	public void update(GamePad gamepad) {
-		if(gamepad.getButton(GamePadButtons.ESC).isPressed()){
+		if(gamepad.getButton(GamePadButtons.ESC).isTyped()){
 			menuHandler.setActivMenu(menuHandler.ingameMenu);
 		}
 	}
 	
 	@Override
-	public void render() {
-		drawOptionMenu();
+	public void render(CameraController display) {
+		drawOptionMenu(display);
 	}
 	
-	private void drawOptionMenu() {
-		CameraController display = menuHandler.user.cameraController;
+	private void drawOptionMenu(CameraController display) {
 
 		Sprite title = new Sprite(ResourceLoader.getInstance().getGUI("menu_title"));
 		Sprite chain = new Sprite(ResourceLoader.getInstance().getGUI("menu_chain"));

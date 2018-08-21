@@ -240,7 +240,7 @@ public class CameraController {
 			Color save = fboBatch.getColor();
 
 			// if (tile.isInShaddow()) {
-			fboBatch.setColor(save.cpy().add(-0.5f, -0.5f, -0.5f, 0));
+//			fboBatch.setColor(save.cpy().add(-0.5f, -0.5f, -0.5f, 0));
 			// }
 
 			drawTileSprite(sprite, tile.getGlobalX(), tile.getGlobalY(), tileWidthHalf, tileHeightHalf,
@@ -489,8 +489,8 @@ public class CameraController {
 
 			line = 1;
 			drawInformationLine("FPS: " + Gdx.graphics.getFramesPerSecond());
-
 			drawInformationLine("Player: " + Main.getInstance().userHandler.getUserNumber(this.user));
+			drawInformationLine("GamePad: " + this.user.gamepad.toString());
 			drawInformationLine("Zoom: " + zoomLevel);
 
 			TileWorld world = this.user.activGameWorld;
@@ -533,37 +533,7 @@ public class CameraController {
 		line++;
 	}
 
-	public void drawIconBar() {
-		Sprite framebar = new Sprite(ResourceLoader.getInstance().getIcon("framebar"));
-		framebar.setPosition(this.width / 2 - framebar.getRegionWidth() / 2, 10);
-		drawSprite(framebar);
-
-		Sprite iconFrame = new Sprite(ResourceLoader.getInstance().getIcon("frame"));
-		Sprite activIconFrame = new Sprite(ResourceLoader.getInstance().getIcon("frame_activ"));
-
-		int invPos = 0;
-		// for (int i = -4; i < 4; i++) {
-		// Sprite drawFrame = user.inventory.isActivSlot(invPos) ?
-		// activIconFrame : iconFrame;
-		//
-		// int xPos = this.width / 2 + (i * iconFrame.getRegionWidth() + i * 10
-		// + 5);
-		// int yPos = 10 + framebar.getRegionHeight() / 2 -
-		// activIconFrame.getRegionHeight() / 2;
-		//
-		// drawFrame.setPosition(xPos, yPos);
-		// drawSprite(drawFrame);
-		//
-		// AbstractItem item = user.inventory.getItem(invPos);
-		// if (item != null) {
-		// Sprite itemIcon = new Sprite(item.getTexture());
-		// itemIcon.setPosition(xPos, yPos);
-		// drawSprite(itemIcon);
-		// }
-		//
-		// invPos++;
-		// }
-	}
+	
 
 	public void renderGUI() {
 		fbUI.begin();
@@ -581,7 +551,6 @@ public class CameraController {
 		// Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT |
 		// GL20.GL_DEPTH_BUFFER_BIT);
 
-		drawIconBar();
 		drawMenu();
 		drawMouseIcon();
 
@@ -590,7 +559,7 @@ public class CameraController {
 	}
 	
 	public void drawMenu(){
-		this.user.menuHandler.renderActivMenu();
+		this.user.menuHandler.renderActivMenu(this);
 	}
 
 	public int drawSpriteAndSubtractYpos(Sprite s, int xpos, int ypos) {

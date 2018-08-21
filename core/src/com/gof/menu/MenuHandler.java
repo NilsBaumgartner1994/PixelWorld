@@ -3,6 +3,7 @@ package com.gof.menu;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.gof.Inputs.GamePad;
 import com.gof.entitys.Human;
+import com.gof.game.CameraController;
 import com.gof.profiles.User;
 
 public class MenuHandler {
@@ -28,9 +29,9 @@ public class MenuHandler {
 		this.activMenu = menu;
 	}
 
-	public void renderActivMenu() {
+	public void renderActivMenu(CameraController display) {
 		if (activMenu != null) {
-			activMenu.render();
+			activMenu.render(display);
 		}
 	}
 

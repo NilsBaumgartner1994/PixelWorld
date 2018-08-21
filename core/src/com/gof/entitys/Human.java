@@ -29,7 +29,7 @@ import items.Inventory;
 import items.Item;
 import items.Tool;
 
-public class LocalPlayer extends Entity{
+public class Human extends Entity{
 
 	public String name;
 
@@ -43,7 +43,6 @@ public class LocalPlayer extends Entity{
 	public boolean stickRightDown;
 
 	public CameraController cameraController;
-	public MenuHandler menuHandler;
 
 	private boolean sneaking;
 
@@ -55,16 +54,17 @@ public class LocalPlayer extends Entity{
 	public final long USECOOLDOWN = 1000 / 10L;
 	public long lastUse = System.currentTimeMillis();
 	public Position usePosition;
+	
+	public Human(TileWorld world){
+		this(world, "Bob");
+	}
 
-	public LocalPlayer(String name) {
-		super(51721,MapTile.tileWidth/2, 50811,MapTile.tileHeight/2, EntityType.PLAYER);
-		// speed = Speed.walkSpeed;
+	public Human(TileWorld world,String name) {
+		super(world,51721,MapTile.tileWidth/2, 50811,MapTile.tileHeight/2, EntityType.PLAYER);
 		this.name = name;
 
-		menuHandler = new MenuHandler(this);
 		sneaking = false;
 		initInventory();
-		initCamera();
 		resetInputVariables();
 	}
 
@@ -90,10 +90,7 @@ public class LocalPlayer extends Entity{
 		this.inventory.addItem(new Item(new Grass()));
 	}
 
-	public void initCamera() {
-		cameraController = new CameraController(this, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		cameraController.setTrack(this);
-	}
+	
 
 	public void setLeftStick(Vector2 dir) {
 		this.stickLeft = dir.cpy();
@@ -121,15 +118,15 @@ public class LocalPlayer extends Entity{
 			if (activItem instanceof Item) {
 				Item item = (Item) activItem;
 				if (item.isNature()) {
-					this.usePosition.getMapTile().setNature(item.getNature());
+					this.getMapTile().setNature(item.getNature());
 				}
 				else{
-					this.usePosition.getMapTile().setMaterial(item.getMaterial());
+					this.getMapTile().setMaterial(item.getMaterial());
 				}
 			}
 			if (activItem instanceof Tool) {
 				Tool tool = (Tool) activItem;
-				this.usePosition.getMapTile().removeNature();
+				getMapTile().removeNature();
 			}
 
 		}
@@ -138,27 +135,30 @@ public class LocalPlayer extends Entity{
 	private void updateLeftStick() {
 		if (this.stickLeft.len() != 0) {
 			this.direction = Position.getPositionDirectionFromVector(this.stickLeft);
-			Position oneBlockDir = this.direction.cpy().scaleAndSet(MapTile.tileHeight);
-			
-//			Main.log(getClass(), "Pos: "+this.getPosition().toString());
-			Position nextBlock = this.getPosition().cpy().addAndSet(oneBlockDir);
-			
-			nextBlock = nextBlock.getMapTile().getGlobalPosition().addAndSet(0, MapTile.tileWidth/2, 0, MapTile.tileHeight/2);
-			
+			Position nextBlock = getNextBlockInDirection();
 			this.nav.setPath(nextBlock);
 		}
+	}
+	
+	public Position getNextBlockInDirection(){
+		Position oneBlockDir = this.direction.cpy().scaleAndSet(MapTile.tileHeight);
+		Position nextBlock = this.getPosition().cpy().addAndSet(oneBlockDir);
+		nextBlock = this.world.getMapTileFromGlobalPos(nextBlock.getPosition().x,nextBlock.getPosition().y).getGlobalPosition().addAndSet(0, MapTile.tileWidth/2, 0, MapTile.tileHeight/2);
+		return nextBlock;
 	}
 
 	public void resetInputVariables() {
 		stickLeft = new Vector2();
 		stickRight = new Vector2();
+		this.speed = Speed.walk;
 	}
 
 	public List<Sprite> getSprite() {
 		return PlayerSpriteCreator.getPlayerSprite(this);
 	}
 
-	public void updateMyGameObjects() {
+	@Override
+	public void updateLogic() {
 		updateLeftStick();
 		updateUse();
 	}

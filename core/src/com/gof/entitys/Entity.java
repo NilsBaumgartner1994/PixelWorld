@@ -1,5 +1,6 @@
 package com.gof.entitys;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -15,8 +16,12 @@ import com.gof.world.Chunk;
 import com.gof.world.MapTile;
 import com.gof.world.TileWorld;
 
-public class Entity extends Body {
+public class Entity extends Body implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5098608000401492288L;
 	private MotionState state;
 	private Material material;
 	private EntityType type;
@@ -61,11 +66,17 @@ public class Entity extends Body {
 	public void calcPhysicStep(int steps) {
 		Position dir = Direction.getDirection(getPosition(), this.nav.getActualDestiny().cpy());
 		dir.scaleAndSet(speed);
+
 		Position clambed = Direction.clambIfDistanceToLong(getPosition(), this.nav.getActualDestiny(), dir);
 
+		
 		this.setVelocity(new Speed(clambed, 1, false));
 
 		super.calcPhysicStep(steps);
+	}
+	
+	public void updateLogic(){
+		//Set Goals and Other calculations about the AI
 	}
 
 	public List<Sprite> getSprite() {
@@ -113,7 +124,6 @@ public class Entity extends Body {
 		if (!(newReffer.getGlobalX() == oldReffer.getGlobalX() && newReffer.getGlobalY() == oldReffer.getGlobalY())) {
 			oldReffer.unregisterEntity(this);
 			newReffer.registerEntity(this);
-
 		}
 	}
 	

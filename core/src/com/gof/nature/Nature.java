@@ -6,6 +6,11 @@ import com.gof.materials.Material;
 
 public class Nature extends Material{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4115895722414825191L;
+
 	@Override
 	public Texture getTexture(){
 		if(texture==null) return ResourceLoader.getInstance().getNatrue("error");

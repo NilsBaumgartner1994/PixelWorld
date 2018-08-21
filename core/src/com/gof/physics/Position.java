@@ -1,11 +1,14 @@
 package com.gof.physics;
 
 import com.badlogic.gdx.math.Vector2;
+import com.gof.game.SaveAndLoadable;
 import com.gof.world.MapTile;
-import com.gof.world.TileWorld;
 
 public class Position implements Comparable<Position> {
 
+	/**
+	 * 
+	 */
 	public int x;
 	public int y;
 	public int xFraction;

@@ -1,8 +1,8 @@
 package com.gof.worldgenerator;
 
-import com.gof.world.MapTile;
+import java.io.Serializable;
 
-public interface GeneratorInterface {
+public interface GeneratorInterface extends Serializable {
 
 	public void generateChunkAt(int cx, int cy);
 	

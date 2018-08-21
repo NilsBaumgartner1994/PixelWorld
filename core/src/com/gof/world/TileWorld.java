@@ -7,14 +7,21 @@ import com.badlogic.gdx.math.Vector2;
 import com.gof.entitys.Entity;
 import com.gof.entitys.Human;
 import com.gof.game.Main;
+import com.gof.game.SaveAndLoadable;
 import com.gof.physics.WorldTime;
 import com.gof.worldgenerator.GeneratorInterface;
 import com.gof.worldgenerator.NatureGenerator;
 
-public class TileWorld {
+public class TileWorld extends SaveAndLoadable {
 
-	private static TileWorld instance;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 828667796302397997L;
+
 	private GeneratorInterface generator;
+
+	String name;
 
 	// Number of cells
 	public int worldSize = 100;
@@ -24,35 +31,54 @@ public class TileWorld {
 
 	public WorldTime time;
 
-	public TileWorld() {
-		instance = this;
+	public TileWorld(String name) {
+		this.name = name;
 		activeChunks = new ArrayList<Chunk>();
 		chunks = new Chunk[worldSize][worldSize];
 		setGenerator(new NatureGenerator(this));
 		time = new WorldTime(0);
 	}
-	
-	public void activateChunk(Chunk c){
-		if(!activeChunks.contains(c)){
+
+	public static final String DATA = "data/";
+	public static final String WORLDS = DATA + "worlds/";
+	public static final String ENDING = ".world";
+
+	public void save() {
+		for (Chunk[] chunks : chunks) {
+			for (Chunk c : chunks) {
+				if (c != null) {
+					c.save(this);
+				}
+			}
+		}
+	}
+
+	public static TileWorld load(String name) {
+		return loadFromExternal(WORLDS + name + ENDING, TileWorld.class);
+	}
+
+	public void activateChunk(Chunk c) {
+		if (!activeChunks.contains(c)) {
 			activeChunks.add(c);
 		}
 	}
-	
-	public void deactivateChunk(Chunk c){
+
+	public void deactivateChunk(Chunk c) {
 		activeChunks.remove(c);
 	}
-	
-	public void deactivateAllChunks(){
-		for(Chunk[] chunks : chunks){
-			for(Chunk c : chunks){
+
+	public void deactivateAllChunks() {
+		for (Chunk[] chunks : chunks) {
+			for (Chunk c : chunks) {
 				deactivateChunk(c);
 			}
 		}
 	}
-	
+
 	public void updateEntitysBodys(int steps) {
-		for(Chunk c : activeChunks){
-			for(Entity e : c.entitys){
+		for (Chunk c : activeChunks) {
+			for (Entity e : c.entitys) {
+				e.updateLogic();
 				e.calcPhysicStep(steps);
 			}
 		}

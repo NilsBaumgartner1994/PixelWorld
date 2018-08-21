@@ -1,91 +1,114 @@
 package com.gof.Inputs;
 
 public class Button {
-	
+
 	private boolean isPressed;
 	private long pressed;
+	private long lastCheck;
 	private long released;
-	private boolean isTyped;
-	
-	public Button(){
+
+	private static final long TYPEDTIMEDEFAULT = 500L;
+	private long TypedTime;
+
+	public Button() {
+		TypedTime = TYPEDTIMEDEFAULT;
 		reset();
 	}
-	
-	public boolean isPressed(){
+
+	public boolean isPressed() {
 		return isPressed;
 	}
-	
-	public void setState(boolean pressed){
-		if(pressed){
+
+	public boolean isTyped() {
+		if (isPressed() && pressed > lastCheck) {
+			updateLastCheck();
+			return true;
+		}
+		return false;
+	}
+
+	public void setState(boolean pressed) {
+		if (pressed) {
 			press();
-		} else{
+		} else {
 			release();
 		}
 	}
-	
-	public void typed(){
-		this.isTyped = true;
+
+	public void press() {
+		if (!isPressed) {
+			isPressed = true;
+			pressed = System.currentTimeMillis();
+		}
 	}
-	
-	public void press(){
-		isPressed = true;
-		pressed = System.currentTimeMillis();
+
+	public void release() {
+		if (isPressed) {
+			isPressed = false;
+			released = System.currentTimeMillis();
+		}
 	}
-	
-	public void release(){
-		isPressed = false;
-		released = System.currentTimeMillis();
-	}
-	
-	public long timeSinceLastPress(){
+
+	public long timeSinceLastPress() {
 		return timeDiff(pressed);
 	}
-	
-	public float timeSinceLastPressInSeconds(){
+
+	public float timeSinceLastPressInSeconds() {
 		float time = timeSinceLastPress();
-		time/=1000;
+		time /= 1000;
 		return time;
 	}
-	
-	public long timeSinceLastRelease(){
+
+	public long timeSinceLastRelease() {
 		return timeDiff(released);
 	}
-	
-	public float timeSinceLastReleaseInSeconds(){
+
+	public float timeSinceLastReleaseInSeconds() {
 		float time = timeSinceLastRelease();
-		time/=1000;
+		time /= 1000;
 		return time;
 	}
-	
-	public long timeSinceLastAction(){
-		if(isPressed()) return timeSinceLastPress();
+
+	public long timeSinceLastAction() {
+		if (isPressed())
+			return timeSinceLastPress();
 		return timeSinceLastRelease();
 	}
-	
-	
-	//Helper
-	private long timeDiff(long val){
-		return System.currentTimeMillis()-val;
+
+	// Helper
+	private long timeDiff(long val) {
+		return System.currentTimeMillis() - val;
 	}
-	
-	private void resetTimes(){
+
+	private void updateLastCheck() {
+		lastCheck = System.currentTimeMillis();
+	}
+
+	private long timeSinceLastCheck() {
+		return System.currentTimeMillis() - lastCheck;
+	}
+
+	private void resetTimes() {
 		resetPressTime();
 		resetReleaseTime();
+		resetCheckTime();
 	}
-	
-	private void resetPressTime(){
-		this.pressed=-1;
+
+	private void resetPressTime() {
+		this.pressed = -1;
 	}
-	
-	private void resetReleaseTime(){
-		this.released=-1;
+
+	private void resetReleaseTime() {
+		this.released = -1;
 	}
-	
-	public void reset(){
+
+	private void resetCheckTime() {
+		this.lastCheck = -1;
+	}
+
+	public void reset() {
 		isPressed = false;
-		isTyped = false;
 		resetTimes();
 	}
-	
-	
+
 }

@@ -21,7 +21,8 @@ public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
 
-	ResourceLoader resourceLoader;
+	public ResourceLoader resourceLoader;
+	public FileController fileController;
 	public AssetManager assets;
 	public TileWorld titleScreenWorld;
 
@@ -43,6 +44,7 @@ public class Main extends ApplicationAdapter {
 	public void initAssetAndResourceLoader() {
 		assets = new AssetManager();
 		resourceLoader = new ResourceLoader();
+		fileController = new FileController();
 	}
 
 	public static Main getInstance() {
@@ -50,7 +52,7 @@ public class Main extends ApplicationAdapter {
 	}
 
 	public void initTileWorld() {
-		titleScreenWorld = new TileWorld();
+		titleScreenWorld = new TileWorld("Default");
 	}
 
 	public void initPlayerHandler() {

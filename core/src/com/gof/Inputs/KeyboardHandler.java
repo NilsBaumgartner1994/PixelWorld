@@ -24,8 +24,8 @@ public class KeyboardHandler {
 	public void updateInputLogic() {
 		updateLeftStick();
 	}
-	
-	public User getUser(){
+
+	public User getUser() {
 		return Main.getInstance().userHandler.getUserByInput(inputHandlerName);
 	}
 
@@ -46,15 +46,20 @@ public class KeyboardHandler {
 			dir.add(new Vector2(0, -1)); // down
 		}
 		u.gamepad.setLeftStick(dir);
-		
+
 		u.gamepad.setButtonState(GamePadButtons.SHIFT, keyboard.isPressed(Keys.SHIFT_LEFT, Keys.SHIFT_RIGHT));
 		u.gamepad.setButtonState(GamePadButtons.CTRL, keyboard.isPressed(Keys.CONTROL_LEFT, Keys.CONTROL_RIGHT));
+		u.gamepad.setButtonState(GamePadButtons.UP, keyboard.isPressed(Keys.SLASH));
+		u.gamepad.setButtonState(GamePadButtons.DOWN, keyboard.isPressed(Keys.RIGHT_BRACKET));
 		u.gamepad.setButtonState(GamePadButtons.ESC, keyboard.isPressed(Keys.ESCAPE));
 	}
 
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		User u = getUser();
+		
 		if (button == Input.Buttons.LEFT) {
 			mouse.left.release();
+			u.gamepad.setButtonState(GamePadButtons.R2, false);
 		}
 		if (button == Input.Buttons.RIGHT) {
 			mouse.right.release();
@@ -70,9 +75,12 @@ public class KeyboardHandler {
 
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		User u = getUser();
+		
 		if (button == Input.Buttons.LEFT) {
 			mouse.left.press();
-//			p.use(u.cameraController.getGlobalPosFromScreenPos(screenX, u.cameraController.height-screenY));
+			u.gamepad.setButtonState(GamePadButtons.R2, true);
+			// p.use(u.cameraController.getGlobalPosFromScreenPos(screenX,
+			// u.cameraController.height-screenY));
 		}
 		if (button == Input.Buttons.RIGHT) {
 			mouse.right.press();
@@ -82,26 +90,24 @@ public class KeyboardHandler {
 	}
 
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		mouseMoved(screenX,screenY);
-		touchDown(screenX,screenY,pointer,Input.Buttons.LEFT);
-		
-		
+		mouseMoved(screenX, screenY);
+		touchDown(screenX, screenY, pointer, Input.Buttons.LEFT);
+
 		return true;
 	}
 
 	public boolean scrolled(int amount) {
-//		Human p = this.getPlayer();
-//		p.inventory.setActivSlot(p.inventory.getActivSlot()+amount);
+		User u = getUser();
+		u.gamepad.setButtonState(GamePadButtons.RIGHT,false);
+		u.gamepad.setButtonState(GamePadButtons.LEFT, false);
+		
+		u.gamepad.setButtonState(GamePadButtons.RIGHT, amount > 0 ? true : false);
+		u.gamepad.setButtonState(GamePadButtons.LEFT, amount < 0 ? true : false);
+
 		return true;
 	}
 
 	public boolean keyTyped(char character) {
-		User u = this.getUser();
-		switch(character){
-			case '+' : u.cameraController.changeDistance(-1); break;
-			case '-' : u.cameraController.changeDistance(1); break;
-			default : break;
-		}
 		return true;
 	}
 
