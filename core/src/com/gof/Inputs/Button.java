@@ -7,11 +7,7 @@ public class Button {
 	private long lastCheck;
 	private long released;
 
-	private static final long TYPEDTIMEDEFAULT = 500L;
-	private long TypedTime;
-
 	public Button() {
-		TypedTime = TYPEDTIMEDEFAULT;
 		reset();
 	}
 
@@ -82,10 +78,6 @@ public class Button {
 
 	private void updateLastCheck() {
 		lastCheck = System.currentTimeMillis();
-	}
-
-	private long timeSinceLastCheck() {
-		return System.currentTimeMillis() - lastCheck;
 	}
 
 	private void resetTimes() {
