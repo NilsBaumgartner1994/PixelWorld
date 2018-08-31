@@ -2,6 +2,8 @@ package com.gof.physics;
 
 import java.io.Serializable;
 
+import com.gof.game.Main;
+
 public class WorldTime implements Serializable{
 
 	/**
@@ -68,10 +70,15 @@ public class WorldTime implements Serializable{
 	
 	public void addDays(int delta){
 		this.days+=delta;
+		System.out.println("WorldTime: Days:"+this.days);
 	}
 	
 	public int getDays(){
 		return this.days;
+	}
+	
+	public float getTicksPerSecond(){
+		return Main.getInstance().ticksPerSecond;
 	}
 
 	public void addTicks(int delta) {

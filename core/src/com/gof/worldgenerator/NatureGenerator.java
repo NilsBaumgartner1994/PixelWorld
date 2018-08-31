@@ -30,10 +30,14 @@ public class NatureGenerator implements GeneratorInterface {
 	public static int octave1 = 8;
 	public static Amortized2DNoise noise;
 
-	public NatureGenerator(TileWorld world) {
-		this.world = world;
+	public NatureGenerator() {
 		random = new Random();
 		noise = new Amortized2DNoise(Amortized2DNoise.CELLSIZE2D);
+	}
+	
+	@Override
+	public void setTileWorld(TileWorld world){
+		this.world = world;
 	}
 
 	@Override

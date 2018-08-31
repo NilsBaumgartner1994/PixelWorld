@@ -1,10 +1,10 @@
 package com.gof.physics;
 
 import com.badlogic.gdx.math.Vector2;
-import com.gof.game.SaveAndLoadable;
+import com.badlogic.gdx.math.Vector3;
 import com.gof.world.MapTile;
 
-public class Position implements Comparable<Position> {
+public class Position {
 
 	/**
 	 * 
@@ -14,8 +14,77 @@ public class Position implements Comparable<Position> {
 	public int xFraction;
 	public int yFraction;
 
-	public static final int fractionMax_x = MapTile.tileWidth;
-	public static final int fractionMax_y = MapTile.tileHeight;
+	public static final transient int fractionMax_x = MapTile.tileWidth;
+	public static final transient int fractionMax_y = MapTile.tileHeight;
+
+	static transient int speed = 1;
+	public static transient final Position STOP = new Position(0, 0, 0, 0);
+	public static transient final Position NORTH = new Position(0, 0, 0, speed);
+	public static transient final Position EAST = new Position(0, 2 * speed, 0, 0);
+	public static transient final Position SOUTH = new Position(0, 0, 0, -speed);
+	public static transient final Position WEST = new Position(0, -2 * speed, 0, 0);
+
+	public static Position getDirection(Position from, Position to) {
+		Position distance = from.distance(to);
+
+		if (distance.length() < NORTH.length()) {
+			return distance;
+		}
+
+		Position dxn = distance.cpy().addAndSet(NORTH);
+		Position dxe = distance.cpy().addAndSet(EAST);
+		Position dxs = distance.cpy().addAndSet(SOUTH);
+		Position dxw = distance.cpy().addAndSet(WEST);
+
+		float dxlN = dxn.length();
+		float dxlE = dxe.length();
+		float dxlS = dxs.length();
+		float dxlW = dxw.length();
+
+		float minNE = Float.min(dxlN, dxlE);
+		float minSW = Float.min(dxlS, dxlW);
+		float minNESW = Float.min(minNE, minSW);
+
+		if (dxlN == minNESW)
+			return NORTH.cpy();
+		if (dxlE == minNESW)
+			return EAST.cpy();
+		if (dxlS == minNESW)
+			return SOUTH.cpy();
+		if (dxlW == minNESW)
+			return WEST.cpy();
+
+		return STOP.cpy();
+	}
+
+	public static Position clambIfDistanceToLong(Position from, Position to, Position velocity) {
+		Position distance = to.distance(from);
+		Position back = velocity.cpy();
+		if(velocity.lengthX()>distance.lengthX()){
+			back.set(distance.x, distance.xFraction, velocity.y, velocity.yFraction);
+		}
+		if(velocity.lengthY()>distance.lengthY()){
+			back.set(velocity.x, velocity.xFraction, distance.y, distance.yFraction);
+		}
+		
+		return back;
+	}
+
+	public static Position getPositionDirectionFromVector(Vector2 v) {
+		Direction dir = Direction.getDirectionFromVector(v);
+		switch (dir) {
+		case NORTH:
+			return NORTH;
+		case EAST:
+			return EAST;
+		case SOUTH:
+			return SOUTH;
+		case WEST:
+			return WEST;
+		default:
+			return EAST;
+		}
+	}
 
 	public Position(int x, int xFraction, int y, int yFraction) {
 		set(x, xFraction, y, yFraction);
@@ -32,30 +101,34 @@ public class Position implements Comparable<Position> {
 	public Position(int x, int y) {
 		this(x, 0, y, 0);
 	}
-	
-	public Position(){
-		this(0,0);
+
+	public Position() {
+		this(0, 0);
 	}
 
 	public Position calcOverflow() {
-		if(xFraction<0){
-			xFraction+=fractionMax_x;
+		if (xFraction < 0) {
+			xFraction += fractionMax_x;
 			this.x--;
 		}
-		if(yFraction<0){
-			yFraction+=fractionMax_y;
+		if (yFraction < 0) {
+			yFraction += fractionMax_y;
 			this.y--;
 		}
-		
+
 		this.x = this.x + xFraction / fractionMax_x;
 		this.y = this.y + yFraction / fractionMax_y;
 		this.xFraction = this.xFraction % fractionMax_x;
 		this.yFraction = this.yFraction % fractionMax_y;
 		return this;
 	}
-	
-	public Position getPosition(){
+
+	public Position getPosition() {
 		return cpy();
+	}
+
+	public Vector3 getVector3() {
+		return new Vector3(x + (xFraction * 1f / fractionMax_x * 1f), 0, y + (yFraction * 1f / fractionMax_y * 1f));
 	}
 
 	public Position cpy() {
@@ -69,8 +142,8 @@ public class Position implements Comparable<Position> {
 	public Position addAndSet(Position p) {
 		return addAndSet(p.x, p.xFraction, p.y, p.yFraction);
 	}
-	
-	public Position subAndSet(Position p){
+
+	public Position subAndSet(Position p) {
 		return addAndSet(p.scaleAndSet(-1));
 	}
 
@@ -101,20 +174,16 @@ public class Position implements Comparable<Position> {
 		return me.addAndSet(ot.scaleAndSet(-1));
 	}
 
-	public float heightCompareLength() {
-		return this.x + this.y + fractionLength();
+	public float lengthX() {
+		return Math.abs(this.x + fractionLengthX());
 	}
-	
-	public float lengthX(){
-		return this.x + fractionLengthX();
+
+	public float lengthY() {
+		return Math.abs(this.y + fractionLengthY());
 	}
-	
-	public float lengthY(){
-		return this.y + fractionLengthY();
-	}
-	
+
 	public float length() {
-		return Math.abs(lengthX())+Math.abs(lengthY());
+		return lengthX() + lengthY();
 	}
 
 	public Position rotate(float degree) {
@@ -153,67 +222,25 @@ public class Position implements Comparable<Position> {
 	private int getFractionYComparable() {
 		return this.yFraction * fractionMax_x;
 	}
-	
-	private float fractionLengthX(){
+
+	float fractionLengthX() {
 		int xComp = getFractionXComparable();
 		int comp = getFractionDivisor();
 		return (1.0f * xComp) / comp;
 	}
-	
-	private float fractionLengthY(){
+
+	float fractionLengthY() {
 		int yComp = getFractionYComparable();
 		int comp = getFractionDivisor();
 		return (1.0f * yComp) / comp;
 	}
-
-	private float fractionLength() {
-		return fractionLengthX() + fractionLengthY();
-	}
 	
-	public static Position getPositionDirectionFromVector(Vector2 v) {
-		float a = v.angle();
-
-		if (a >= 45 && a <= 180 - 45)
-			return Direction.NORTH;
-		if (a > 180 - 45 && a < 180 + 45)
-			return Direction.WEST;
-		if (a >= 180 + 45 && a <= 360 - 45)
-			return Direction.SOUTH;
-		return Direction.EAST;
+	public boolean equals(Position p){
+		return this.x==p.x && this.xFraction == p.xFraction && this.y==p.y && this.yFraction==p.yFraction;
 	}
 
-	@Override
-	public int compareTo(Position o) {
-		float me = heightCompareLength();
-		float other = o.heightCompareLength();
-
-		if (me > other) {
-			return -1;
-		}
-		if (me < other) {
-			return 1;
-		}
-
-		// both bodys same vertical height
-		if (this.x < o.x) {
-			return 1;
-		}
-		if (this.x > o.x) {
-			return -1;
-		}
-
-		if (this.xFraction < o.xFraction) {
-			return 1;
-		}
-		if (this.xFraction > o.xFraction) {
-			return -1;
-		}
-
-		return 0;
-	}
-	
-	public String toString(){
-		return "X: "+this.x+","+this.xFraction+" | Y: "+this.y+","+this.yFraction;
+	public String toString() {
+		return "X: " + this.x + "," + this.xFraction + " | Y: " + this.y + "," + this.yFraction;
 	}
 
 }

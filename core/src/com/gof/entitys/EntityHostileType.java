@@ -1,6 +1,6 @@
 package com.gof.entitys;
 
-public enum EntityType{
+public enum EntityHostileType{
 	
 	PLAYER, NPC, ANIMAL, ENEMY
 	

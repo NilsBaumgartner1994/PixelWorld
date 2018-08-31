@@ -1,54 +1,47 @@
 package com.gof.physics;
 
-import com.gof.game.Main;
+import com.badlogic.gdx.math.Vector2;
 
-public class Direction {
+public enum Direction {
 
-	static int speed = 1;
+	// MIDDLE, NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST,
+	// NORTHWEST;
+	MIDDLE, NORTH, EAST, SOUTH, WEST;
 
-	public static final Position STOP = new Position(0,0,0,0);
-	
-	public static final Position NORTH = new Position(0,0,0,speed);
-	public static final Position EAST = new Position(0,2*speed,0,0);
-	public static final Position SOUTH = new Position(0,0,0,-speed);
-	public static final Position WEST = new Position(0,-2*speed,0,0);
-	
-	public static Position getDirection(Position from, Position to){
-		Position distance = from.distance(to);
-		
-		if(distance.length()<NORTH.length()){
-			return distance;
-		}
-		
-		Position dxn = distance.cpy().addAndSet(NORTH);
-		Position dxe = distance.cpy().addAndSet(EAST);
-		Position dxs = distance.cpy().addAndSet(SOUTH);
-		Position dxw = distance.cpy().addAndSet(WEST);
+	public static Direction getDirectionFromVector(Vector2 v) {
+		float a = v.angle();
 
-		float dxlN = dxn.length();
-		float dxlE = dxe.length();
-		float dxlS = dxs.length();
-		float dxlW = dxw.length();
-		
-		float minNE = Float.min(dxlN, dxlE);
-		float minSW = Float.min(dxlS, dxlW);
-		float minNESW = Float.min(minNE, minSW);
-		
-		if(dxlN==minNESW) return NORTH.cpy();
-		if(dxlE==minNESW) return EAST.cpy();
-		if(dxlS==minNESW) return SOUTH.cpy();
-		if(dxlW==minNESW) return WEST.cpy();
-		
-		return STOP.cpy();
+		if (a >= 45 && a <= 180 - 45)
+			return NORTH;
+		if (a > 180 - 45 && a < 180 + 45)
+			return WEST;
+		if (a >= 180 + 45 && a <= 360 - 45)
+			return SOUTH;
+		return EAST;
 	}
 	
-	public static Position clambIfDistanceToLong(Position from, Position to, Position velocity){
-		Position distance = to.distance(from);
-		if(distance.length()<velocity.length()){
-			return distance;
-		}
-		return velocity;
+	public static Direction rotateDirection(Direction dir, float deg){
+		Vector2 vec = getVectorFromDirection(dir);
+		vec.rotate(-deg);
+		return getDirectionFromVector(vec);
 	}
+
+	private static Vector2 getVectorFromDirection(Direction dir) {
+		switch (dir) {
+		case MIDDLE:
+			return new Vector2(0, 0);
+		case NORTH:
+			return new Vector2(0, 1);
+		case EAST:
+			return new Vector2(1, 0);
+		case SOUTH:
+			return new Vector2(0, -1);
+		case WEST:
+			return new Vector2(-1, 0);
+		}
+		return null;
+	}
+
 	
-	
+
 }

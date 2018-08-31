@@ -3,10 +3,13 @@ package com.gof.world;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g3d.Model;
 import com.gof.entitys.Entity;
-import com.gof.materials.Material;
+import com.gof.materials.MyMaterial;
 import com.gof.nature.Nature;
 import com.gof.physics.Body;
 import com.gof.physics.Direction;
@@ -18,28 +21,28 @@ public class MapTile extends Position implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 216668977777721960L;
-	public final static int tileWidth = 128;
-	public final static int tileHeight = 64;
+	public final static transient int tileWidth = 128;
+	public final static transient int tileHeight = 64;
 
+	public int height;
 	public short direction;
 	private boolean solid;
 
-	public Material material;
+	public MyMaterial material;
+	public Nature nature;
 	
 	private boolean shaddow;
-
-	public Nature nature;
 
 	public transient Chunk chunk;
 	
 	public List<Entity> entitys;
 
-	public MapTile(Chunk c, int x, int y, boolean solid, Material m) {
+	public MapTile(Chunk c, int x, int y, boolean solid, MyMaterial m) {
 		super(x, y);
 		entitys = new ArrayList<Entity>();
 		this.chunk = c;
 		setSolid(solid);
-		this.material = m;
+		setMaterial(m);
 	}
 	
 	public void registerEntity(Entity body){
@@ -81,35 +84,29 @@ public class MapTile extends Position implements Serializable {
 	public void setSolid(boolean solid) {
 		this.solid = solid;
 	}
-
-	public Sprite getMaterialSprite() {
-		return new Sprite(material.getTexture());
-	}
-
-	public Sprite getNatureTexture() {
-		if (nature == null) {
-			return null;
-		}
+	
+	public Sprite getNatureTexture(){
+		if(nature==null) return null;
 		return new Sprite(nature.getTexture());
 	}
 	
-	public void setMaterial(Material m){
-		this.material = m;
-	}
-
-	public void setNature(Nature n) {
+	public void setNature(Nature n){
 		this.nature = n;
+		if(n.equals(Nature.TREE)){
+			setSolid(true);
+		}
 	}
-
-	public String getNatureName() {
-		if (nature == null)
-			return "None";
-
-		return nature.texture;
+	
+	public Sprite getMaterialSprite(){
+		return new Sprite(material.getTexture());
 	}
-
-	public void removeNature() {
-		setNature(null);
+	
+	public void setMaterial(MyMaterial m){
+		this.material = m;
+		if(m.equals(MyMaterial.WATER)){
+			setSolid(true);
+		}
+		this.height = MyMaterial.getDefaultHeightByID(this.material.getID());
 	}
 
 	public boolean isSolid() {
@@ -134,26 +131,6 @@ public class MapTile extends Position implements Serializable {
 	
 	public void unselect(){
 		setShaddow(false);
-	}
-
-	public MapTile getTileInDirection(Position direction) {
-		return getOffset(direction.x, direction.y);
-	}
-
-	public MapTile getLeft() {
-		return getTileInDirection(Direction.WEST);
-	}
-
-	public MapTile getRight() {
-		return getTileInDirection(Direction.EAST);
-	}
-
-	public MapTile getAbouve() {
-		return getTileInDirection(Direction.NORTH);
-	}
-
-	public MapTile getUnder() {
-		return getTileInDirection(Direction.SOUTH);
 	}
 
 	public List<MapTile> getNeumann() {

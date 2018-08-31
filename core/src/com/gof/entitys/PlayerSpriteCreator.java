@@ -29,8 +29,8 @@ public class PlayerSpriteCreator{
 				
 		List<Sprite> back = new ArrayList<Sprite>();
 		
-		Sprite shaddow = new Sprite(ResourceLoader.getInstance().getShaddow("entity"));
-		back.add(shaddow);
+//		Sprite shaddow = new Sprite(ResourceLoader.getInstance().getShaddow("entity"));
+//		back.add(shaddow);
 		
 //		back.add(sbody);
 //		back.add(shead);

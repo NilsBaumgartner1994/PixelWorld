@@ -2,11 +2,12 @@ package com.gof.entitys;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.gof.game.Main;
-import com.gof.materials.Material;
+import com.gof.materials.MyMaterial;
 import com.gof.physics.Body;
 import com.gof.physics.Direction;
 import com.gof.physics.Navigation;
@@ -16,21 +17,22 @@ import com.gof.world.Chunk;
 import com.gof.world.MapTile;
 import com.gof.world.TileWorld;
 
-public class Entity extends Body implements Serializable{
+public class Entity extends Body implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5098608000401492288L;
 	private MotionState state;
-	private Material material;
-	private EntityType type;
+	private MyMaterial material;
+	private EntityHostileType type;
 	protected int speed;
 	protected TileWorld world;
+	private int id;
 
 	Navigation nav;
 
-	public Entity(TileWorld world, Position position, MotionState state, EntityType type) {
+	public Entity(TileWorld world, Position position, MotionState state, EntityHostileType type) {
 		super(position);
 		this.world = world;
 		this.nav = new Navigation(position);
@@ -39,16 +41,16 @@ public class Entity extends Body implements Serializable{
 		spawn();
 	}
 
-	public Entity(TileWorld world, Position position, EntityType type) {
+	public Entity(TileWorld world, Position position, EntityHostileType type) {
 		this(world, position, MotionState.STOP, type);
 	}
 
-	public Entity(TileWorld world, int x, int y, EntityType type) {
-		this(world, new Position(x, y), MotionState.STOP, type);
+	public Entity(TileWorld world, int x, int y, EntityHostileType type) {
+		this(world, new Position(x, y), type);
 	}
 
-	public Entity(TileWorld world, int x, int xFraction, int y, int yFraction, EntityType type) {
-		this(world, new Position(x, xFraction, y, yFraction), MotionState.STOP, type);
+	public Entity(TileWorld world, int x, int xFraction, int y, int yFraction, EntityHostileType type) {
+		this(world, new Position(x, xFraction, y, yFraction), type);
 	}
 
 	public void setDestiny(Position pos) {
@@ -64,30 +66,35 @@ public class Entity extends Body implements Serializable{
 	 */
 	@Override
 	public void calcPhysicStep(int steps) {
-		Position dir = Direction.getDirection(getPosition(), this.nav.getActualDestiny().cpy());
-		dir.scaleAndSet(speed);
+		if (!this.nav.hasFinished()) {
+			Position actualDestiny = this.nav.getActualDestiny().cpy();
+			Position dir = Position.getDirection(getPosition(), actualDestiny);
+			dir.scaleAndSet(speed);
 
-		Position clambed = Direction.clambIfDistanceToLong(getPosition(), this.nav.getActualDestiny(), dir);
+			Position clambed = Position.clambIfDistanceToLong(getPosition(), actualDestiny, dir);
+			this.setVelocity(new Speed(clambed, 1, false));
 
-		
-		this.setVelocity(new Speed(clambed, 1, false));
+			super.calcPhysicStep(steps);
 
-		super.calcPhysicStep(steps);
+			if (getPosition().equals(actualDestiny)) {
+				this.nav.arrivedAtDestiny();
+			}
+		}
 	}
-	
-	public void updateLogic(){
-		//Set Goals and Other calculations about the AI
+
+	public void updateLogic() {
+		// Set Goals and Other calculations about the AI
 	}
 
 	public List<Sprite> getSprite() {
 		return null;
 	}
 
-	public EntityType getEntityType() {
+	public EntityHostileType getEntityHostileType() {
 		return this.type;
 	}
 
-	public Material getMaterial() {
+	public MyMaterial getMaterial() {
 		return this.material;
 	}
 
@@ -103,17 +110,17 @@ public class Entity extends Body implements Serializable{
 
 	@Override
 	public Entity setPosition(Position newpos) {
-		super.setPosition(newpos);
 		registerEntityOnMapTile(newpos);
 		registerEntityOnChunk(newpos);
+		super.setPosition(newpos);
 		return this;
 	}
 
 	public MapTile getMapTile() {
 		return world.getMapTileFromGlobalPos(this.position.x, this.position.y);
 	}
-	
-	public void registerOnMapTile(){
+
+	private void registerOnMapTile() {
 		getMapTile().registerEntity(this);
 	}
 
@@ -126,8 +133,8 @@ public class Entity extends Body implements Serializable{
 			newReffer.registerEntity(this);
 		}
 	}
-	
-	public void registerOnChunk(){
+
+	private void registerOnChunk() {
 		getMapTile().chunk.registerEntity(this);
 	}
 

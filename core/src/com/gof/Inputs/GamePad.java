@@ -1,43 +1,27 @@
 package com.gof.inputs;
 
 import com.badlogic.gdx.math.Vector2;
+import com.gof.physics.Direction;
 
 public class GamePad {
 
-	public static final int STICKMAX = 2;
-	private Vector2 leftStick;
-	private Vector2 rightStick;
+	private Stick leftStick;
+	private Stick rightStick;
 	private Button[] buttons;
 
 	public GamePad() {
 		initValues();
 		resetValues();
 	}
-
-	public void setLeftStick(Vector2 v) {
-		this.leftStick = v.cpy().clamp(0, STICKMAX);
+	
+	public Stick getLeftStick(){
+		return this.leftStick;
 	}
-
-	public Vector2 getLeftStick() {
-		return this.leftStick.cpy();
+	
+	public Stick getRightStick(){
+		return this.rightStick;
 	}
-
-	public void addLeftStick(Vector2 v) {
-		setLeftStick(getLeftStick().add(v));
-	}
-
-	public void setRightStick(Vector2 v) {
-		this.rightStick = v.cpy().clamp(0, STICKMAX);
-	}
-
-	public Vector2 getRightStick() {
-		return this.rightStick.cpy();
-	}
-
-	public void addRightStick(Vector2 v) {
-		setRightStick(getRightStick().add(v));
-	}
-
+	
 	public void setButtonState(GamePadButtons b, boolean pressed) {
 		getButton(b).setState(pressed);
 	}
@@ -63,8 +47,8 @@ public class GamePad {
 	}
 
 	private void initValues() {
-		setLeftStick(new Vector2(0, 0));
-		setRightStick(new Vector2(0, 0));
+		this.leftStick = new Stick();
+		this.rightStick = new Stick();
 
 		int amountButtons = GamePadButtons.values().length;
 		buttons = new Button[amountButtons];
@@ -74,8 +58,8 @@ public class GamePad {
 	}
 
 	public void resetValues() {
-		setLeftStick(new Vector2(0, 0));
-		setRightStick(new Vector2(0, 0));
+		this.leftStick.reset();
+		this.rightStick.reset();
 		for (Button b : buttons) {
 			b.reset();
 		}
@@ -86,7 +70,7 @@ public class GamePad {
 		for (GamePadButtons b : GamePadButtons.values()) {
 			buttonStates += b.name() + ":" + (isButtonPressed(b) ? "T" : "F") + " ";
 		}
-		return "L:" + leftStick.toString() + " |R:" + rightStick.toString() + " " + buttonStates;
+		return "L:" + leftStick.getVec().toString() + " |R:" + rightStick.getVec().toString() + " " + buttonStates;
 	}
 
 }

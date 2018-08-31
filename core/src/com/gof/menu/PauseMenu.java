@@ -1,72 +1,124 @@
 package com.gof.menu;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.gof.game.CameraController;
+import com.badlogic.gdx.math.Vector2;
+import com.gof.game.CameraControllerInterface;
 import com.gof.game.ResourceLoader;
 import com.gof.inputs.GamePad;
 import com.gof.inputs.GamePadButtons;
+import com.gof.physics.Direction;
 
 public class PauseMenu implements Menu {
 
 	public MenuHandler menuHandler;
+	private MenuComponent activeMenuComponent;
+
+	private List<MenuComponent> menuComponents;
+	private MenuComponent resumeMenuComponent;
+	private MenuComponent optionsMenuComponent;
+	private MenuComponent quitMenuComponent;
+	
+	private Menu optionMenu;
 
 	public PauseMenu(MenuHandler menuHandler) {
 		this.menuHandler = menuHandler;
+		optionMenu = new OptionMenu(menuHandler,this);
+		
+		initMenuComponents();
+		resumeMenuComponent.setActive(true);
+		activeMenuComponent = resumeMenuComponent;
+	}
+
+	public void initMenuComponents() {
+		menuComponents = new ArrayList<MenuComponent>();
+		resumeMenuComponent = new MenuComponent("Resume", "Test String\nMultiple Line");
+		menuComponents.add(resumeMenuComponent);
+		optionsMenuComponent = new MenuComponent("Options", "Test String");
+		menuComponents.add(optionsMenuComponent);
+		quitMenuComponent = new MenuComponent("Quit", "Test String");
+		menuComponents.add(quitMenuComponent);
 	}
 
 	@Override
 	public void update(GamePad gamepad) {
-		if(gamepad.getButton(GamePadButtons.ESC).isTyped()){
+		if (gamepad.getButton(GamePadButtons.ESC).isTyped()) {
 			menuHandler.setActivMenu(menuHandler.ingameMenu);
 		}
-	}
-	
-	@Override
-	public void render(CameraController display) {
-		drawOptionMenu(display);
-	}
-	
-	private void drawOptionMenu(CameraController display) {
-
-		Sprite title = new Sprite(ResourceLoader.getInstance().getGUI("menu_title"));
-		Sprite chain = new Sprite(ResourceLoader.getInstance().getGUI("menu_chain"));
-		Sprite post_title = new Sprite(ResourceLoader.getInstance().getGUI("menu_information_top"));
-		Sprite post_top = new Sprite(ResourceLoader.getInstance().getGUI("menu_information_post_top"));
-		Sprite post_middle = new Sprite(ResourceLoader.getInstance().getGUI("menu_information_post_middle"));
-		Sprite post_bottom = new Sprite(ResourceLoader.getInstance().getGUI("menu_information_post_bottom"));
-
-		int marginTop = 50;
-		int xpos = display.width / 2 - title.getRegionWidth() / 2;
-		int yposStart = display.height - marginTop;
-
-		String[] labels = { "Resume", "Options", "Quit" };
-
-		Color oldColor = display.font.getColor().cpy();
-		display.font.setColor(Color.FIREBRICK);
-
-		int ypos = yposStart;
-		for (String label : labels) {
-
-			ypos -= title.getRegionHeight();
-			title.setPosition(xpos, ypos);
-			display.drawSprite(title);
-
-			display.layout.setText(display.font, label);
-			int stringWidth = (int) display.layout.width;
-			int stringHeight = (int) display.layout.height;
-			display.font.draw(display.fboBatch, label, display.width / 2 - stringWidth / 2,
-					ypos + title.getRegionHeight() / 2 + stringHeight / 2);
-
-			ypos = display.drawSpriteAndSubtractYpos(chain, xpos, ypos);
-			ypos = display.drawSpriteAndSubtractYpos(post_title, xpos, ypos);
-			ypos = display.drawSpriteAndSubtractYpos(post_top, xpos, ypos);
-			ypos = display.drawSpriteAndSubtractYpos(post_middle, xpos, ypos);
-			ypos = display.drawSpriteAndSubtractYpos(post_bottom, xpos, ypos);
-
+		if (gamepad.getButton(GamePadButtons.UP).isTyped()) {
+			changeActiveMenuComponent(-1);
+		}
+		if (gamepad.getButton(GamePadButtons.DOWN).isTyped()) {
+			changeActiveMenuComponent(1);
 		}
 
-		display.font.setColor(oldColor);
+		switch (gamepad.getLeftStick().getLastDirection()) {
+		case NORTH:
+			changeActiveMenuComponent(-1);
+			break;
+		case SOUTH:
+			changeActiveMenuComponent(1);
+			break;
+		default:
+			break;
+		}
+
+		if (gamepad.getButton(GamePadButtons.START).isTyped()) {
+			select();
+		}
+
+	}
+
+	public void changeActiveMenuComponent(int direction) {
+		if (activeMenuComponent != null && !menuComponents.isEmpty()) {
+			activeMenuComponent.setActive(false);
+			int size = menuComponents.size();
+			int position = getMenuComponentPosition(activeMenuComponent, size);
+			int newActiveMenuPos = ((position + direction) % size + size) % size;
+			activeMenuComponent = menuComponents.get(newActiveMenuPos);
+			activeMenuComponent.setActive(true);
+		}
+	}
+
+	private int getMenuComponentPosition(MenuComponent comp, int size) {
+		for (int i = 0; i < size; i++) {
+			if (menuComponents.get(i) == comp)
+				return i;
+		}
+		return -1;
+	}
+
+	@Override
+	public void render(CameraControllerInterface display) {
+		int marginTop = 50;
+		int yposStart = display.getHeigth() - marginTop;
+		int ypos = yposStart;
+		for (MenuComponent mc : menuComponents) {
+			ypos = mc.render(display, ypos);
+		}
+	}
+
+	@Override
+	public void select() {
+		if (activeMenuComponent == resumeMenuComponent) {
+			this.menuHandler.setActivMenu(this.menuHandler.ingameMenu);
+		}
+		if (activeMenuComponent == optionsMenuComponent) {
+			this.menuHandler.setActivMenu(optionMenu);
+		}
+		if (activeMenuComponent == quitMenuComponent) {
+			Gdx.app.exit();
+		}
+	}
+
+	@Override
+	public void changeSelection(Vector2 vec) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

@@ -89,7 +89,8 @@ public class Main extends ApplicationAdapter {
 	}
 
 	float renderTime = 0;
-	float refreshRate = 1 / 60f;
+	public float ticksPerSecond = 60;
+	float refreshRate = 1 / ticksPerSecond;
 
 	float timeSpeed = 1f;
 
@@ -138,10 +139,7 @@ public class Main extends ApplicationAdapter {
 		User[] users = userHandler.getUsers();
 
 		for (User u : users) {
-			u.cameraController.renderToFrameBuffer();
-			u.cameraController.renderToInformationBuffer();
-			u.cameraController.renderGUI();
-			u.cameraController.renderToScreen();
+			u.cameraController.render();
 		}
 	}
 

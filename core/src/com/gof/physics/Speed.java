@@ -1,11 +1,9 @@
 package com.gof.physics;
 
-import com.gof.game.Main;
-
 public class Speed {
 	
 	public static int sneak = 1;
-	public static int walk = 4;
+	public static int walk = 2;
 	public static int run = 16;
 
 	public Position direction;
@@ -13,7 +11,7 @@ public class Speed {
 	int ticksPassed;
 
 	public Speed(Position direction, int inTicks, int ticksPassed, boolean minimize) {
-		this.direction = direction;
+		this.direction = direction.cpy();
 		this.inTicks = inTicks;
 		this.ticksPassed = ticksPassed;
 
@@ -59,14 +57,14 @@ public class Speed {
 
 	/**
 	 * http://st-page.de/2015/01/java-ggt-groesster-gemeinsamer-teiler/ Der
-	 * größte gemeinsame Teiler wird hier berechnet. Die Laufzeit entspricht
-	 * maximal der größten Zahl.
+	 * grï¿½ï¿½te gemeinsame Teiler wird hier berechnet. Die Laufzeit entspricht
+	 * maximal der grï¿½ï¿½ten Zahl.
 	 * 
 	 * @param a
 	 *            Erste Zahl
 	 * @param b
 	 *            Zweite Zahl
-	 * @return Größter gemeinsame Teiler
+	 * @return Grï¿½ï¿½ter gemeinsame Teiler
 	 */
 	public static int ggt(int a, int b) {
 		// Hier versuche ich Arbeitsaufwand (Rechnenzeit) zu sparen in dem ich

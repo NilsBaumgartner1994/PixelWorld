@@ -1,7 +1,9 @@
 package com.gof.world;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.badlogic.gdx.math.Vector2;
 import com.gof.entitys.Entity;
@@ -28,15 +30,40 @@ public class TileWorld extends SaveAndLoadable {
 
 	public Chunk chunks[][];
 	public List<Chunk> activeChunks;
+	public Map<Integer, Entity> entitys = new HashMap<Integer, Entity>();
 
 	public WorldTime time;
 
 	public TileWorld(String name) {
+		this(name, null, new WorldTime(0), null, new NatureGenerator());
+	}
+
+	public TileWorld(String name, List<Chunk> generatedChunks, WorldTime time, Map<Integer, Entity> entitys,
+			NatureGenerator generator) {
 		this.name = name;
 		activeChunks = new ArrayList<Chunk>();
 		chunks = new Chunk[worldSize][worldSize];
-		setGenerator(new NatureGenerator(this));
-		time = new WorldTime(0);
+		for(int i=0; i<worldSize;i++){
+			for(int j=0; j<worldSize;j++){
+				chunks[i][j] = new Chunk();
+			}
+		}
+		
+		if (generatedChunks != null) {
+			for (Chunk chunk : generatedChunks) {
+				setChunk(chunk);
+			}
+		}
+		this.time = time;
+		setEntityMap(entitys);
+		setGenerator(generator);
+	}
+
+	public void setEntityMap(Map<Integer, Entity> entitys) {
+		if (entitys == null) {
+			entitys = new HashMap<Integer, Entity>();
+		}
+		this.entitys = entitys;
 	}
 
 	public static final String DATA = "data/";
@@ -47,7 +74,9 @@ public class TileWorld extends SaveAndLoadable {
 		for (Chunk[] chunks : chunks) {
 			for (Chunk c : chunks) {
 				if (c != null) {
-					c.save(this);
+					if (c.isGenerated()) {
+						c.save(this);
+					}
 				}
 			}
 		}
@@ -167,6 +196,10 @@ public class TileWorld extends SaveAndLoadable {
 		Chunk c = chunks[cx][cy];
 		if (c == null) {
 			generator.generateChunkAt(cx, cy);
+		} else {
+			if (!c.isGenerated()) {
+				generator.generateChunkAt(cx, cy);
+			}
 		}
 		return chunks[cx][cy];
 	}
@@ -184,7 +217,11 @@ public class TileWorld extends SaveAndLoadable {
 	}
 
 	public void setGenerator(GeneratorInterface generator) {
+		if (generator == null) {
+			generator = new NatureGenerator();
+		}
 		this.generator = generator;
+		this.generator.setTileWorld(this);
 	}
 
 }

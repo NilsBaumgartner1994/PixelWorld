@@ -1,23 +1,11 @@
 package com.gof.entitys;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.gof.game.CameraController;
-import com.gof.game.Main;
-import com.gof.helper.VectorHelper;
-import com.gof.materials.Debug;
-import com.gof.materials.Grass;
-import com.gof.materials.Material;
-import com.gof.materials.MaterialError;
-import com.gof.materials.Stone;
-import com.gof.materials.Water;
-import com.gof.menu.MenuHandler;
-import com.gof.nature.Nature;
-import com.gof.nature.TallGrass;
-import com.gof.nature.Tree;
+import com.gof.game.CameraControllerInterface;
 import com.gof.physics.Direction;
 import com.gof.physics.Position;
 import com.gof.physics.Speed;
@@ -29,7 +17,7 @@ import com.gof.items.Inventory;
 import com.gof.items.Item;
 import com.gof.items.Tool;
 
-public class Human extends Entity{
+public class Human extends Entity {
 
 	public String name;
 
@@ -42,25 +30,21 @@ public class Human extends Entity{
 	private Vector2 stickRight;
 	public boolean stickRightDown;
 
-	public CameraController cameraController;
+	public CameraControllerInterface cameraController;
 
 	private boolean sneaking;
 
 	public Position direction;
 
 	public Inventory inventory;
-	
+
 	public boolean use = false;
 	public final long USECOOLDOWN = 1000 / 10L;
 	public long lastUse = System.currentTimeMillis();
 	public Position usePosition;
-	
-	public Human(TileWorld world){
-		this(world, "Bob");
-	}
 
-	public Human(TileWorld world,String name) {
-		super(world,51721,MapTile.tileWidth/2, 50811,MapTile.tileHeight/2, EntityType.PLAYER);
+	public Human(TileWorld world, Position startPos,String name) {
+		super(world, startPos, EntityHostileType.PLAYER);
 		this.name = name;
 
 		sneaking = false;
@@ -84,13 +68,11 @@ public class Human extends Entity{
 
 	public void initInventory() {
 		this.inventory = new Inventory();
-		this.inventory.addItem(new Item(new Tree()));
-		this.inventory.addItem(new Item(new TallGrass()));
+		// this.inventory.addItem(new Item(new Tree()));
+		// this.inventory.addItem(new Item(new TallGrass()));
 		this.inventory.addItem(new Tool());
-		this.inventory.addItem(new Item(new Grass()));
+		// this.inventory.addItem(new Item(new Grass()));
 	}
-
-	
 
 	public void setLeftStick(Vector2 dir) {
 		this.stickLeft = dir.cpy();
@@ -118,15 +100,14 @@ public class Human extends Entity{
 			if (activItem instanceof Item) {
 				Item item = (Item) activItem;
 				if (item.isNature()) {
-					this.getMapTile().setNature(item.getNature());
-				}
-				else{
+					// this.getMapTile().setNature(item.getNature());
+				} else {
 					this.getMapTile().setMaterial(item.getMaterial());
 				}
 			}
 			if (activItem instanceof Tool) {
 				Tool tool = (Tool) activItem;
-				getMapTile().removeNature();
+				// getMapTile().removeNature();
 			}
 
 		}
@@ -135,16 +116,19 @@ public class Human extends Entity{
 	private void updateLeftStick() {
 		if (this.stickLeft.len() != 0) {
 			this.direction = Position.getPositionDirectionFromVector(this.stickLeft);
-			Position nextBlock = getNextBlockInDirection();
-			this.nav.setPath(nextBlock);
+			MapTile nextBlock = getNextBlockInDirection();
+			if (!nextBlock.isSolid()) {
+				Position nextBlockMiddle = nextBlock.getGlobalPosition().addAndSet(0, MapTile.tileWidth / 2, 0,
+						MapTile.tileHeight / 2);
+				this.nav.setPath(nextBlockMiddle);
+			}
 		}
 	}
-	
-	public Position getNextBlockInDirection(){
+
+	public MapTile getNextBlockInDirection() {
 		Position oneBlockDir = this.direction.cpy().scaleAndSet(MapTile.tileHeight);
 		Position nextBlock = this.getPosition().cpy().addAndSet(oneBlockDir);
-		nextBlock = this.world.getMapTileFromGlobalPos(nextBlock.getPosition().x,nextBlock.getPosition().y).getGlobalPosition().addAndSet(0, MapTile.tileWidth/2, 0, MapTile.tileHeight/2);
-		return nextBlock;
+		return this.world.getMapTileFromGlobalPos(nextBlock.getPosition().x, nextBlock.getPosition().y);
 	}
 
 	public void resetInputVariables() {
@@ -154,7 +138,10 @@ public class Human extends Entity{
 	}
 
 	public List<Sprite> getSprite() {
-		return PlayerSpriteCreator.getPlayerSprite(this);
+		// return PlayerSpriteCreator.getPlayerSprite(this);
+		List<Sprite> sprites = new ArrayList<Sprite>();
+		sprites.add(new Sprite(FoxSpriteAnimations.getTexture(getMotionState(), this.world.time)));
+		return sprites;
 	}
 
 	@Override

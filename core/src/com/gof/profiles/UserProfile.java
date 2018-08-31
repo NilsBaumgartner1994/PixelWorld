@@ -2,7 +2,7 @@ package com.gof.profiles;
 
 import com.gof.game.SaveAndLoadable;
 
-public class UserProfile extends SaveAndLoadable{
+public class UserProfile extends SaveAndLoadable {
 
 	/**
 	 * 
@@ -13,17 +13,21 @@ public class UserProfile extends SaveAndLoadable{
 	public UserProfile() {
 		this.name = "Default";
 	}
-	
-	public static final String DATA = "data/";
-	public static final String PROFILES = DATA+"profiles/";
-	public static final String ENDING = ".profile";
-	
-	public static UserProfile load(String name){
-		return (UserProfile) SaveAndLoadable.loadFromInternal(PROFILES+name+ENDING,UserProfile.class);
+
+	public boolean showDebugInformationSide = false;
+	public boolean showDebugInformationCoordinatesOnMapTiles = false;
+
+
+	public static final transient String DATA = "data/";
+	public static final transient String PROFILES = DATA + "profiles/";
+	public static final transient String ENDING = ".profile";
+
+	public static UserProfile load(String name) {
+		return (UserProfile) SaveAndLoadable.loadFromInternal(PROFILES + name + ENDING, UserProfile.class);
 	}
-	
-	public void save(){
-		super.saveToInternal(PROFILES+name+ENDING);
+
+	public void save() {
+		super.saveToInternal(PROFILES + name + ENDING);
 	}
-	
+
 }

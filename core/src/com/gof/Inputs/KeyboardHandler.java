@@ -33,25 +33,27 @@ public class KeyboardHandler {
 		Vector2 dir = new Vector2(0, 0);
 		User u = getUser();
 
-		if (keyboard.isPressed(Keys.A)) {
+		if (keyboard.isPressed(Keys.A) || keyboard.isPressed(Keys.LEFT)) {
 			dir.add(new Vector2(-1, 0)); // left
 		}
-		if (keyboard.isPressed(Keys.D)) {
+		if (keyboard.isPressed(Keys.D) || keyboard.isPressed(Keys.RIGHT)) {
 			dir.add(new Vector2(1, 0)); // right
 		}
-		if (keyboard.isPressed(Keys.W)) {
+		if (keyboard.isPressed(Keys.W) || keyboard.isPressed(Keys.UP)) {
 			dir.add(new Vector2(0, 1)); // up
 		}
-		if (keyboard.isPressed(Keys.S)) {
+		if (keyboard.isPressed(Keys.S) || keyboard.isPressed(Keys.DOWN)) {
 			dir.add(new Vector2(0, -1)); // down
 		}
-		u.gamepad.setLeftStick(dir);
+		u.gamepad.getLeftStick().setVec(dir);
 
 		u.gamepad.setButtonState(GamePadButtons.SHIFT, keyboard.isPressed(Keys.SHIFT_LEFT, Keys.SHIFT_RIGHT));
 		u.gamepad.setButtonState(GamePadButtons.CTRL, keyboard.isPressed(Keys.CONTROL_LEFT, Keys.CONTROL_RIGHT));
 		u.gamepad.setButtonState(GamePadButtons.UP, keyboard.isPressed(Keys.SLASH));
 		u.gamepad.setButtonState(GamePadButtons.DOWN, keyboard.isPressed(Keys.RIGHT_BRACKET));
 		u.gamepad.setButtonState(GamePadButtons.ESC, keyboard.isPressed(Keys.ESCAPE));
+		u.gamepad.setButtonState(GamePadButtons.R2, keyboard.isPressed(Keys.E));
+		u.gamepad.setButtonState(GamePadButtons.START, keyboard.isPressed(Keys.ENTER));
 	}
 
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
@@ -78,7 +80,7 @@ public class KeyboardHandler {
 		
 		if (button == Input.Buttons.LEFT) {
 			mouse.left.press();
-			u.gamepad.setButtonState(GamePadButtons.R2, true);
+//			u.gamepad.setButtonState(GamePadButtons.R2, true);
 			// p.use(u.cameraController.getGlobalPosFromScreenPos(screenX,
 			// u.cameraController.height-screenY));
 		}

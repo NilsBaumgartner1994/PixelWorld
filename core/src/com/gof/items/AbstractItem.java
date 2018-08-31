@@ -2,7 +2,7 @@ package com.gof.items;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.gof.game.ResourceLoader;
-import com.gof.materials.Material;
+import com.gof.materials.MyMaterial;
 import com.gof.nature.Nature;
 
 public class AbstractItem {

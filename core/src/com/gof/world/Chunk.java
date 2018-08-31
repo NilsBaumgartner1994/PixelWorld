@@ -19,7 +19,7 @@ import java.util.List;
 import com.gof.entitys.Entity;
 import com.gof.game.Main;
 import com.gof.game.SaveAndLoadable;
-import com.gof.materials.Grass;
+import com.gof.materials.MyMaterial;
 import com.gof.physics.Body;
 import com.gof.physics.Direction;
 import com.gof.worldgenerator.NatureGenerator;
@@ -34,14 +34,23 @@ public class Chunk extends SaveAndLoadable{
 	public int y;
 
 	public static final int CHUNKSIZE = 1024;
+	private boolean generated;
 
 	MapTile[][] tiles;
 	List<Entity> entitys;
+	
+	public Chunk(){
+		generated = false;
+	}
 	
 	public void save(TileWorld world){
 		System.out.println("Saving: "+x+"-"+y+".chunk");
 		saveToInternal(TileWorld.WORLDS+world.name+"/"+x+"-"+y+".chunk");
 		System.out.println("Saved to: "+TileWorld.WORLDS+world.name+"/"+x+"-"+y+".chunk");
+	}
+	
+	public boolean isGenerated(){
+		return this.generated;
 	}
 
 	public void create(int _x, int _y, Amortized2DNoise noise) {
@@ -61,6 +70,7 @@ public class Chunk extends SaveAndLoadable{
 
 		Main.log(getClass(), "Generation: start");
 		tiles = noise.Generate2DNoise(this, tiles, cell2, NatureGenerator.octave0, NatureGenerator.octave1, y, x);
+		this.generated = true;
 	}
 
 	public void registerEntity(Entity body) {

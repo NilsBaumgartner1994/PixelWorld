@@ -1,15 +1,12 @@
 package com.gof.physics;
 
-import com.gof.game.Main;
-import com.gof.world.MapTile;
-
-public class Body implements Comparable<Body> {
+public class Body {
 	
 	protected Position position;
 	Speed velocity;
 	Position acceleration;
 	
-	MapTile referrsTo;
+//	MapTile referrsTo;
 
 	public Body(Position position, Speed velocity, Position acceleration) {
 		this.position = position.cpy();
@@ -58,10 +55,6 @@ public class Body implements Comparable<Body> {
 		setPosition(getPosition().addAndSet(vel));
 	}
 
-	public float getValueOfVector(Position vec) {
-		return vec.heightCompareLength();
-	}
-
 	public Body setVelocity(Speed velocity) {
 		this.velocity = velocity.cpy();
 		return this;
@@ -74,11 +67,6 @@ public class Body implements Comparable<Body> {
 	public Body setAcceleration(Position acceleration) {
 		this.acceleration = acceleration.cpy();
 		return this;
-	}
-
-	@Override
-	public int compareTo(Body o) {
-		return this.position.compareTo(o.position);
 	}
 
 }

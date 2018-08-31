@@ -3,6 +3,7 @@ package com.gof.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g3d.Model;
 
 public class ResourceLoader {
 
@@ -20,24 +21,23 @@ public class ResourceLoader {
 	}
 
 	public static String data = "data/";
-	public static String entitys = data + "entitys/";
-	public static String shaddows = entitys + "shaddows/";
-	public static String player = entitys + "player.png";
+	
+	
 
 	public static String tiles = data + "tiles/";
 	public static String nature = data + "nature/";
+	public static String entitys = data + "entitys/";
 	public static String gui = data + "gui/";
 	public static String icons = data + "icons/";
-	
-	
-	public void addToLoad(String name) {
-		assets.load(Gdx.files.internal(name).path(), Texture.class);
-	}
+	public static final String textureEnding = ".png";
 
-	private void loadAsset(String name) {
-		addToLoad(name);
+	public static String shaddows = entitys + "shaddows/";
+	public static String player = entitys + "player.png";
+	public static final String modelEnding = ".g3db";
+
+	private void loadAsset(String path, Class class1) {
+		assets.load(Gdx.files.internal(path).path(), class1);
 		float progress = 0;
-//		Main.log(getClass(), "Loading: " + name);
 		while (!assets.update()) {
 			if (progress != assets.getProgress()) {
 				progress = assets.getProgress();
@@ -45,40 +45,53 @@ public class ResourceLoader {
 			}
 		}
 	}
+	
+	/**
+	 * Texture
+	 */
 
-	public Texture getTexture(String name) {
-		if (!assets.isLoaded(name)) {
-			loadAsset(name);
+	public Texture getTexture(String path) {
+		if (!assets.isLoaded(path)) {
+			loadAsset(path,Texture.class);
 		}
-		return assets.get(name);
+		return assets.get(path);
 	}
-
-	boolean debug = false;
-
-	public Texture getTile(String name) {
-		if (debug)
-			return getTexture(tiles + "debug/" + name + ".png");
-		return getTexture(tiles + name + ".png");
-	}
-
-	public Texture getNatrue(String name) {
-		return getTexture(nature + name + ".png");
-	}
-
+	
 	public Texture getGUI(String name) {
 		return getTexture(gui + name + ".png");
-	}
-
-	public Texture getShaddow(String name) {
-		return getTexture(shaddows + name + ".png");
 	}
 
 	public Texture getIcon(String name) {
 		return getTexture(icons + name + ".png");
 	}
-
-	public Texture getCloudShaddow() {
-		return getTexture(data + "shaddow/cloud.png");
+	
+	public Texture getEntity(String entityType, String name){
+		return getTexture(entitys+entityType+"/"+name+".png");
 	}
+	
+	public Texture getTile(String name) {
+		return getTexture(tiles + name + ".png");
+	}
+	
+	public Texture getNature(String name) {
+		return getTexture(nature + name + ".png");
+	}
+	
+	/**
+	 * Model
+	 */
+
+	public Model getModel(String path) {
+		if (!assets.isLoaded(path)) {
+			loadAsset(path,Model.class);
+		}
+		return assets.get(path);
+	}
+	
+	public Model getBlock(String name){
+		return getModel(tiles+name+modelEnding);
+	}
+
+	
 
 }

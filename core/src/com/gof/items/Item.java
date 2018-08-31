@@ -1,18 +1,18 @@
 package com.gof.items;
 
-import com.gof.materials.Material;
+import com.gof.materials.MyMaterial;
 import com.gof.nature.Nature;
 
 public class Item extends AbstractItem{
 	
-	Material material;
+	MyMaterial material;
 	
-	public Item(Material m, int amount){
+	public Item(MyMaterial m, int amount){
 		super(amount);
 		this.material = m;
 	}
 	
-	public Item(Material m){
+	public Item(MyMaterial m){
 		this(m,1);
 	}
 		
@@ -26,7 +26,7 @@ public class Item extends AbstractItem{
 		return (Nature) material;
 	}
 	
-	public Material getMaterial(){
+	public MyMaterial getMaterial(){
 		return this.material;
 	}
 	

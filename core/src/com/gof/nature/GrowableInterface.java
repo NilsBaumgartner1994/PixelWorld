@@ -1,6 +1,6 @@
 package com.gof.nature;
 
-import com.gof.materials.Material;
+import com.gof.materials.MyMaterial;
 
 public interface GrowableInterface {
 
