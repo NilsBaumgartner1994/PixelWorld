@@ -50,6 +50,8 @@ public class KeyboardHandler {
 		u.gamepad.setButtonState(GamePadButtons.SHIFT, keyboard.isPressed(Keys.SHIFT_LEFT, Keys.SHIFT_RIGHT));
 		u.gamepad.setButtonState(GamePadButtons.CTRL, keyboard.isPressed(Keys.CONTROL_LEFT, Keys.CONTROL_RIGHT));
 		u.gamepad.setButtonState(GamePadButtons.UP, keyboard.isPressed(Keys.SLASH));
+		u.gamepad.setButtonState(GamePadButtons.A, keyboard.isPressed(Keys.K));
+		u.gamepad.setButtonState(GamePadButtons.B, keyboard.isPressed(Keys.L));
 		u.gamepad.setButtonState(GamePadButtons.DOWN, keyboard.isPressed(Keys.RIGHT_BRACKET));
 		u.gamepad.setButtonState(GamePadButtons.ESC, keyboard.isPressed(Keys.ESCAPE));
 		u.gamepad.setButtonState(GamePadButtons.R2, keyboard.isPressed(Keys.E));

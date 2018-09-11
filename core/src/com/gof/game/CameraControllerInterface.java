@@ -1,5 +1,6 @@
 package com.gof.game;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -17,6 +18,7 @@ public interface CameraControllerInterface {
 	public void renderTileWorldToFrameBuffer();
 	public int scaleZoom(int orginalPixel);
 	public void drawSprite(Sprite sprite);
+	public void drawSprite(Sprite sprite, Color color);
 	public Position getGlobalPosFromScreenPos(int screenX, int screenY);
 	public void renderToInformationBuffer();
 	public void renderGUI();

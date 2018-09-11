@@ -4,19 +4,24 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.gof.inputs.GamePad;
 import com.gof.inputs.GamePadButtons;
+import com.gof.inputs.Stick;
 import com.gof.entitys.Human;
 import com.gof.game.CameraControllerInterface;
 import com.gof.game.ResourceLoader;
 import com.gof.profiles.User;
 
 import com.gof.items.AbstractItem;
+import com.gof.menuComponents.ControllerOverlay;
+import com.gof.physics.Direction;
 
 public class Ingame implements Menu {
 
 	public MenuHandler menuHandler;
+	private ControllerOverlay controlleroverlay;
 
 	public Ingame(MenuHandler menuHandler) {
 		this.menuHandler = menuHandler;
+		this.controlleroverlay = new ControllerOverlay(this.menuHandler.user.gamepad);
 	}
 
 	@Override
@@ -69,10 +74,11 @@ public class Ingame implements Menu {
 	@Override
 	public void render(CameraControllerInterface display) {
 		// TODO Auto-generated method stub
+		controlleroverlay.draw(display);
 		drawIconBar(display);
 	}
 
-	public void drawIconBar(CameraControllerInterface display) {
+	private void drawIconBar(CameraControllerInterface display) {
 
 		Sprite framebar = new Sprite(ResourceLoader.getInstance().getIcon("framebar"));
 		framebar.setPosition(display.getWidth() / 2 - framebar.getRegionWidth() / 2, 10);
@@ -106,13 +112,13 @@ public class Ingame implements Menu {
 	@Override
 	public void select() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void changeSelection(Vector2 vec) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

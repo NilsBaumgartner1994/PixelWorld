@@ -295,6 +295,13 @@ public class CameraController2D implements CameraControllerInterface {
 		fboBatch.draw(sprite, sprite.getX(), sprite.getY(), sprite.getOriginX(), sprite.getOriginY(), sprite.getWidth(),
 				sprite.getHeight(), sprite.getScaleX(), sprite.getScaleY(), sprite.getRotation());
 	}
+	
+	public void drawSprite(Sprite sprite, Color color) {
+		Color copy = fboBatch.getColor().cpy();
+		fboBatch.setColor(color);
+		drawSprite(sprite);
+		fboBatch.setColor(copy);
+	}
 
 	private int getZoomLevelScaleFactorDenumerator() {
 		double amount = Math.pow(2, zoomLevel);

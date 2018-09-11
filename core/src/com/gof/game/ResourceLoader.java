@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g3d.Model;
 public class ResourceLoader {
 
 	public AssetManager assets;
-
+	
 	public static ResourceLoader instance;
 
 	public ResourceLoader() {
@@ -28,6 +28,7 @@ public class ResourceLoader {
 	public static String nature = data + "nature/";
 	public static String entitys = data + "entitys/";
 	public static String gui = data + "gui/";
+	public static String controlls = gui+"controlls/";
 	public static String icons = data + "icons/";
 	public static final String textureEnding = ".png";
 

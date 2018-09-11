@@ -1,15 +1,14 @@
 package com.gof.inputs;
 
-import com.badlogic.gdx.math.Vector2;
-import com.gof.physics.Direction;
-
 public class GamePad {
 
+	public GamePadType layouttype;
 	private Stick leftStick;
 	private Stick rightStick;
 	private Button[] buttons;
 
 	public GamePad() {
+		layouttype = GamePadType.KEYBOARD;
 		initValues();
 		resetValues();
 	}
