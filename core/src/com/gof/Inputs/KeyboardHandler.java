@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
 import com.gof.entitys.Human;
 import com.gof.game.Main;
+import com.gof.helper.EasyColor;
+import com.gof.menuComponents.ControllerButtonOverlay;
 import com.gof.physics.Direction;
 import com.gof.profiles.User;
 
@@ -49,10 +51,16 @@ public class KeyboardHandler {
 
 		u.gamepad.setButtonState(GamePadButtons.SHIFT, keyboard.isPressed(Keys.SHIFT_LEFT, Keys.SHIFT_RIGHT));
 		u.gamepad.setButtonState(GamePadButtons.CTRL, keyboard.isPressed(Keys.CONTROL_LEFT, Keys.CONTROL_RIGHT));
-		u.gamepad.setButtonState(GamePadButtons.UP, keyboard.isPressed(Keys.SLASH));
+		
+		u.gamepad.setButtonState(GamePadButtons.UP, keyboard.isPressed(Keys.SLASH)); //+ on mac
+		u.gamepad.setButtonState(GamePadButtons.DOWN, keyboard.isPressed(Keys.RIGHT_BRACKET)); //- on mac
+		
+		u.gamepad.setButtonState(GamePadButtons.X, keyboard.isPressed(Keys.J));
+		u.gamepad.setButtonState(GamePadButtons.Y, keyboard.isPressed(Keys.I));
 		u.gamepad.setButtonState(GamePadButtons.A, keyboard.isPressed(Keys.K));
 		u.gamepad.setButtonState(GamePadButtons.B, keyboard.isPressed(Keys.L));
-		u.gamepad.setButtonState(GamePadButtons.DOWN, keyboard.isPressed(Keys.RIGHT_BRACKET));
+		
+		
 		u.gamepad.setButtonState(GamePadButtons.ESC, keyboard.isPressed(Keys.ESCAPE));
 		u.gamepad.setButtonState(GamePadButtons.R2, keyboard.isPressed(Keys.E));
 		u.gamepad.setButtonState(GamePadButtons.START, keyboard.isPressed(Keys.ENTER));

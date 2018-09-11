@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.gof.game.CameraControllerInterface;
 import com.gof.game.ResourceLoader;
+import com.gof.helper.EasyColor;
 
 public class ControllerOverlay {
 
@@ -58,15 +59,18 @@ public class ControllerOverlay {
 		rightStickBackgroundSprite.setPosition(display.getWidth() - rightStickBackgroundSprite.getWidth() * scale, 0);
 		display.drawSprite(rightStickBackgroundSprite);
 		
-		Color topColor = new Color(154/255f,235/255f,0,255/255f); //Hell Gruen
-		ControllerButtonOverlay left = new ControllerButtonOverlay(leftButton,this.gamepad.getButton(GamePadButtons.A),topColor);
-		ControllerButtonOverlay top = new ControllerButtonOverlay(topButton,this.gamepad.getButton(GamePadButtons.B),topColor);
-		ControllerButtonOverlay right = new ControllerButtonOverlay(rightButton,this.gamepad.getButton(GamePadButtons.A),topColor);
-		ControllerButtonOverlay bottom = new ControllerButtonOverlay(bottomButton,this.gamepad.getButton(GamePadButtons.A),topColor);
+		ControllerButtonOverlay left = new ControllerButtonOverlay(leftButton,this.gamepad.getButton(GamePadButtons.X),EasyColor.BLUELIGHT);
+		ControllerButtonOverlay top = new ControllerButtonOverlay(topButton,this.gamepad.getButton(GamePadButtons.Y),EasyColor.YELLOWLIGHT);
+		ControllerButtonOverlay right = new ControllerButtonOverlay(rightButton,this.gamepad.getButton(GamePadButtons.B),EasyColor.REDLIGHT);
+		ControllerButtonOverlay bottom = new ControllerButtonOverlay(bottomButton,this.gamepad.getButton(GamePadButtons.A),EasyColor.GREENLIGHT);
 		
 		
 		float xpos = display.getWidth() - rightStickBackgroundSprite.getWidth()/2 * scale;
-		left.draw(display, xpos, rightStickBackgroundSprite.getHeight()/2*scale, scale);
+		top.draw(display, xpos, (rightStickBackgroundSprite.getHeight()-rightStickBackgroundSprite.getHeight()/4)*scale, scale);
+		left.draw(display, xpos-rightStickBackgroundSprite.getWidth()*scale/4, (rightStickBackgroundSprite.getHeight()/2)*scale, scale);
+		right.draw(display, xpos+rightStickBackgroundSprite.getWidth()*scale/4, (rightStickBackgroundSprite.getHeight()/2)*scale, scale);
+		bottom.draw(display, xpos, rightStickBackgroundSprite.getHeight()/4*scale, scale);
+		
 		
 	}
 
