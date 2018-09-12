@@ -13,11 +13,8 @@ public class UserDebugProfile implements Serializable {
 	public VarHolder<Boolean> showDebugInformationCoordinatesOnMapTiles;
 	
 	public UserDebugProfile(){
-		this.showDebugInformationSide = new VarHolder<Boolean>();
-		this.showDebugInformationSide.value = false;
-
-		this.showDebugInformationCoordinatesOnMapTiles = new VarHolder<Boolean>();
-		this.showDebugInformationCoordinatesOnMapTiles.value = false;
+		this.showDebugInformationSide = new VarHolder<Boolean>(false);
+		this.showDebugInformationCoordinatesOnMapTiles = new VarHolder<Boolean>(false);
 	}
 	
 	

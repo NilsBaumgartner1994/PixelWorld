@@ -39,8 +39,6 @@ public class MenuComponentBoolean implements MenuComponentContent {
 
 		ypos = drawSingleContent(display, ypos, name);
 		
-		System.out.println("Boolean: "+this.bool);
-		
 		int percent = this.bool.value ? 100 : 0;
 		drawSlider(display, yposStart, percent);
 		return ypos;
@@ -71,7 +69,6 @@ public class MenuComponentBoolean implements MenuComponentContent {
 
 		display.drawSpriteAndSubtractYpos(post_middle, xpos, ypos);
 		display.drawSpriteAndSubtractYpos(slider_body, xpos, ypos);
-		System.out.println(percent);
 		ypos = display.drawSpriteAndSubtractYpos(slider_knob, xpos + percent, ypos);
 
 		return ypos;

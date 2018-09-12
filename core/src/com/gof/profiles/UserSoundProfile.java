@@ -9,12 +9,12 @@ public class UserSoundProfile implements Serializable {
 	 */
 	private static final long serialVersionUID = 3207593096419342158L;
 	
-	public Float uiSound;
-	public Float natureSound;
+	public VarHolder<Float> uiSound;
+	public VarHolder<Float> natureSound;
 	
 	public UserSoundProfile(){
-		this.uiSound = 1f;
-		this.natureSound = 1f;
+		this.uiSound = new VarHolder<Float>(1f);
+		this.natureSound = new VarHolder<Float>(1f);
 	}
 	
 	
