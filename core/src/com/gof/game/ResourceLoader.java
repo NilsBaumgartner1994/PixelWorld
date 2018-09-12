@@ -92,7 +92,5 @@ public class ResourceLoader {
 	public Model getBlock(String name){
 		return getModel(tiles+name+modelEnding);
 	}
-
 	
-
 }

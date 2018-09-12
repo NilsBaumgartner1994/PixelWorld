@@ -25,6 +25,8 @@ import com.gof.physics.Position;
 import com.gof.physics.PositionComperator;
 import com.gof.profiles.User;
 import com.gof.shaders.ShaddowShader;
+import com.gof.sound.EasySounds;
+import com.gof.sound.SoundManager;
 import com.gof.world.MapTile;
 import com.gof.world.TileWorld;
 
@@ -286,7 +288,7 @@ public class CameraController2D implements CameraControllerInterface {
 		sprite.setRotation(rotation);
 
 		drawSprite(sprite);
-		if (this.user.profile.showDebugInformationCoordinatesOnMapTiles) {
+		if (this.user.profile.debugProfile.showDebugInformationCoordinatesOnMapTiles.value) {
 			drawInformationAtPos(xy[0] + 20, xy[1] + tileHeightHalf + 80, globalPos.x + "/" + globalPos.y);
 		}
 	}
@@ -688,6 +690,8 @@ public class CameraController2D implements CameraControllerInterface {
 	}
 
 	public void changeDistance(int amount) {
+		SoundManager.getInstance().playSound(EasySounds.CLICK);
+		
 		zoomLevel += amount;
 		if (zoomLevel < zoomLevelmin)
 			zoomLevel = zoomLevelmin;
@@ -703,7 +707,7 @@ public class CameraController2D implements CameraControllerInterface {
 	public void render() {
 		// TODO Auto-generated method stub
 		renderTileWorldToFrameBuffer();
-		if (this.user.profile.showDebugInformationSide) {
+		if (this.user.profile.debugProfile.showDebugInformationSide.value) {
 			renderToInformationBuffer();
 		}
 		renderGUI();

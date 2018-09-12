@@ -12,10 +12,12 @@ public class UserProfile extends SaveAndLoadable {
 
 	public UserProfile() {
 		this.name = "Default";
+		this.debugProfile = new UserDebugProfile();
+		this.soundProfile = new UserSoundProfile();
 	}
 
-	public boolean showDebugInformationSide = false;
-	public boolean showDebugInformationCoordinatesOnMapTiles = false;
+	public UserDebugProfile debugProfile;
+	public UserSoundProfile soundProfile;
 
 
 	public static final transient String DATA = "data/";

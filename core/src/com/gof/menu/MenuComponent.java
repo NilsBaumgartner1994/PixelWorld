@@ -1,30 +1,54 @@
 package com.gof.menu;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.gof.game.CameraControllerInterface;
 import com.gof.game.ResourceLoader;
 import com.gof.inputs.GamePad;
 import com.gof.inputs.GamePadButtons;
+import com.gof.profiles.VarHolder;
 
 public class MenuComponent {
 
 	String title;
-	String content;
+	MenuComponentContent[] contents;
 	boolean active;
 
-	public MenuComponent(String title, String content) {
+	public MenuComponent(String title, MenuComponentContent[] content) {
 		setTitle(title);
 		setContent(content);
 		setActive(false);
+	}
+
+	public MenuComponent(String title, Object... obj) {
+		this(title, createMenuComponentContents(obj));
+	}
+
+	private static MenuComponentContent[] createMenuComponentContents(Object... obj) {
+		MenuComponentContent[] contents = new MenuComponentContent[obj.length];
+		for (int i = 0; i < obj.length; i++) {
+			if (obj[i].getClass() == VarHolder.class) {
+				VarHolder varHolderGen = (VarHolder)obj[i];
+				if(varHolderGen.value.getClass() == Boolean.class){
+					contents[i] = new MenuComponentBoolean("Test", (VarHolder<Boolean>)obj[i]);
+				}
+				
+			}
+			if (obj[i].getClass() == String.class) {
+				contents[i] = new MenuComponentString((String) obj[i]);
+			}
+		}
+		return contents;
 	}
 
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setContent(MenuComponentContent[] content) {
+		this.contents = content;
 	}
 
 	public void setActive(boolean active) {
@@ -63,49 +87,14 @@ public class MenuComponent {
 		ypos = display.drawSpriteAndSubtractYpos(post_title, xpos, ypos);
 		ypos = display.drawSpriteAndSubtractYpos(post_top, xpos, ypos);
 
-		ypos = drawContent(display,xpos,ypos,this.content);
-		ypos = drawSlider(display,xpos,ypos,30);
+		for (MenuComponentContent c : contents) {
+			ypos = c.render(display, ypos);
+		}
 
 		ypos = display.drawSpriteAndSubtractYpos(post_bottom, xpos, ypos);
 
 		display.getFont().setColor(oldColor);
 
-		return ypos;
-	}
-	
-	private int drawContent(CameraControllerInterface display, int xpos, int ypos, String content) {
-		String[] contents = content.split("\n");
-		for(String c : contents){
-			ypos = drawSingleContent(display,xpos,ypos,c);
-		}
-		return ypos;
-	}
-
-	private int drawSingleContent(CameraControllerInterface display, int xpos, int ypos, String content) {
-		Sprite post_middle = new Sprite(ResourceLoader.getInstance().getGUI("menu_information_post_middle"));
-
-		ypos = display.drawSpriteAndSubtractYpos(post_middle, xpos, ypos);
-		display.getLayout().setText(display.getFont(), content);
-		int stringWidth = (int) display.getLayout().width;
-		int stringHeight = (int) display.getLayout().height;
-		display.getFont().draw(display.getSpriteBatch(), content, display.getWidth() / 2 - stringWidth / 2,
-				ypos + post_middle.getRegionHeight() / 2 + stringHeight / 2);
-		
-		return ypos;
-	}
-	
-	private int drawSlider(CameraControllerInterface display, int xpos, int ypos, int percent){
-		percent = Math.max(0, Math.min(100, percent));
-		
-		Sprite post_middle = new Sprite(ResourceLoader.getInstance().getGUI("menu_information_post_middle"));
-		Sprite slider_body = new Sprite(ResourceLoader.getInstance().getGUI("menu_information_post_slider_body"));
-		Sprite slider_knob = new Sprite(ResourceLoader.getInstance().getGUI("menu_information_post_slider_knob"));
-		
-		display.drawSpriteAndSubtractYpos(post_middle, xpos, ypos);
-		display.drawSpriteAndSubtractYpos(slider_body, xpos, ypos);
-		System.out.println(percent);
-		ypos = display.drawSpriteAndSubtractYpos(slider_knob, xpos+percent, ypos);
-		
 		return ypos;
 	}
 

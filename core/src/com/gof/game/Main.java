@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.gof.inputs.InputHandler;
 import com.gof.profiles.User;
 import com.gof.profiles.UserHandler;
+import com.gof.sound.SoundManager;
 import com.gof.world.TileWorld;
 
 public class Main extends ApplicationAdapter {
@@ -21,6 +22,7 @@ public class Main extends ApplicationAdapter {
 	Texture img;
 
 	public ResourceLoader resourceLoader;
+	public SoundManager soundManager;
 	public FileController fileController;
 	public AssetManager assets;
 	public TileWorld titleScreenWorld;
@@ -43,6 +45,7 @@ public class Main extends ApplicationAdapter {
 	public void initAssetAndResourceLoader() {
 		assets = new AssetManager();
 		resourceLoader = new ResourceLoader();
+		soundManager = new SoundManager();
 		fileController = new FileController();
 	}
 
@@ -150,5 +153,8 @@ public class Main extends ApplicationAdapter {
 		for (User u : users) {
 			u.cameraController.dispose();
 		}
+		
+		this.assets.dispose();
+		this.soundManager.disposeAll();
 	}
 }

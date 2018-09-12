@@ -2,6 +2,7 @@ package com.gof.menu;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -12,6 +13,7 @@ import com.gof.game.ResourceLoader;
 import com.gof.inputs.GamePad;
 import com.gof.inputs.GamePadButtons;
 import com.gof.physics.Direction;
+import com.gof.profiles.UserProfile;
 
 public class OptionMenu implements Menu {
 
@@ -34,9 +36,9 @@ public class OptionMenu implements Menu {
 
 	public void initMenuComponents() {
 		menuComponents = new ArrayList<MenuComponent>();
-		mapTileCoordinatesMenuComponent = new MenuComponent("MapTileCoordinates", ""+this.menuHandler.user.profile.showDebugInformationCoordinatesOnMapTiles);
+		mapTileCoordinatesMenuComponent = new MenuComponent("MapTileCoordinates", this.menuHandler.user.profile.debugProfile.showDebugInformationCoordinatesOnMapTiles);
 		menuComponents.add(mapTileCoordinatesMenuComponent);
-		debugInformationsMenuComponent = new MenuComponent("Side Informations", ""+this.menuHandler.user.profile.showDebugInformationSide);
+		debugInformationsMenuComponent = new MenuComponent("Side Informations", this.menuHandler.user.profile.debugProfile.showDebugInformationSide);
 		menuComponents.add(debugInformationsMenuComponent);
 		backMenuComponent = new MenuComponent("Back", "to Pause Menu");
 		menuComponents.add(backMenuComponent);
@@ -102,13 +104,13 @@ public class OptionMenu implements Menu {
 
 	@Override
 	public void select() {
+		UserProfile profile = this.menuHandler.user.profile;
+		
 		if (activeMenuComponent == mapTileCoordinatesMenuComponent) {
-			this.menuHandler.user.profile.showDebugInformationCoordinatesOnMapTiles = !this.menuHandler.user.profile.showDebugInformationCoordinatesOnMapTiles;
-			mapTileCoordinatesMenuComponent.content = ""+this.menuHandler.user.profile.showDebugInformationCoordinatesOnMapTiles;
+			profile.debugProfile.showDebugInformationCoordinatesOnMapTiles.value = !profile.debugProfile.showDebugInformationCoordinatesOnMapTiles.value;
 		}
 		if (activeMenuComponent == debugInformationsMenuComponent) {
-			this.menuHandler.user.profile.showDebugInformationSide = !this.menuHandler.user.profile.showDebugInformationSide;
-			debugInformationsMenuComponent.content = ""+this.menuHandler.user.profile.showDebugInformationSide;
+			profile.debugProfile.showDebugInformationSide.value = !profile.debugProfile.showDebugInformationSide.value;
 		}
 		if (activeMenuComponent == backMenuComponent) {
 			this.menuHandler.setActivMenu(this.parent);

@@ -9,7 +9,8 @@ import com.gof.entitys.Human;
 import com.gof.game.CameraControllerInterface;
 import com.gof.game.ResourceLoader;
 import com.gof.profiles.User;
-
+import com.gof.sound.EasySounds;
+import com.gof.sound.SoundManager;
 import com.gof.items.AbstractItem;
 import com.gof.menuComponents.ControllerOverlay;
 import com.gof.physics.Direction;
@@ -31,12 +32,10 @@ public class Ingame implements Menu {
 			menuHandler.setActivMenu(menuHandler.pauseMenu);
 		}
 		User user = this.menuHandler.user;
-		if (gamepad.isButtonTyped(GamePadButtons.UP)) {
-			System.out.println("ZoomIn");
+		if (gamepad.isButtonTyped(GamePadButtons.DOWN)) {
 			user.cameraController.changeDistance(1);
 		}
-		if (gamepad.isButtonTyped(GamePadButtons.DOWN)) {
-			System.out.println("ZoomOut");
+		if (gamepad.isButtonTyped(GamePadButtons.UP)) {
 			user.cameraController.changeDistance(-1);
 		}
 
