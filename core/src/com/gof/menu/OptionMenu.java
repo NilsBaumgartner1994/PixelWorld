@@ -36,10 +36,8 @@ public class OptionMenu implements Menu {
 
 	public void initMenuComponents() {
 		menuComponents = new ArrayList<MenuComponent>();
-		mapTileCoordinatesMenuComponent = new MenuComponent("MapTileCoordinates", this.menuHandler.user.profile.debugProfile.showDebugInformationCoordinatesOnMapTiles);
+		mapTileCoordinatesMenuComponent = new MenuComponent("MapTileCoordinates", this.menuHandler.user.profile.debugProfile.getVars());
 		menuComponents.add(mapTileCoordinatesMenuComponent);
-		debugInformationsMenuComponent = new MenuComponent("Side Informations", this.menuHandler.user.profile.debugProfile.showDebugInformationSide);
-		menuComponents.add(debugInformationsMenuComponent);
 		backMenuComponent = new MenuComponent("Back", "to Pause Menu");
 		menuComponents.add(backMenuComponent);
 	}

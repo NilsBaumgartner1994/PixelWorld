@@ -39,8 +39,10 @@ public class MenuComponentBoolean implements MenuComponentContent {
 
 		ypos = drawSingleContent(display, ypos, name);
 		
+		
 		int percent = this.bool.value ? 100 : 0;
 		drawSlider(display, yposStart, percent);
+		drawText(display,this.bool.getName(),350,yposStart);
 		return ypos;
 	}
 
@@ -56,6 +58,19 @@ public class MenuComponentBoolean implements MenuComponentContent {
 				ypos + post_middle.getRegionHeight() / 2 + stringHeight / 2);
 
 		return ypos;
+	}
+	
+	private void drawText(CameraControllerInterface display, String text, int xpos, int ypos){
+		Sprite post_middle = new Sprite(ResourceLoader.getInstance().getGUI("menu_information_post_middle"));
+		
+		Color oldColor = display.getFont().getColor().cpy();
+		display.getFont().setColor(getColor());
+		display.getLayout().setText(display.getFont(), text);
+		int stringWidth = (int) display.getLayout().width;
+		int stringHeight = (int) display.getLayout().height;
+
+		display.getFont().draw(display.getSpriteBatch(), text, xpos,
+				ypos - post_middle.getHeight()/2 + stringHeight / 2);
 	}
 
 	private int drawSlider(CameraControllerInterface display, int ypos, int percent) {

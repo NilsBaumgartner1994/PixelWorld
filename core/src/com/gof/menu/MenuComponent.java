@@ -1,13 +1,9 @@
 package com.gof.menu;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.gof.game.CameraControllerInterface;
 import com.gof.game.ResourceLoader;
-import com.gof.inputs.GamePad;
-import com.gof.inputs.GamePadButtons;
 import com.gof.profiles.VarHolder;
 
 public class MenuComponent {
