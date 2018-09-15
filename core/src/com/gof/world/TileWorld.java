@@ -26,7 +26,7 @@ public class TileWorld extends SaveAndLoadable {
 	String name;
 
 	// Number of cells
-	public int worldSize = 100;
+	public static int worldSize = 100;
 
 	public Chunk chunks[][];
 	public List<Chunk> activeChunks;

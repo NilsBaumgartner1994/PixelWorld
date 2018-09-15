@@ -82,7 +82,7 @@ public class Main extends ApplicationAdapter {
 	}
 
 	private void hideMouse() {
-		Cursor customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("data/gui/hand_blank.png")), 0, 0);
+		Cursor customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("data/gui/cursor/hand_blank.png")), 0, 0);
 		Gdx.graphics.setCursor(customCursor);
 	}
 

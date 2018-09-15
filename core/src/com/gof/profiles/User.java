@@ -2,11 +2,9 @@ package com.gof.profiles;
 
 import com.badlogic.gdx.Gdx;
 import com.gof.inputs.GamePad;
-import com.gof.inputs.GamePadButtons;
 import com.gof.entitys.Bat;
 import com.gof.entitys.Human;
 import com.gof.game.CameraController2D;
-import com.gof.game.CameraController3D;
 import com.gof.game.CameraControllerInterface;
 import com.gof.game.Main;
 import com.gof.menu.MenuHandler;
@@ -41,11 +39,9 @@ public class User {
 		
 		Bat bat = new Bat(this.activGameWorld,startPos.cpy().addAndSet(2, 0, 0, 0));
 		bat.spawn();
-//		cameraController.setTrack(bat);
 	}
 
 	public void initCamera() {
-//		cameraController = new CameraController3D(this, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		cameraController = new CameraController2D(this, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		// cameraController.setTrack(this);
 	}

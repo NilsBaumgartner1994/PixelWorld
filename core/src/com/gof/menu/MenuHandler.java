@@ -7,8 +7,7 @@ import com.gof.profiles.User;
 public class MenuHandler {
 
 	public Menu activMenu;
-	public Ingame ingameMenu;
-	public PauseMenu pauseMenu;
+	public Menu ingameMenu, pauseMenu;
 	
 	public User user;
 	
@@ -19,8 +18,8 @@ public class MenuHandler {
 	}
 	
 	public void initMenus(){
-		ingameMenu = new Ingame(this);
-		pauseMenu = new PauseMenu(this);
+		ingameMenu = new Ingame(this,pauseMenu);
+		pauseMenu = new PauseMenu(this,ingameMenu);
 	}
 	
 	public void setActivMenu(Menu menu){

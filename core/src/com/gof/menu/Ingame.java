@@ -15,23 +15,28 @@ import com.gof.items.AbstractItem;
 import com.gof.menuComponents.ControllerOverlay;
 import com.gof.physics.Direction;
 
-public class Ingame implements Menu {
+public class Ingame extends SimpleMenu {
 
-	public MenuHandler menuHandler;
 	private ControllerOverlay controlleroverlay;
 
-	public Ingame(MenuHandler menuHandler) {
-		this.menuHandler = menuHandler;
-		this.controlleroverlay = new ControllerOverlay(this.menuHandler.user.gamepad);
+	public Ingame(MenuHandler menuHandler, Menu parent) {
+		super(menuHandler, parent, "Back", null);
+		controlleroverlay = new ControllerOverlay(menuHandler.user.gamepad);
 	}
 
 	@Override
-	public void update(GamePad gamepad) {
+	public void render(CameraControllerInterface display) {
+		super.render(display);
+		controlleroverlay.draw(display);
+		drawIconBar(display);
+	}
 
+	@Override
+	public boolean update(GamePad gamepad) {
 		if (gamepad.isButtonTyped(GamePadButtons.ESC)) {
-			menuHandler.setActivMenu(menuHandler.pauseMenu);
+			this.handler.setActivMenu(this.handler.pauseMenu);
 		}
-		User user = this.menuHandler.user;
+		User user = this.handler.user;
 		if (gamepad.isButtonTyped(GamePadButtons.DOWN)) {
 			user.cameraController.changeDistance(1);
 		}
@@ -40,7 +45,7 @@ public class Ingame implements Menu {
 		}
 
 		Human human = user.human;
-		switch (this.menuHandler.user.cameraController.getCameraDirection()) {
+		switch (this.handler.user.cameraController.getCameraDirection()) {
 		case NORTH:
 			human.setLeftStick(gamepad.getLeftStick().getVec());
 			break;
@@ -68,13 +73,8 @@ public class Ingame implements Menu {
 		if (gamepad.isButtonTyped(GamePadButtons.RIGHT)) {
 			human.inventory.setActivSlot(human.inventory.getActivSlot() + 1);
 		}
-	}
 
-	@Override
-	public void render(CameraControllerInterface display) {
-		// TODO Auto-generated method stub
-		controlleroverlay.draw(display);
-		drawIconBar(display);
+		return true;
 	}
 
 	private void drawIconBar(CameraControllerInterface display) {
@@ -86,7 +86,7 @@ public class Ingame implements Menu {
 		Sprite iconFrame = new Sprite(ResourceLoader.getInstance().getIcon("frame"));
 		Sprite activIconFrame = new Sprite(ResourceLoader.getInstance().getIcon("frame_activ"));
 
-		Human human = menuHandler.user.human;
+		Human human = this.handler.user.human;
 		int invPos = 0;
 		for (int i = -4; i < 4; i++) {
 			Sprite drawFrame = human.inventory.isActivSlot(invPos) ? activIconFrame : iconFrame;
@@ -110,12 +110,6 @@ public class Ingame implements Menu {
 
 	@Override
 	public void select() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void changeSelection(Vector2 vec) {
 		// TODO Auto-generated method stub
 
 	}

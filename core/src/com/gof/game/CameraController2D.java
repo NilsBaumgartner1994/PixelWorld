@@ -294,6 +294,8 @@ public class CameraController2D implements CameraControllerInterface {
 	}
 
 	public void drawSprite(Sprite sprite) {
+		
+		
 		fboBatch.draw(sprite, sprite.getX(), sprite.getY(), sprite.getOriginX(), sprite.getOriginY(), sprite.getWidth(),
 				sprite.getHeight(), sprite.getScaleX(), sprite.getScaleY(), sprite.getRotation());
 	}
@@ -347,8 +349,8 @@ public class CameraController2D implements CameraControllerInterface {
 		int yPosMultXPart = 1;
 		int yPosMultYPart = 1;
 
-		int extraXCorrection = 0;
-		int extraYCorrection = 0;
+//		int extraXCorrection = 0;
+//		int extraYCorrection = 0;
 
 		if (this.cameraDirection == Direction.NORTH) {
 			xPosMultXPart = 1;
@@ -361,26 +363,22 @@ public class CameraController2D implements CameraControllerInterface {
 			xPosMultYPart = -1;
 			yPosMultXPart = 1;
 			yPosMultYPart = -1;
-			extraYCorrection = +1;
 		}
 		if (this.cameraDirection == Direction.SOUTH) {
 			xPosMultXPart = -1;
 			xPosMultYPart = 1;
 			yPosMultXPart = -1;
 			yPosMultYPart = -1;
-			extraXCorrection = +1;
-			extraYCorrection = +1;
 		}
 		if (this.cameraDirection == Direction.WEST) {
 			xPosMultXPart = 1;
 			xPosMultYPart = 1;
 			yPosMultXPart = -1;
 			yPosMultYPart = 1;
-			extraXCorrection = +1;
 		}
 
-		relativeX += extraXCorrection;
-		relativeY += extraYCorrection;
+//		relativeX += extraXCorrection;
+//		relativeY += extraYCorrection;
 
 		int relativeXYForX = (xPosMultXPart * relativeX + xPosMultYPart * relativeY);
 		int fractionCorrectionX = (xPosMultXPart * oldXF / 2 + xPosMultYPart * oldYF);
@@ -660,7 +658,7 @@ public class CameraController2D implements CameraControllerInterface {
 	private void drawMouseIcon() {
 		Mouse m = Main.getInstance().inputHandler.keyboardHandler.mouse;
 
-		Sprite hand = new Sprite(ResourceLoader.getInstance().getGUI("hand_select"));
+		Sprite hand = new Sprite(ResourceLoader.getInstance().getGUI("cursor/hand_select"));
 
 		if (m != null) {
 			hand.setPosition(m.getX() - hand.getRegionWidth() / 2, this.height - m.getY() - hand.getRegionHeight() / 2);

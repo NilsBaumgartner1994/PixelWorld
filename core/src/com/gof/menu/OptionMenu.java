@@ -1,6 +1,7 @@
 package com.gof.menu;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -9,116 +10,42 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.gof.game.CameraControllerInterface;
+import com.gof.game.Main;
 import com.gof.game.ResourceLoader;
 import com.gof.inputs.GamePad;
 import com.gof.inputs.GamePadButtons;
 import com.gof.physics.Direction;
 import com.gof.profiles.UserProfile;
+import com.gof.profiles.VarHolder;
+import com.gof.world.WorldToPNG;
 
-public class OptionMenu implements Menu {
-
-	public MenuHandler menuHandler;
-	private MenuComponent activeMenuComponent;
-
-	private List<MenuComponent> menuComponents;
-	private MenuComponent mapTileCoordinatesMenuComponent;
-	private MenuComponent debugInformationsMenuComponent;
-	private MenuComponent backMenuComponent;
-	private Menu parent;
+public class OptionMenu extends SimpleMenu {
 
 	public OptionMenu(MenuHandler menuHandler, Menu parent) {
-		this.menuHandler = menuHandler;
-		this.parent = parent;
-		initMenuComponents();
-		mapTileCoordinatesMenuComponent.setActive(true);
-		activeMenuComponent = mapTileCoordinatesMenuComponent;
+		super(menuHandler, parent, "Options", null);
+		this.setContent(initMenuComponents());
 	}
 
-	public void initMenuComponents() {
-		menuComponents = new ArrayList<MenuComponent>();
-		mapTileCoordinatesMenuComponent = new MenuComponent("MapTileCoordinates", this.menuHandler.user.profile.debugProfile.getVars());
-		menuComponents.add(mapTileCoordinatesMenuComponent);
-		backMenuComponent = new MenuComponent("Back", "to Pause Menu");
-		menuComponents.add(backMenuComponent);
-	}
+	public List<SimpleMenuComponent> initMenuComponents() {
+		List<SimpleMenuComponent> menuComponents = new LinkedList<SimpleMenuComponent>();
 
-	@Override
-	public void update(GamePad gamepad) {
-		if (gamepad.getButton(GamePadButtons.ESC).isTyped()) {
-			menuHandler.setActivMenu(parent);
+		for (VarHolder var : this.handler.user.profile.debugProfile.getVars()) {
+			SimpleMenuComponent c = new SimpleMenuBooleanEditable(var);
+			menuComponents.add(c);
 		}
-		if (gamepad.getButton(GamePadButtons.UP).isTyped()) {
-			changeActiveMenuComponent(-1);
-		}
-		if (gamepad.getButton(GamePadButtons.DOWN).isTyped()) {
-			changeActiveMenuComponent(1);
-		}
-
-		switch (gamepad.getLeftStick().getLastDirection()) {
-		case NORTH:
-			changeActiveMenuComponent(-1);
-			break;
-		case SOUTH:
-			changeActiveMenuComponent(1);
-			break;
-		default:
-			break;
-		}
-
-		if (gamepad.getButton(GamePadButtons.START).isTyped()) {
-			select();
-		}
-
-	}
-
-	public void changeActiveMenuComponent(int direction) {
-		if (activeMenuComponent != null && !menuComponents.isEmpty()) {
-			activeMenuComponent.setActive(false);
-			int size = menuComponents.size();
-			int position = getMenuComponentPosition(activeMenuComponent, size);
-			int newActiveMenuPos = ((position + direction) % size + size) % size;
-			activeMenuComponent = menuComponents.get(newActiveMenuPos);
-			activeMenuComponent.setActive(true);
-		}
-	}
-
-	private int getMenuComponentPosition(MenuComponent comp, int size) {
-		for (int i = 0; i < size; i++) {
-			if (menuComponents.get(i) == comp)
-				return i;
-		}
-		return -1;
-	}
-
-	@Override
-	public void render(CameraControllerInterface display) {
-		int marginTop = 50;
-		int yposStart = display.getHeigth() - marginTop;
-		int ypos = yposStart;
-		for (MenuComponent mc : menuComponents) {
-			ypos = mc.render(display, ypos);
-		}
-	}
-
-	@Override
-	public void select() {
-		UserProfile profile = this.menuHandler.user.profile;
 		
-		if (activeMenuComponent == mapTileCoordinatesMenuComponent) {
-			profile.debugProfile.showDebugInformationCoordinatesOnMapTiles.value = !profile.debugProfile.showDebugInformationCoordinatesOnMapTiles.value;
-		}
-		if (activeMenuComponent == debugInformationsMenuComponent) {
-			profile.debugProfile.showDebugInformationSide.value = !profile.debugProfile.showDebugInformationSide.value;
-		}
-		if (activeMenuComponent == backMenuComponent) {
-			this.menuHandler.setActivMenu(this.parent);
-		}
-	}
+		Runnable quitRunnable = new Runnable() {
+			public void run() {
+				WorldToPNG.saveToImage(Main.getInstance().titleScreenWorld);
+			}
+		};
+		
+		SimpleMenuRunnableItem WorldToPNG = new SimpleMenuRunnableItem("World To PNG", SimpleMenuNameTypes.SUB,quitRunnable);
+		menuComponents.add(WorldToPNG);
+		
+		menuComponents.add(handler.ingameMenu);
 
-	@Override
-	public void changeSelection(Vector2 vec) {
-		// TODO Auto-generated method stub
-
+		return menuComponents;
 	}
 
 }
