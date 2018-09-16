@@ -59,6 +59,5 @@ public class ControllerButtonOverlay {
 		spriteButtonTop.setScale(scale);
 		spriteButtonTop.setPosition(xPosition,yPositionTop);
 		display.drawSprite(spriteButtonTop,glyphDraw);
-
 	}
 }

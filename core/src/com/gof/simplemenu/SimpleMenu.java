@@ -42,6 +42,10 @@ public class SimpleMenu extends SimpleMenuNameItem implements Menu {
 		}
 		this.contents = content;
 	}
+	
+	public void addContent(SimpleMenuComponent content){
+		contents.add(content);
+	}
 
 	public void setActive(SimpleMenuComponent simpleMenuComponent) {
 		if (this.active != null) {
@@ -122,6 +126,12 @@ public class SimpleMenu extends SimpleMenuNameItem implements Menu {
 		} else {
 			active.select();
 		}
+	}
+
+	@Override
+	public void prepareForActivation() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

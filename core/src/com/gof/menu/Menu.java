@@ -6,5 +6,6 @@ import com.gof.simplemenu.SimpleMenuComponent;
 public interface Menu extends SimpleMenuComponent{
 
 	public void render(CameraControllerInterface display);
+	public void prepareForActivation();
 	
 }

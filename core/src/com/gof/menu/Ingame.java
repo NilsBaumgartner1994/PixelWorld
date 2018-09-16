@@ -14,21 +14,30 @@ import com.gof.sound.EasySounds;
 import com.gof.sound.SoundManager;
 import com.gof.items.AbstractItem;
 import com.gof.menuComponents.ControllerOverlay;
+import com.gof.menuComponents.MiniMapOverlay;
 import com.gof.physics.Direction;
 
 public class Ingame extends SimpleMenu {
 
 	private ControllerOverlay controlleroverlay;
-
-	public Ingame(MenuHandler menuHandler, Menu parent) {
-		super(menuHandler, parent, "Back", null);
-		controlleroverlay = new ControllerOverlay(menuHandler.user.gamepad);
+	private MiniMapOverlay minimap;
+	
+	public Ingame(MenuHandler handler, Menu parent) {
+		super(handler, parent, "Back", null);
+		initMenuComponents();
+	}
+	
+	private void initMenuComponents(){
+		controlleroverlay = new ControllerOverlay(this.handler.user.gamepad);
+		this.addContent(controlleroverlay);
+		
+		minimap = new MiniMapOverlay(this.handler);
+		this.addContent(minimap);
 	}
 
 	@Override
 	public void render(CameraControllerInterface display) {
 		super.render(display);
-		controlleroverlay.draw(display);
 		drawIconBar(display);
 	}
 

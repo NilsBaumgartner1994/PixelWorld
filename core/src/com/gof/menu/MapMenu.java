@@ -31,19 +31,16 @@ public class MapMenu extends SimpleMenu {
 	}
 
 	@Override
-	public void select() {
-		Pixmap map = WorldToPNG.getPixmap(this.handler.user.human.getMapTile().chunk);
-		menuImage.setImage(map);
-		map.dispose();
-		System.out.println("MenuImage Set");
-
-		super.select();
-	}
-
-	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
 		menuImage.dispose();
+	}
+	
+	@Override
+	public void prepareForActivation(){
+		Pixmap map = WorldToPNG.getPixmap(this.handler.user.human.getMapTile().chunk);
+		menuImage.setImage(map);
+		map.dispose();
 	}
 
 }

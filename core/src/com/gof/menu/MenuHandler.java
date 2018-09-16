@@ -23,6 +23,7 @@ public class MenuHandler {
 	}
 	
 	public void setActivMenu(Menu menu){
+		menu.prepareForActivation();
 		this.activMenu = menu;
 	}
 

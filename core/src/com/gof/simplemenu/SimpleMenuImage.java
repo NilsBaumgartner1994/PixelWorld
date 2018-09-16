@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.gof.game.CameraControllerInterface;
 import com.gof.game.ResourceLoader;
+import com.gof.helper.SpriteHelper;
 import com.gof.inputs.GamePad;
 
 public class SimpleMenuImage extends SimpleMenuNameItem {
@@ -20,12 +21,7 @@ public class SimpleMenuImage extends SimpleMenuNameItem {
 	}
 
 	public void setImage(Sprite image) {
-		this.image = image;
-		int width = this.image.getRegionWidth();
-		float scaleFactor = (XSIZE*1f) / (1f*width);
-		System.out.println("Scale Fac: "+scaleFactor);
-		this.image.setOrigin(0, image.getHeight());
-		this.image.setScale(scaleFactor);
+		this.image = SpriteHelper.setToWidth(image, XSIZE);
 	}
 	
 	private static final int XSIZE = 128;

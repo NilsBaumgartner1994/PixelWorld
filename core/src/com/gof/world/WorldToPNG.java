@@ -24,7 +24,9 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
+import com.gof.entitys.Entity;
 import com.gof.materials.MyMaterial;
+import com.gof.physics.Position;
 
 public class WorldToPNG {
 
@@ -49,8 +51,8 @@ public class WorldToPNG {
 		this.chunk = c;
 		initVariables();
 	}
-	
-	public static Pixmap getPixmap(Chunk c){
+
+	public static Pixmap getPixmap(Chunk c) {
 		WorldToPNG toPNG = new WorldToPNG(c);
 		toPNG.renderPixmap();
 		return toPNG._pixmap;
@@ -63,22 +65,22 @@ public class WorldToPNG {
 
 	public static void saveToImage(TileWorld world) {
 		System.out.println("Start Test");
-	
+
 		System.out.println("Start Saving");
-		List<WorldToPNG> parts = getArea(world,49,2,48,2);
+		List<WorldToPNG> parts = getArea(world, 49, 2, 48, 2);
 		System.out.println("get Pixmaps");
 		List<Pixmap> pixmaps = getPixmaps(parts);
-		
+
 		System.out.println("Merge");
 		Pixmap merged = merge4PixmapTogether(pixmaps);
 		System.out.println("Save Merge");
-		savePixmap(merged,"merge");
+		savePixmap(merged, "merge");
 	}
-	
-	public static List<WorldToPNG> getArea(TileWorld world, int xs, int xa, int ys, int ya){
+
+	public static List<WorldToPNG> getArea(TileWorld world, int xs, int xa, int ys, int ya) {
 		List<WorldToPNG> parts = new LinkedList<WorldToPNG>();
-		for (int x = xs; x < xs+xa; x++) {
-			for (int y = ys; y < ys+ya; y++) {
+		for (int x = xs; x < xs + xa; x++) {
+			for (int y = ys; y < ys + ya; y++) {
 				WorldToPNG toPNG = new WorldToPNG(world.getChunk(x, y));
 				toPNG.renderPixmap();
 				parts.add(toPNG);
@@ -86,70 +88,70 @@ public class WorldToPNG {
 		}
 		return parts;
 	}
-	
-	public static List<Pixmap> getPixmaps(List<WorldToPNG> parts){
+
+	public static List<Pixmap> getPixmaps(List<WorldToPNG> parts) {
 		List<Pixmap> pixmaps = new LinkedList<Pixmap>();
-		for(WorldToPNG part : parts){
+		for (WorldToPNG part : parts) {
 			pixmaps.add(part._pixmap);
 		}
 		return pixmaps;
 	}
-	
-	private static Pixmap glue4PixmapsTogether(List<Pixmap>pixmaps){
-		if(!allPixmapsSameSize(pixmaps) || pixmaps.size()!=4){
+
+	private static Pixmap glue4PixmapsTogether(List<Pixmap> pixmaps) {
+		if (!allPixmapsSameSize(pixmaps) || pixmaps.size() != 4) {
 			return null;
 		}
-		
+
 		int width = pixmaps.get(0).getWidth();
 		int height = pixmaps.get(0).getHeight();
-		
-		Pixmap result = new Pixmap(width*2, height*2, Format.RGBA8888);
-		
-		for(int x=0;x<width;x++){
-			for(int y=0;y<height;y++){
+
+		Pixmap result = new Pixmap(width * 2, height * 2, Format.RGBA8888);
+
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
 				result.drawPixel(x, y, pixmaps.get(0).getPixel(x, y));
-				result.drawPixel(x, y+height, pixmaps.get(1).getPixel(x, y));
-				result.drawPixel(x+width, y, pixmaps.get(2).getPixel(x, y));
-				result.drawPixel(x+width, y+height, pixmaps.get(3).getPixel(x, y));
+				result.drawPixel(x, y + height, pixmaps.get(1).getPixel(x, y));
+				result.drawPixel(x + width, y, pixmaps.get(2).getPixel(x, y));
+				result.drawPixel(x + width, y + height, pixmaps.get(3).getPixel(x, y));
 			}
 		}
-		
+
 		return result;
 	}
 
-	private static Pixmap merge4PixmapTogether(List<Pixmap>pixmaps){
-		if(!allPixmapsSameSize(pixmaps) || pixmaps.size()!=4){
+	private static Pixmap merge4PixmapTogether(List<Pixmap> pixmaps) {
+		if (!allPixmapsSameSize(pixmaps) || pixmaps.size() != 4) {
 			return null;
 		}
-		
+
 		int width = pixmaps.get(0).getWidth();
 		int height = pixmaps.get(0).getHeight();
-		
+
 		Pixmap result = new Pixmap(width, height, Format.RGBA8888);
-		
-		for(int x=0;x<width;x+=2){
-			for(int y=0;y<height;y+=2){
-				result.drawPixel(x/2, y/2, pixmaps.get(0).getPixel(x, y));
-				result.drawPixel(x/2, y/2+height/2, pixmaps.get(1).getPixel(x, y));
-				result.drawPixel(x/2+width/2, y/2, pixmaps.get(2).getPixel(x, y));
-				result.drawPixel(x/2+width/2, y/2+height/2, pixmaps.get(3).getPixel(x, y));
+
+		for (int x = 0; x < width; x += 2) {
+			for (int y = 0; y < height; y += 2) {
+				result.drawPixel(x / 2, y / 2, pixmaps.get(0).getPixel(x, y));
+				result.drawPixel(x / 2, y / 2 + height / 2, pixmaps.get(1).getPixel(x, y));
+				result.drawPixel(x / 2 + width / 2, y / 2, pixmaps.get(2).getPixel(x, y));
+				result.drawPixel(x / 2 + width / 2, y / 2 + height / 2, pixmaps.get(3).getPixel(x, y));
 			}
 		}
-		
+
 		return result;
 	}
-	
-	private static boolean allPixmapsSameSize(List<Pixmap>pixmaps ){
+
+	private static boolean allPixmapsSameSize(List<Pixmap> pixmaps) {
 		int width = -1;
 		int height = -1;
-		
-		for(int i=0; i<pixmaps.size();i++){
+
+		for (int i = 0; i < pixmaps.size(); i++) {
 			Pixmap map = pixmaps.get(i);
-			if(map==null) {
+			if (map == null) {
 				return false;
 			}
-			if(i!=0){
-				if(width!=map.getWidth() || height != map.getHeight()){
+			if (i != 0) {
+				if (width != map.getWidth() || height != map.getHeight()) {
 					return false;
 				}
 			}
@@ -169,7 +171,7 @@ public class WorldToPNG {
 		System.out.println("Render Pixmap");
 		renderPixmap();
 		System.out.println("Save Pixmap");
-		savePixmap(_pixmap,this.chunk.x + "-" + this.chunk.y);
+		savePixmap(_pixmap, this.chunk.x + "-" + this.chunk.y);
 		dispose();
 	}
 
@@ -191,8 +193,17 @@ public class WorldToPNG {
 			for (int y = 0; y < this.height; y++) {
 				Color color = mapping.get(this.chunk.getMapTileFromLocalPos(x, y).material);
 				_pixmap.setColor(color);
-				_pixmap.drawPixel(x, height-y-1);
+				_pixmap.drawPixel(x, height - y - 1);
 			}
+		}
+
+		List<Entity> entitys = new LinkedList<>(this.chunk.entitys);
+		
+		for(Entity entity : entitys){
+			_pixmap.setColor(Color.RED);
+			Position p = entity.getPositionInChunk();
+			_pixmap.drawPixel(p.x, height - p.y - 1);
+			
 		}
 
 		return _pixmap;

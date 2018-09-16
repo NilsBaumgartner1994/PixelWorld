@@ -137,6 +137,18 @@ public class Entity extends Body implements Serializable {
 	private void registerOnChunk() {
 		getMapTile().chunk.registerEntity(this);
 	}
+	
+	public Chunk getChunk(){
+		Position p = this.getPosition();
+		return world.getChunkGlobalPos(p.x, p.y);
+	}
+	
+	public Position getPositionInChunk(){
+		Chunk c = getChunk();
+		Position p = this.getPosition();
+		Position posInChunk = new Position(p.x-c.getGloabalPosX(),p.y-c.getGloabalPosY());
+		return posInChunk;
+	}
 
 	private void registerEntityOnChunk(Position newpos) {
 		Chunk newChunkReffer = world.getChunkGlobalPos(newpos.x, newpos.y);

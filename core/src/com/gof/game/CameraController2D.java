@@ -49,7 +49,7 @@ public class CameraController2D implements CameraControllerInterface {
 	public static int zoomLevel = 0;
 	public static int zoomLevelmin = -2;
 	public static int zoomLevelmax = 3;
-	
+
 	Direction cameraDirection = Direction.NORTH;
 
 	public GlyphLayout layout;
@@ -171,6 +171,10 @@ public class CameraController2D implements CameraControllerInterface {
 	public int scaleZoom(int orginalPixel) {
 		return orginalPixel * numerator / denumerator;
 	}
+	
+	public float scaleZoom(float orginalPixel){
+		return orginalPixel * numerator / denumerator;
+	}
 
 	int numerator = getZoomLevelScaleFactorNumerator();
 	int denumerator = getZoomLevelScaleFactorDenumerator();
@@ -196,8 +200,8 @@ public class CameraController2D implements CameraControllerInterface {
 			if (nature != null) {
 
 				nature.setScale(1, shaddowLength);
-				drawTileSprite(nature, tile.getGlobalPosition(), tileWidthHalf, tileHeightHalf,
-						shaddowRotation, tile.height);
+				drawTileSprite(nature, tile.getGlobalPosition(), tileWidthHalf, tileHeightHalf, shaddowRotation,
+						tile.height);
 			}
 		}
 
@@ -214,21 +218,21 @@ public class CameraController2D implements CameraControllerInterface {
 		for (MapTile tile : area) {
 			for (Entity e : tile.entitys) {
 				for (Sprite s : e.getSprite()) {
-					drawOnGround(s, tile, e.getPosition(),tileWidthHalf, tileHeightHalf);
+					drawOnGround(s, tile, e.getPosition(), tileWidthHalf, tileHeightHalf);
 				}
 			}
-			
+
 			Sprite nature = tile.getNatureTexture();
 			drawOnGround(nature, tile, tile.getGlobalPosition(), tileWidthHalf, tileHeightHalf);
-			
+
 		}
 	}
 
-	private void drawOnGround(Sprite sprite, MapTile tile,Position globalPos, int tileWidthHalf, int tileHeightHalf) {
+	private void drawOnGround(Sprite sprite, MapTile tile, Position globalPos, int tileWidthHalf, int tileHeightHalf) {
 
 		Color save = fboBatch.getColor();
 
-		drawTileSprite(sprite, globalPos, tileWidthHalf, tileHeightHalf, tile.getRotation(),tile.height);
+		drawTileSprite(sprite, globalPos, tileWidthHalf, tileHeightHalf, tile.getRotation(), tile.height);
 
 		if (tile.isInShaddow()) {
 			fboBatch.setColor(save);
@@ -260,8 +264,8 @@ public class CameraController2D implements CameraControllerInterface {
 			// fboBatch.setColor(save.cpy().add(-0.5f, -0.5f, -0.5f, 0));
 			// }
 
-			drawTileSprite(sprite, tile.getGlobalPosition(), tileWidthHalf, tileHeightHalf,
-					tile.getRotation(),tile.height);
+			drawTileSprite(sprite, tile.getGlobalPosition(), tileWidthHalf, tileHeightHalf, tile.getRotation(),
+					tile.height);
 
 			if (tile.isInShaddow()) {
 				fboBatch.setColor(save);
@@ -273,33 +277,35 @@ public class CameraController2D implements CameraControllerInterface {
 
 	}
 
-	private void drawTileSprite(Sprite sprite, Position globalPos, int tileWidthHalf, int tileHeightHalf,
-			int rotation, int heightDifference) {
+	private void drawTileSprite(Sprite sprite, Position globalPos, int tileWidthHalf, int tileHeightHalf, int rotation,
+			int heightDifference) {
 		if (sprite == null) {
 			return;
 		}
 		int[] xy = globalPosToScreenPos(globalPos, tileHeightHalf, tileWidthHalf, sprite);
 
-		sprite.setPosition(xy[0], xy[1]+scaleZoom(heightDifference));
+		sprite.setPosition(xy[0], xy[1] + scaleZoom(heightDifference));
 
 		// sprite.setOrigin(tileWidthHalf, tileHeightHalf);
 		sprite.setOrigin(scaleZoom(90), scaleZoom(240 - 145));
-		sprite.setSize(sprite.getWidth() * numerator / denumerator, sprite.getHeight() * numerator / denumerator);
+		sprite.setSize(scaleZoom(sprite.getWidth()), scaleZoom(sprite.getHeight()));
 		sprite.setRotation(rotation);
 
 		drawSprite(sprite);
 		if (this.user.profile.debugProfile.showDebugInformationCoordinatesOnMapTiles.value) {
-			drawInformationAtPos(xy[0] + 20, xy[1] + tileHeightHalf + 80, globalPos.x + "/" + globalPos.y);
+			Sprite mouse = new Sprite(ResourceLoader.getInstance().getTile("mouseMatter"));
+			
+			drawInformationCenteredAtPos(xy[0] + scaleZoom(sprite.getRegionWidth() / 2),
+					xy[1] + tileHeightHalf*3+tileHeightHalf/2, globalPos.x + "/" + globalPos.y);
 		}
 	}
 
 	public void drawSprite(Sprite sprite) {
-		
-		
+
 		fboBatch.draw(sprite, sprite.getX(), sprite.getY(), sprite.getOriginX(), sprite.getOriginY(), sprite.getWidth(),
 				sprite.getHeight(), sprite.getScaleX(), sprite.getScaleY(), sprite.getRotation());
 	}
-	
+
 	public void drawSprite(Sprite sprite, Color color) {
 		Color copy = fboBatch.getColor().cpy();
 		fboBatch.setColor(color);
@@ -332,12 +338,12 @@ public class CameraController2D implements CameraControllerInterface {
 		int globalX = globalPos.x;
 		int globalYFrac = globalPos.yFraction;
 		int globalXFrac = globalPos.xFraction;
-		
+
 		int relativeY = (globalY - camera.getPosition().y);
 		int relativeX = (globalX - camera.getPosition().x);
 
-		int oldYF = scaleZoom(globalYFrac-camera.getPosition().yFraction);
-		int oldXF = scaleZoom(globalXFrac-camera.getPosition().xFraction);
+		int oldYF = scaleZoom(globalYFrac - camera.getPosition().yFraction);
+		int oldXF = scaleZoom(globalXFrac - camera.getPosition().xFraction);
 
 		int spriteCorrection = scaleZoom(-sprite.getRegionWidth() / 2);
 		int widthCorrection = this.width / 2;
@@ -349,8 +355,8 @@ public class CameraController2D implements CameraControllerInterface {
 		int yPosMultXPart = 1;
 		int yPosMultYPart = 1;
 
-//		int extraXCorrection = 0;
-//		int extraYCorrection = 0;
+		// int extraXCorrection = 0;
+		// int extraYCorrection = 0;
 
 		if (this.cameraDirection == Direction.NORTH) {
 			xPosMultXPart = 1;
@@ -377,8 +383,8 @@ public class CameraController2D implements CameraControllerInterface {
 			yPosMultYPart = 1;
 		}
 
-//		relativeX += extraXCorrection;
-//		relativeY += extraYCorrection;
+		// relativeX += extraXCorrection;
+		// relativeY += extraYCorrection;
 
 		int relativeXYForX = (xPosMultXPart * relativeX + xPosMultYPart * relativeY);
 		int fractionCorrectionX = (xPosMultXPart * oldXF / 2 + xPosMultYPart * oldYF);
@@ -455,16 +461,16 @@ public class CameraController2D implements CameraControllerInterface {
 		if (this.cameraDirection == Direction.EAST) {
 			int helper = xCorrection;
 			xCorrection = yCorrection;
-			yCorrection = -helper;
+			yCorrection = -helper + 1;
 
 		}
 		if (this.cameraDirection == Direction.SOUTH) {
-			xCorrection = -xCorrection;
-			yCorrection = -yCorrection;
+			xCorrection = -xCorrection + 1;
+			yCorrection = -yCorrection + 1;
 		}
 		if (this.cameraDirection == Direction.WEST) {
 			int helper = xCorrection;
-			xCorrection = -yCorrection;
+			xCorrection = -yCorrection + 1;
 			yCorrection = helper;
 		}
 
@@ -621,6 +627,14 @@ public class CameraController2D implements CameraControllerInterface {
 		font.draw(fboBatch, s, x, y - 0.5f * z);
 	}
 
+	private void drawInformationCenteredAtPos(float x, float y, String s) {
+		float z = font.getLineHeight();
+		getLayout().setText(getFont(), s);
+		int stringWidth = (int) getLayout().width;
+		int stringHeight = (int) getLayout().height;
+		font.draw(fboBatch, s, x - stringWidth / 2, y - stringHeight / 2);
+	}
+
 	public void renderGUI() {
 		fbUI.begin();
 
@@ -689,7 +703,7 @@ public class CameraController2D implements CameraControllerInterface {
 
 	public void changeDistance(int amount) {
 		SoundManager.getInstance().playSound(EasySounds.CLICK);
-		
+
 		zoomLevel += amount;
 		if (zoomLevel < zoomLevelmin)
 			zoomLevel = zoomLevelmin;
