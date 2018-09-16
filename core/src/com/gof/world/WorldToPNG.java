@@ -14,6 +14,8 @@
 package com.gof.world;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import com.badlogic.gdx.files.FileHandle;
@@ -47,6 +49,12 @@ public class WorldToPNG {
 		this.chunk = c;
 		initVariables();
 	}
+	
+	public static Pixmap getPixmap(Chunk c){
+		WorldToPNG toPNG = new WorldToPNG(c);
+		toPNG.renderPixmap();
+		return toPNG._pixmap;
+	}
 
 	private void initVariables() {
 		this.width = this.height = Chunk.CHUNKSIZE;
@@ -54,22 +62,122 @@ public class WorldToPNG {
 	}
 
 	public static void saveToImage(TileWorld world) {
-		WorldToPNG toPNG = new WorldToPNG(world.getChunk(50, 49));
+		System.out.println("Start Test");
+	
+		System.out.println("Start Saving");
+		List<WorldToPNG> parts = getArea(world,49,2,48,2);
+		System.out.println("get Pixmaps");
+		List<Pixmap> pixmaps = getPixmaps(parts);
+		
+		System.out.println("Merge");
+		Pixmap merged = merge4PixmapTogether(pixmaps);
+		System.out.println("Save Merge");
+		savePixmap(merged,"merge");
+	}
+	
+	public static List<WorldToPNG> getArea(TileWorld world, int xs, int xa, int ys, int ya){
+		List<WorldToPNG> parts = new LinkedList<WorldToPNG>();
+		for (int x = xs; x < xs+xa; x++) {
+			for (int y = ys; y < ys+ya; y++) {
+				WorldToPNG toPNG = new WorldToPNG(world.getChunk(x, y));
+				toPNG.renderPixmap();
+				parts.add(toPNG);
+			}
+		}
+		return parts;
+	}
+	
+	public static List<Pixmap> getPixmaps(List<WorldToPNG> parts){
+		List<Pixmap> pixmaps = new LinkedList<Pixmap>();
+		for(WorldToPNG part : parts){
+			pixmaps.add(part._pixmap);
+		}
+		return pixmaps;
+	}
+	
+	private static Pixmap glue4PixmapsTogether(List<Pixmap>pixmaps){
+		if(!allPixmapsSameSize(pixmaps) || pixmaps.size()!=4){
+			return null;
+		}
+		
+		int width = pixmaps.get(0).getWidth();
+		int height = pixmaps.get(0).getHeight();
+		
+		Pixmap result = new Pixmap(width*2, height*2, Format.RGBA8888);
+		
+		for(int x=0;x<width;x++){
+			for(int y=0;y<height;y++){
+				result.drawPixel(x, y, pixmaps.get(0).getPixel(x, y));
+				result.drawPixel(x, y+height, pixmaps.get(1).getPixel(x, y));
+				result.drawPixel(x+width, y, pixmaps.get(2).getPixel(x, y));
+				result.drawPixel(x+width, y+height, pixmaps.get(3).getPixel(x, y));
+			}
+		}
+		
+		return result;
+	}
+
+	private static Pixmap merge4PixmapTogether(List<Pixmap>pixmaps){
+		if(!allPixmapsSameSize(pixmaps) || pixmaps.size()!=4){
+			return null;
+		}
+		
+		int width = pixmaps.get(0).getWidth();
+		int height = pixmaps.get(0).getHeight();
+		
+		Pixmap result = new Pixmap(width, height, Format.RGBA8888);
+		
+		for(int x=0;x<width;x+=2){
+			for(int y=0;y<height;y+=2){
+				result.drawPixel(x/2, y/2, pixmaps.get(0).getPixel(x, y));
+				result.drawPixel(x/2, y/2+height/2, pixmaps.get(1).getPixel(x, y));
+				result.drawPixel(x/2+width/2, y/2, pixmaps.get(2).getPixel(x, y));
+				result.drawPixel(x/2+width/2, y/2+height/2, pixmaps.get(3).getPixel(x, y));
+			}
+		}
+		
+		return result;
+	}
+	
+	private static boolean allPixmapsSameSize(List<Pixmap>pixmaps ){
+		int width = -1;
+		int height = -1;
+		
+		for(int i=0; i<pixmaps.size();i++){
+			Pixmap map = pixmaps.get(i);
+			if(map==null) {
+				return false;
+			}
+			if(i!=0){
+				if(width!=map.getWidth() || height != map.getHeight()){
+					return false;
+				}
+			}
+			width = map.getWidth();
+			height = map.getHeight();
+		}
+		return true;
+	}
+
+	private static void saveChunkToImage(TileWorld world, int x, int y) {
+		WorldToPNG toPNG = new WorldToPNG(world.getChunk(x, y));
+		System.out.println("Sett up");
 		toPNG.saveToImage();
 	}
 
 	public void saveToImage() {
+		System.out.println("Render Pixmap");
 		renderPixmap();
-		savePixmap();
+		System.out.println("Save Pixmap");
+		savePixmap(_pixmap,this.chunk.x + "-" + this.chunk.y);
 		dispose();
 	}
 
-	public void savePixmap() {
+	public static void savePixmap(Pixmap _pixmap, String name) {
 		try {
 			FileHandle fh;
-			do {
-				fh = new FileHandle("dsfefs.png");
-			} while (fh.exists());
+			fh = new FileHandle(name + ".png");
+			fh.parent().mkdirs();
 			PixmapIO.writePNG(fh, _pixmap);
 		} catch (Exception e) {
 		}
@@ -83,7 +191,7 @@ public class WorldToPNG {
 			for (int y = 0; y < this.height; y++) {
 				Color color = mapping.get(this.chunk.getMapTileFromLocalPos(x, y).material);
 				_pixmap.setColor(color);
-				_pixmap.drawPixel(x, y);
+				_pixmap.drawPixel(x, height-y-1);
 			}
 		}
 

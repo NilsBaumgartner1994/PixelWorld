@@ -22,6 +22,7 @@ import com.gof.game.SaveAndLoadable;
 import com.gof.materials.MyMaterial;
 import com.gof.physics.Body;
 import com.gof.physics.Direction;
+import com.gof.worldgenerator.Amortized2DNoise;
 import com.gof.worldgenerator.NatureGenerator;
 
 public class Chunk extends SaveAndLoadable{
@@ -33,7 +34,8 @@ public class Chunk extends SaveAndLoadable{
 	public int x;
 	public int y;
 
-	public static final int CHUNKSIZE = 1024;
+//	public static final int CHUNKSIZE = 1024;
+	public static final int CHUNKSIZE = 32;
 	private boolean generated;
 
 	MapTile[][] tiles;

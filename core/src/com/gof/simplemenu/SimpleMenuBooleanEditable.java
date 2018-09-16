@@ -1,10 +1,11 @@
-package com.gof.menu;
+package com.gof.simplemenu;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.gof.game.CameraControllerInterface;
 import com.gof.game.ResourceLoader;
 import com.gof.inputs.GamePad;
+import com.gof.inputs.GamePadButtons;
 import com.gof.profiles.VarHolder;
 
 public class SimpleMenuBooleanEditable implements SimpleMenuComponent{
@@ -84,13 +85,19 @@ public class SimpleMenuBooleanEditable implements SimpleMenuComponent{
 
 	@Override
 	public boolean update(GamePad gamepad) {
-		// TODO Auto-generated method stub
+
 		return true;
 	}
 
 	@Override
 	public void select() {
 		bool.setVar(!bool.getVar());
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

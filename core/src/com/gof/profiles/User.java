@@ -32,13 +32,14 @@ public class User {
 		this.activGameWorld = Main.getInstance().titleScreenWorld;
 		initCamera();
 		
-		Position startPos = new Position(51721, MapTile.tileWidth / 2, 50811, MapTile.tileHeight / 2);
+//		Position startPos = new Position(51721, MapTile.tileWidth / 2, 50811, MapTile.tileHeight / 2);
+		Position startPos = new Position(0, MapTile.tileWidth / 2, 0, MapTile.tileHeight / 2);
 		
 		this.human = new Human(this.activGameWorld, startPos, "Bob");
 		cameraController.setTrack(human);
 		
-		Bat bat = new Bat(this.activGameWorld,startPos.cpy().addAndSet(2, 0, 0, 0));
-		bat.spawn();
+//		Bat bat = new Bat(this.activGameWorld,startPos.cpy().addAndSet(2, 0, 0, 0));
+//		bat.spawn();
 	}
 
 	public void initCamera() {

@@ -3,7 +3,6 @@ package com.gof.worldgenerator;
 import java.util.Random;
 
 import com.gof.game.Main;
-import com.gof.world.Amortized2DNoise;
 import com.gof.world.Chunk;
 import com.gof.world.TileWorld;
 

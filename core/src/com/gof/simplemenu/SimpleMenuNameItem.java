@@ -1,4 +1,4 @@
-package com.gof.menu;
+package com.gof.simplemenu;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -72,6 +72,12 @@ public class SimpleMenuNameItem implements SimpleMenuComponent{
 
 	@Override
 	public void select() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dispose() {
 		// TODO Auto-generated method stub
 		
 	}

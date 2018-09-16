@@ -2,6 +2,7 @@ package com.gof.world;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -43,12 +44,12 @@ public class TileWorld extends SaveAndLoadable {
 		this.name = name;
 		activeChunks = new ArrayList<Chunk>();
 		chunks = new Chunk[worldSize][worldSize];
-		for(int i=0; i<worldSize;i++){
-			for(int j=0; j<worldSize;j++){
+		for (int i = 0; i < worldSize; i++) {
+			for (int j = 0; j < worldSize; j++) {
 				chunks[i][j] = new Chunk();
 			}
 		}
-		
+
 		if (generatedChunks != null) {
 			for (Chunk chunk : generatedChunks) {
 				setChunk(chunk);
@@ -106,7 +107,8 @@ public class TileWorld extends SaveAndLoadable {
 
 	public void updateEntitysBodys(int steps) {
 		for (Chunk c : activeChunks) {
-			for (Entity e : c.entitys) {
+			List<Entity> copiedEntitys = new LinkedList<Entity>(c.entitys);
+			for (Entity e : copiedEntitys) {
 				e.updateLogic();
 				e.calcPhysicStep(steps);
 			}
@@ -121,21 +123,13 @@ public class TileWorld extends SaveAndLoadable {
 		int cxe = globalPosToChunkPos(xe);
 		int cye = globalPosToChunkPos(ye);
 
-		int xLeft = cxs;
-		int xRight = cxe;
-		if (xLeft > xRight) {
-			int h = xLeft;
-			xLeft = xRight;
-			xRight = h;
-		}
+		// make left lower than right
+		int xLeft = cxs > cxe ? cxe : cxs;
+		int xRight = cxs > cxe ? cxs : cxe;
 
-		int yBottom = cys;
-		int yTop = cye;
-		if (yBottom > yTop) {
-			int h = yBottom;
-			yBottom = yTop;
-			yTop = h;
-		}
+		// make bottom lower than top
+		int yBottom = cys > cye ? cye : cys;
+		int yTop = cys > cye ? cys : cye;
 
 		yBottom = checkGloablPosBoundary(yBottom);
 		yTop = checkGloablPosBoundary(yTop);
@@ -194,13 +188,10 @@ public class TileWorld extends SaveAndLoadable {
 			return null;
 
 		Chunk c = chunks[cx][cy];
-		if (c == null) {
+		if (c == null || !c.isGenerated()) {
 			generator.generateChunkAt(cx, cy);
-		} else {
-			if (!c.isGenerated()) {
-				generator.generateChunkAt(cx, cy);
-			}
 		}
+		
 		return chunks[cx][cy];
 	}
 
@@ -209,7 +200,10 @@ public class TileWorld extends SaveAndLoadable {
 	}
 
 	public MapTile getMapTile(Chunk c, int tx, int ty) {
-		return getChunk(c.x, c.y).getMapTileFromLocalPos(tx, ty);
+		if(c==null) return null;
+		Chunk generatedChunk = getChunk(c.x, c.y);
+		if(generatedChunk==null) return null;
+		return generatedChunk.getMapTileFromLocalPos(tx, ty);
 	}
 
 	public GeneratorInterface getGenerator() {

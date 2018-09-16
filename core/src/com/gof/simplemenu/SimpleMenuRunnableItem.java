@@ -1,4 +1,4 @@
-package com.gof.menu;
+package com.gof.simplemenu;
 
 public class SimpleMenuRunnableItem extends SimpleMenuNameItem{
 	

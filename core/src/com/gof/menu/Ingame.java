@@ -9,6 +9,7 @@ import com.gof.entitys.Human;
 import com.gof.game.CameraControllerInterface;
 import com.gof.game.ResourceLoader;
 import com.gof.profiles.User;
+import com.gof.simplemenu.SimpleMenu;
 import com.gof.sound.EasySounds;
 import com.gof.sound.SoundManager;
 import com.gof.items.AbstractItem;

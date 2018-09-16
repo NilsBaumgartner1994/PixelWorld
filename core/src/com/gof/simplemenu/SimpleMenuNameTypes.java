@@ -1,4 +1,4 @@
-package com.gof.menu;
+package com.gof.simplemenu;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.gof.game.ResourceLoader;

@@ -11,7 +11,7 @@
 /// Demo by Pablo Nu�ez.
 /// Last updated January 31, 2014.
 
-package com.gof.world;
+package com.gof.worldgenerator;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -22,7 +22,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.gof.materials.MyMaterial;
 import com.gof.nature.Nature;
 import com.gof.physics.Direction;
-import com.gof.worldgenerator.NatureGenerator;
+import com.gof.world.Chunk;
+import com.gof.world.MapTile;
 
 public class Amortized2DNoise {
 	float[] uax, vax, ubx, vbx, uay, vay, uby, vby; // /< Amortized noise

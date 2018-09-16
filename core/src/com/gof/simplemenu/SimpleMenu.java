@@ -1,4 +1,4 @@
-package com.gof.menu;
+package com.gof.simplemenu;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -8,13 +8,15 @@ import com.gof.game.CameraControllerInterface;
 import com.gof.game.ResourceLoader;
 import com.gof.inputs.GamePad;
 import com.gof.inputs.GamePadButtons;
+import com.gof.menu.Menu;
+import com.gof.menu.MenuHandler;
 
 public class SimpleMenu extends SimpleMenuNameItem implements Menu {
 
-	List<SimpleMenuComponent> contents;
-	SimpleMenuComponent active = null;
-	MenuHandler handler;
-	Menu parent;
+	protected List<SimpleMenuComponent> contents;
+	protected SimpleMenuComponent active = null;
+	protected MenuHandler handler;
+	protected Menu parent;
 
 	public SimpleMenu(MenuHandler handler, Menu parent, String title, List<SimpleMenuComponent> content) {
 		super(title, SimpleMenuNameTypes.MAIN);
@@ -54,7 +56,8 @@ public class SimpleMenu extends SimpleMenuNameItem implements Menu {
 	@Override
 	public boolean update(GamePad gamepad) {
 		if (gamepad.getButton(GamePadButtons.ESC).isTyped()) {
-			handler.setActivMenu(parent);
+			setActive(parent);
+			select();
 		}
 		if (gamepad.getButton(GamePadButtons.UP).isTyped()) {
 			changeActiveMenuComponent(-1);
@@ -113,7 +116,8 @@ public class SimpleMenu extends SimpleMenuNameItem implements Menu {
 
 	@Override
 	public void select() {
-		if (active instanceof Menu) {
+		if (active instanceof Menu && active != this) {
+			this.dispose();
 			this.handler.setActivMenu((Menu) active);
 		} else {
 			active.select();

@@ -1,22 +1,14 @@
 package com.gof.menu;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector2;
-import com.gof.game.CameraControllerInterface;
 import com.gof.game.Main;
-import com.gof.game.ResourceLoader;
-import com.gof.inputs.GamePad;
-import com.gof.inputs.GamePadButtons;
-import com.gof.physics.Direction;
-import com.gof.profiles.UserProfile;
 import com.gof.profiles.VarHolder;
+import com.gof.simplemenu.SimpleMenu;
+import com.gof.simplemenu.SimpleMenuBooleanEditable;
+import com.gof.simplemenu.SimpleMenuComponent;
+import com.gof.simplemenu.SimpleMenuNameTypes;
+import com.gof.simplemenu.SimpleMenuRunnableItem;
 import com.gof.world.WorldToPNG;
 
 public class OptionMenu extends SimpleMenu {
@@ -43,7 +35,7 @@ public class OptionMenu extends SimpleMenu {
 		SimpleMenuRunnableItem WorldToPNG = new SimpleMenuRunnableItem("World To PNG", SimpleMenuNameTypes.SUB,quitRunnable);
 		menuComponents.add(WorldToPNG);
 		
-		menuComponents.add(handler.ingameMenu);
+		menuComponents.add(parent);
 
 		return menuComponents;
 	}

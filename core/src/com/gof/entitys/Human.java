@@ -117,11 +117,11 @@ public class Human extends Entity {
 		if (this.stickLeft.len() != 0) {
 			this.direction = Position.getPositionDirectionFromVector(this.stickLeft);
 			MapTile nextBlock = getNextBlockInDirection();
-			if (!nextBlock.isSolid()) {
+//			if (!nextBlock.isSolid()) {
 				Position nextBlockMiddle = nextBlock.getGlobalPosition().addAndSet(0, MapTile.tileWidth / 2, 0,
 						MapTile.tileHeight / 2);
 				this.nav.setPath(nextBlockMiddle);
-			}
+//			}
 		}
 	}
 
