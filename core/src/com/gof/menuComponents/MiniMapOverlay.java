@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.gof.game.CameraControllerInterface;
+import com.gof.game.ResourceLoader;
 import com.gof.helper.SpriteHelper;
 import com.gof.inputs.GamePad;
 import com.gof.menu.MenuHandler;
@@ -42,6 +43,12 @@ public class MiniMapOverlay implements SimpleMenuComponent {
 
 			map.setPosition(x, y);
 			display.drawSpriteAndSubtractYpos(map, x, y);
+			
+//			Sprite minimapBlack = new Sprite(ResourceLoader.getInstance().getGUI("minimap/minimap-black"));
+//			display.drawSpriteAndSubtractYpos(minimapBlack, x, y);
+			
+			Sprite minimapRand = new Sprite(ResourceLoader.getInstance().getGUI("minimap/minimap"));
+			display.drawSpriteAndSubtractYpos(minimapRand, x, y);
 		}
 		return 0;
 	}
