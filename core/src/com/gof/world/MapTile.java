@@ -154,5 +154,9 @@ public class MapTile extends Position implements Serializable {
 		back.add(getOffset(1, 1));
 		return back;
 	}
+	
+	public String toString(){
+		return "Chunk: "+this.chunk.x+":"+this.chunk.y+" LocalPos: "+this.x+":"+this.y+" GlobalPos: "+this.getGlobalX()+":"+this.getGlobalY();
+	}
 
 }

@@ -8,8 +8,6 @@ import java.util.Map;
 
 import com.badlogic.gdx.math.Vector2;
 import com.gof.entitys.Entity;
-import com.gof.entitys.Human;
-import com.gof.game.Main;
 import com.gof.game.SaveAndLoadable;
 import com.gof.physics.WorldTime;
 import com.gof.worldgenerator.GeneratorInterface;
@@ -26,10 +24,8 @@ public class TileWorld extends SaveAndLoadable {
 
 	String name;
 
-	// Number of cells
-	public static int worldSize = 100;
+	public Map<String, Chunk> chunks;
 
-	public Chunk chunks[][];
 	public List<Chunk> activeChunks;
 	public Map<Integer, Entity> entitys = new HashMap<Integer, Entity>();
 
@@ -43,12 +39,7 @@ public class TileWorld extends SaveAndLoadable {
 			NatureGenerator generator) {
 		this.name = name;
 		activeChunks = new ArrayList<Chunk>();
-		chunks = new Chunk[worldSize][worldSize];
-		for (int i = 0; i < worldSize; i++) {
-			for (int j = 0; j < worldSize; j++) {
-				chunks[i][j] = new Chunk();
-			}
-		}
+		chunks = new HashMap<String, Chunk>();
 
 		if (generatedChunks != null) {
 			for (Chunk chunk : generatedChunks) {
@@ -72,12 +63,10 @@ public class TileWorld extends SaveAndLoadable {
 	public static final String ENDING = ".world";
 
 	public void save() {
-		for (Chunk[] chunks : chunks) {
-			for (Chunk c : chunks) {
-				if (c != null) {
-					if (c.isGenerated()) {
-						c.save(this);
-					}
+		for (Chunk c : chunks.values()) {
+			if (c != null) {
+				if (c.isGenerated()) {
+					c.save(this);
 				}
 			}
 		}
@@ -98,10 +87,8 @@ public class TileWorld extends SaveAndLoadable {
 	}
 
 	public void deactivateAllChunks() {
-		for (Chunk[] chunks : chunks) {
-			for (Chunk c : chunks) {
-				deactivateChunk(c);
-			}
+		for (Chunk c : chunks.values()) {
+			deactivateChunk(c);
 		}
 	}
 
@@ -150,10 +137,10 @@ public class TileWorld extends SaveAndLoadable {
 	}
 
 	public int checkGloablPosBoundary(int gx) {
-		if (gx < 0)
-			return 0;
-		if (gx > worldSize * Chunk.CHUNKSIZE)
-			return worldSize * Chunk.CHUNKSIZE;
+		// if (gx < 0)
+		// return 0;
+		// if (gx > worldSize * Chunk.CHUNKSIZE)
+		// return worldSize * Chunk.CHUNKSIZE;
 		return gx;
 	}
 
@@ -162,10 +149,27 @@ public class TileWorld extends SaveAndLoadable {
 	}
 
 	public MapTile getMapTileFromGlobalPos(int gx, int gy) {
-		return getMapTile(getChunkGlobalPos(gx, gy), gx % Chunk.CHUNKSIZE, gy % Chunk.CHUNKSIZE);
+		int clx = gx;
+		int cly = gy;
+		
+
+			clx = gx % Chunk.CHUNKSIZE;
+			cly = gy % Chunk.CHUNKSIZE;
+			
+			if(clx<0){
+				clx = Chunk.CHUNKSIZE+clx;
+			}
+			if(cly<0){
+				cly = Chunk.CHUNKSIZE+cly;
+			}
+			
+		return getMapTile(getChunkGlobalPos(gx, gy), clx, cly);
 	}
 
 	public static int globalPosToChunkPos(int gx) {
+		if(gx<0 && gx%Chunk.CHUNKSIZE!=0){
+			return gx / Chunk.CHUNKSIZE-1;
+		}
 		return gx / Chunk.CHUNKSIZE;
 	}
 
@@ -182,27 +186,29 @@ public class TileWorld extends SaveAndLoadable {
 	}
 
 	public Chunk getChunk(int cx, int cy) {
-		if (cx < 0 || cx > worldSize)
-			return null;
-		if (cy < 0 || cy > worldSize)
-			return null;
+		// if (cx < 0 || cx > worldSize)
+		// return null;
+		// if (cy < 0 || cy > worldSize)
+		// return null;
 
-		Chunk c = chunks[cx][cy];
+		Chunk c = chunks.get(cx + "-" + cy);
 		if (c == null || !c.isGenerated()) {
 			generator.generateChunkAt(cx, cy);
 		}
-		
-		return chunks[cx][cy];
+
+		return chunks.get(cx + "-" + cy);
 	}
 
 	public Chunk setChunk(Chunk c) {
-		return chunks[c.x][c.y] = c;
+		return chunks.put(c.x + "-" + c.y, c);
 	}
 
 	public MapTile getMapTile(Chunk c, int tx, int ty) {
-		if(c==null) return null;
+		if (c == null)
+			return null;
 		Chunk generatedChunk = getChunk(c.x, c.y);
-		if(generatedChunk==null) return null;
+		if (generatedChunk == null)
+			return null;
 		return generatedChunk.getMapTileFromLocalPos(tx, ty);
 	}
 

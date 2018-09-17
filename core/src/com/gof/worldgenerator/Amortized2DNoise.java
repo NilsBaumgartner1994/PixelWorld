@@ -304,7 +304,7 @@ public class Amortized2DNoise {
 					tiles[cx][cy] = new MapTile(c, cx, cy, false, MyMaterial.WATER);
 				}
 
-				 tiles[cx][cy].setHeight((int) (cell[cx][cy]*100));
+//				 tiles[cx][cy].setHeight((int) (cell[cx][cy]*100)); //For debugging
 			}
 		}
 
