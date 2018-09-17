@@ -290,34 +290,21 @@ public class Amortized2DNoise {
 
 		for (int cy = 0; cy < CELLSIZE2D; cy++) {
 			for (int cx = 0; cx < CELLSIZE2D; cx++) {
-				
-				if(NatureGenerator.debug_generation){
-				
-				if(cx%2==0 ^ cy%2==0){
-					tiles[cx][cy] = new MapTile(c, cx, cy, false, MyMaterial.GRASS);
-				}else if(cx%5==0 ^ cy%5==0){
-					tiles[cx][cy] = new MapTile(c, cx, cy, false, MyMaterial.WATER);
-				}else{
+
+				if (cell[cx][cy] >= seaLevel && cell[cx][cy] <= seaLevel + sandAmount) {
 					tiles[cx][cy] = new MapTile(c, cx, cy, false, MyMaterial.SAND);
 				}
-				
+				if (cell[cx][cy] > seaLevel + 0.1f && cell[cx][cy] <= seaLevel + 0.4f) {
+					tiles[cx][cy] = new MapTile(c, cx, cy, false, MyMaterial.GRASS);
 				}
-				else{
-				
-					if (cell[cx][cy] >= seaLevel && cell[cx][cy] <= seaLevel + sandAmount) {
-						tiles[cx][cy] = new MapTile(c, cx, cy, false, MyMaterial.SAND);
-					}
-					if (cell[cx][cy] > seaLevel + 0.1f && cell[cx][cy] <= seaLevel + 0.4f) {
-						tiles[cx][cy] = new MapTile(c, cx, cy, false, MyMaterial.GRASS);
-					}
-					if (cell[cx][cy] > seaLevel + 0.4f) {
-						tiles[cx][cy] = new MapTile(c, cx, cy, false, MyMaterial.STONE);
-					}
-					if (cell[cx][cy] < seaLevel) {
-						tiles[cx][cy] = new MapTile(c, cx, cy, false, MyMaterial.WATER);
-					}
-					
+				if (cell[cx][cy] > seaLevel + 0.4f) {
+					tiles[cx][cy] = new MapTile(c, cx, cy, false, MyMaterial.STONE);
 				}
+				if (cell[cx][cy] < seaLevel) {
+					tiles[cx][cy] = new MapTile(c, cx, cy, false, MyMaterial.WATER);
+				}
+
+				 tiles[cx][cy].setHeight((int) (cell[cx][cy]*100));
 			}
 		}
 

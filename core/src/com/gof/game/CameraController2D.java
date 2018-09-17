@@ -67,6 +67,10 @@ public class CameraController2D implements CameraControllerInterface {
 		font.setColor(Color.BLACK);
 		layout = new GlyphLayout();
 	}
+	
+	public Position getCameraPosition(){
+		return this.camera.getPosition().cpy();
+	}
 
 	public void resize(int width, int height) {
 		setScreenSize(width, height);
@@ -610,6 +614,7 @@ public class CameraController2D implements CameraControllerInterface {
 			MapTile standOn = world.getMapTileFromGlobalPos((int) bodyPos.x, (int) bodyPos.y);
 			drawInformationLine("Body Chunk: " + standOn.chunk.x + "|" + standOn.chunk.y);
 			drawInformationLine("Stand On: " + standOn.material.getName());
+			drawInformationLine("MapTile Height: " + standOn.height);
 			if (standOn.nature != null) {
 				drawInformationLine("Nature: " + standOn.nature.getName());
 			}

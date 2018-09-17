@@ -30,6 +30,7 @@ public interface CameraControllerInterface {
 	public void changeDistance(int amount);
 	public void dispose();
 	public void setTrack(Entity body);
+	public Position getCameraPosition();
 	public int getWidth();
 	public int getHeigth();
 	public BitmapFont getFont();

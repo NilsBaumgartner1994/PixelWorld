@@ -31,8 +31,21 @@ public class PositionComperator implements Comparator<Position> {
 		}
 		return -getDirectionNorthCompare(pos1, pos2);
 	}
+	
+	private Position getGlobalPosIfMapTile(Position pos){
+		if(pos instanceof MapTile){
+			MapTile tile = (MapTile)pos;
+			return tile.getGlobalPosition();
+		}
+		
+		return pos;
+	}
 
-	public int getDirectionNorthCompare(Position pos1, Position pos2) {
+	public int getDirectionNorthCompare(Position pos1n, Position pos2n) {
+		Position pos1 = getGlobalPosIfMapTile(pos1n);
+		Position pos2 = getGlobalPosIfMapTile(pos2n);
+		
+		
 		float me = heightCompareLength(pos1);
 		float other = heightCompareLength(pos2);
 

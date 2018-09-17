@@ -106,7 +106,11 @@ public class MapTile extends Position implements Serializable {
 		if(m.equals(MyMaterial.WATER)){
 			setSolid(true);
 		}
-		this.height = MyMaterial.getDefaultHeightByID(this.material.getID());
+		setHeight(MyMaterial.getDefaultHeightByID(this.material.getID()));
+	}
+	
+	public void setHeight(int height){
+		this.height = height;
 	}
 
 	public boolean isSolid() {

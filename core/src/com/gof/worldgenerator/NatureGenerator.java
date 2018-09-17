@@ -18,15 +18,15 @@ public class NatureGenerator implements GeneratorInterface {
 	public static boolean debug_generation = false;
 
 	// Altering will make it look more like continents or islands.
-	public static float seaLevel = 0.1f;
+	public static float seaLevel = -0.2f;
 
 	// How much sand in the shore is created
-	public static float sandAmount = 0.1f;
+	public static float sandAmount = 0.3f;
 	public static Random random;
 
 	// Alter this value for different results
 	public static int octave0 = 2;
-	public static int octave1 = 8;
+	public static int octave1 = 6;
 	public static Amortized2DNoise noise;
 
 	public NatureGenerator() {
