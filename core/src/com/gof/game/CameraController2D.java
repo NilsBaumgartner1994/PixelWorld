@@ -260,6 +260,7 @@ public class CameraController2D implements CameraControllerInterface {
 			mouseTile = world.getMapTileFromGlobalPos(globalPos.x, globalPos.y);
 		}
 
+		drawOrderNumber = 0;
 		for (MapTile tile : area) {
 			Sprite sprite = tile.getMaterialSprite();
 			Color save = fboBatch.getColor();
@@ -274,12 +275,16 @@ public class CameraController2D implements CameraControllerInterface {
 			if (tile.isInShaddow()) {
 				fboBatch.setColor(save);
 			}
+			
+			drawOrderNumber++;
 
 			fboBatch.setColor(save);
 
 		}
 
 	}
+	
+	int drawOrderNumber = 0;
 
 	private void drawTileSprite(Sprite sprite, Position globalPos, int tileWidthHalf, int tileHeightHalf, int rotation,
 			int heightDifference) {
@@ -296,12 +301,19 @@ public class CameraController2D implements CameraControllerInterface {
 		sprite.setRotation(rotation);
 
 		drawSprite(sprite);
-		if (this.user.profile.debugProfile.showDebugInformationCoordinatesOnMapTiles.value) {
+		if (this.user.profile.debugProfile.showCoordinatesOnMapTiles.getVar()) {
 			Sprite mouse = new Sprite(ResourceLoader.getInstance().getTile("mouseMatter"));
 			
 			drawInformationCenteredAtPos(xy[0] + scaleZoom(sprite.getRegionWidth() / 2),
 					xy[1] + tileHeightHalf*3+tileHeightHalf/2, globalPos.x + "/" + globalPos.y);
 		}
+		if (this.user.profile.debugProfile.showMapTilesDrawOrder.getVar()) {
+			Sprite mouse = new Sprite(ResourceLoader.getInstance().getTile("mouseMatter"));
+			
+			drawInformationCenteredAtPos(xy[0] + scaleZoom(sprite.getRegionWidth() / 2),
+					xy[1] + tileHeightHalf*3+tileHeightHalf/2, ""+drawOrderNumber);
+		}
+		
 	}
 
 	public void drawSprite(Sprite sprite) {
