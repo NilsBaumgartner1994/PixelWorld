@@ -1,11 +1,212 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src">
-		<attributes>
-			<attribute name="FROM_GRADLE_MODEL" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
-	<classpathentry kind="output" path="bin"/>
+  <classpathentry kind="output" path="bin/default"/>
+  <classpathentry output="bin/main" kind="src" path="src">
+    <attributes>
+      <attribute name="gradle_scope" value="main"/>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6/"/>
+  <classpathentry kind="src" path="/PixelWorld-core"/>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-tools/1.9.8/6c7486ec4bf38d3a632455638356f6e85c97f437/gdx-tools-1.9.8-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-tools/1.9.8/5c32820fccee957cc77990d353297ceed1a63159/gdx-tools-1.9.8.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-backend-lwjgl/1.9.8/680fd8ed8d823a1510d4bea1ab59248934d1deca/gdx-backend-lwjgl-1.9.8-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-backend-lwjgl/1.9.8/b7c138f14ed67ad830ae7597da3d86ae02b20eee/gdx-backend-lwjgl-1.9.8.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-platform/1.9.8/604a2ef2c7c92a5900114757cbd3fb4dcbb8270c/gdx-platform-1.9.8-natives-desktop.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-box2d-platform/1.9.8/3195b56f82751d7cd7de85edb6824d17bf479781/gdx-box2d-platform-1.9.8-natives-desktop.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-controllers-desktop/1.9.8/5911bf10d33a049fa27b72d0b800d0eb0c7ba0f4/gdx-controllers-desktop-1.9.8-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-controllers-desktop/1.9.8/631f8e4bc387dbf8a7122e2e8729ec1cdc0dc45a/gdx-controllers-desktop-1.9.8.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-controllers-platform/1.9.8/deef23cee3884f579312b2987afd6a377b6eda2e/gdx-controllers-platform-1.9.8-natives-desktop.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-freetype-platform/1.9.8/b21a8def0c70ec49ea5e2658e788b7a9177399f8/gdx-freetype-platform-1.9.8-natives-desktop.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-bullet-platform/1.9.8/be27849ed15241692302a3e8b1c209a7d48276f4/gdx-bullet-platform-1.9.8-natives-desktop.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/de.tomgrill.gdxfacebook/gdx-facebook-desktop/1.4.1/944b19cb8190c3a445d0ee74617ad47fedf01c5e/gdx-facebook-desktop-1.4.1-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/de.tomgrill.gdxfacebook/gdx-facebook-desktop/1.4.1/709e9a585082d7b875540d33ee3a4f4787ea74c3/gdx-facebook-desktop-1.4.1.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/de.tomgrill.gdxdialogs/gdx-dialogs-desktop/1.2.5/63b4782f0a32fa4db8c6b9928d15efe58b5f4d7d/gdx-dialogs-desktop-1.2.5-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/de.tomgrill.gdxdialogs/gdx-dialogs-desktop/1.2.5/233048054a845d7a59d86c54e9d74f95749f74b5/gdx-dialogs-desktop-1.2.5.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-controllers/1.9.8/5be4e61f2a04718e82f5fecbaffeff0035021902/gdx-controllers-1.9.8-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-controllers/1.9.8/8cdc9ab6826a74594c3b0084d8a7669f8124592b/gdx-controllers-1.9.8.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-bullet/1.9.8/e37e48ef3e095fae02f5d8832ee44fb0e347a583/gdx-bullet-1.9.8-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-bullet/1.9.8/7f6d7421bc365d49246b65f0528978fd0c8524ed/gdx-bullet-1.9.8.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.ashley/ashley/1.7.0/761d4182b29162ddd88b5d49152b8d36acb628f4/ashley-1.7.0-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.ashley/ashley/1.7.0/a7c4083c0a42027a3c03ba7ccecef6cbe1c5f0a4/ashley-1.7.0.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-ai/1.8.0/154b2fbb50894a944607cd74f7dba1073d31a967/gdx-ai-1.8.0-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-ai/1.8.0/ec30677d8ab1a8b8aa4b853c5f4e4b1361f50bf5/gdx-ai-1.8.0.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.underwaterapps.overlap2druntime/overlap2d-runtime-libgdx/0.1.0/17835caf1b92a837f621536299b5e75b82724f57/overlap2d-runtime-libgdx-0.1.0-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.underwaterapps.overlap2druntime/overlap2d-runtime-libgdx/0.1.0/1dd0d0808d1e44fe10c749d8216c44e5c4c99361/overlap2d-runtime-libgdx-0.1.0.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.github.czyzby/gdx-lml-vis/1.9.1.9.6/68d8edc9d9d0f5edd78929727ee70534cfb94b22/gdx-lml-vis-1.9.1.9.6-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.github.czyzby/gdx-lml-vis/1.9.1.9.6/951c197ebe8c9644bd555722c449fa4cfda527fb/gdx-lml-vis-1.9.1.9.6.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.kotcrab.vis/vis-ui/1.3.0/f6114ee000ad1f210ea36d1c793f64564300f861/vis-ui-1.3.0-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.kotcrab.vis/vis-ui/1.3.0/639741faa66a560197ee06a9412949402c831796/vis-ui-1.3.0.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/net.dermetfan.libgdx-utils/libgdx-utils-box2d/0.13.4/4acd1315a8c5b90fec5b995ea83003ddf4fb7f67/libgdx-utils-box2d-0.13.4-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/net.dermetfan.libgdx-utils/libgdx-utils-box2d/0.13.4/918d79a20ea3c898cdb3611782c5b2bfa6ec575b/libgdx-utils-box2d-0.13.4.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/net.dermetfan.libgdx-utils/libgdx-utils/0.13.4/aabe6c69e3a8bee6e0a56f954f377631a3c2f720/libgdx-utils-0.13.4-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/net.dermetfan.libgdx-utils/libgdx-utils/0.13.4/27affad2873d1c9c366a2290fc51f3927f3a5f83/libgdx-utils-0.13.4.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-backend-headless/1.9.8/2c8b22192291dd19a7b1d0e76295d6f658758dae/gdx-backend-headless-1.9.8-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-backend-headless/1.9.8/c90fcd61d78d3b3d3ee7e493030b06df984df53b/gdx-backend-headless-1.9.8.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/de.tomgrill.gdxfacebook/gdx-facebook-core/1.4.1/25dbbf40f9e8ccc051face02a17d0651688f624f/gdx-facebook-core-1.4.1-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/de.tomgrill.gdxfacebook/gdx-facebook-core/1.4.1/1b5d4948b033a4b9a8f360d0fa76c49e6e17baec/gdx-facebook-core-1.4.1.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/de.tomgrill.gdxdialogs/gdx-dialogs-core/1.2.5/401ecb9eb3f3bc5084687cba7fa8bb76645d834d/gdx-dialogs-core-1.2.5-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/de.tomgrill.gdxdialogs/gdx-dialogs-core/1.2.5/c55ef7e82d013ea7d99a66dcbdc24cfa7127337e/gdx-dialogs-core-1.2.5.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.box2dlights/box2dlights/1.4/57a1f15112328706c648a430bd19574118e2d8f4/box2dlights-1.4-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.box2dlights/box2dlights/1.4/3d77ad5b4164fb32fc67e2446e35911bb0aaf0bd/box2dlights-1.4.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-box2d/1.9.8/1fd1df309f965e52196900b270afc2bcd0acd0a2/gdx-box2d-1.9.8-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-box2d/1.9.8/6f0497b7958216464101adfb7bdc3a0f7b88d6d3/gdx-box2d-1.9.8.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-freetype/1.9.8/a16774d14a95c8e45b9ae4cd3f2d7450fa1f7c94/gdx-freetype-1.9.8-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-freetype/1.9.8/d92b5b8beab10e3b3c0dd836d4fc186f95e7ea4b/gdx-freetype-1.9.8.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.8/bac17f395be5010619b31280fe84e9f53118d0b9/gdx-1.9.8-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.8/a35a0076fbce873f9c2d5a1a1c8066244231bb3c/gdx-1.9.8.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.github.czyzby/gdx-lml/1.9.1.9.6/dfda7fb10e5f9eaa1e68ee1e23ca9caa5ed953ad/gdx-lml-1.9.1.9.6-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.github.czyzby/gdx-lml/1.9.1.9.6/2590018dd6fc37566e3998db2cc2ecce0155c3b4/gdx-lml-1.9.1.9.6.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.github.czyzby/gdx-kiwi/1.9.1.9.6/3e29d2875b5e1c0a9d8e9378bfe3893ab62edbff/gdx-kiwi-1.9.1.9.6-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.github.czyzby/gdx-kiwi/1.9.1.9.6/c00391b240ccf1212f3acd2095b6df489d4ff281/gdx-kiwi-1.9.1.9.6.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl_util/2.9.2/308d4ebe8d7b240d3490b6a7e0424807ea3ad98b/lwjgl_util-2.9.2-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl_util/2.9.2/4b9e37300a87799856e0bd15ed81663cdb6b0947/lwjgl_util-2.9.2.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl/2.9.2/4d114b5ef3ad3bf571b1f090cb00855991067e0b/lwjgl-2.9.2-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl/2.9.2/a9d80fe5935c7a9149f6584d9777cfd471f65489/lwjgl-2.9.2.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.jlayer/jlayer/1.0.1-gdx/f1c4ffebc5e4f68be914404faab580c20de8ea1f/jlayer-1.0.1-gdx-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/com.badlogicgames.jlayer/jlayer/1.0.1-gdx/7cca83cec5c1b2f011362f4d85aabd71a73b049d/jlayer-1.0.1-gdx.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/org.jcraft/jorbis/0.0.17/5446be5d62e4c6b347c8e6cd28dc00a936417ba2/jorbis-0.0.17-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/org.jcraft/jorbis/0.0.17/8872d22b293e8f5d7d56ff92be966e6dc28ebdc6/jorbis-0.0.17.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl-platform/2.9.2/510c7d317f5e9e700b9cfaac5fd38bdebf0702e0/lwjgl-platform-2.9.2-natives-windows.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl-platform/2.9.2/d276cdf61fe2b516c7b7f4aa1b8dea91dbdc8d56/lwjgl-platform-2.9.2-natives-linux.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl-platform/2.9.2/d55b46b40b40249d627a83a7f7f22649709d70c3/lwjgl-platform-2.9.2-natives-osx.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput/2.0.5/82604cfeb87b9ab70ed70aa19a137de8ceb21504/jinput-2.0.5-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput/2.0.5/39c7796b469a600f72380316f6b1f11db6c2c7c4/jinput-2.0.5.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/net.java.jutils/jutils/1.0.0/d18678a00b216863206a1bb6190507e02a32971b/jutils-1.0.0-sources.jar" kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/net.java.jutils/jutils/1.0.0/e12fe1fda814bd348c1579329c86943d2cd3c6a6/jutils-1.0.0.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput-platform/2.0.5/7ff832a6eb9ab6a767f1ade2b548092d0fa64795/jinput-platform-2.0.5-natives-linux.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput-platform/2.0.5/385ee093e01f587f30ee1c8a2ee7d408fd732e16/jinput-platform-2.0.5-natives-windows.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Users/nbaumgartner/.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput-platform/2.0.5/53f9c919f34d2ca9de8c51fc4e1e8282029a9232/jinput-platform-2.0.5-natives-osx.jar">
+    <attributes>
+      <attribute name="gradle_used_by_scope" value="main,test"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="src" path="assets"/>
 </classpath>

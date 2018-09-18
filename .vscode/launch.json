@@ -22,7 +22,7 @@
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",
             "stopOnEntry": false,
-            "mainClass": "com.gof.desktop.DesktopLauncher",
+            "mainClass": "com.gentlemansoftware.pixelworld.desktop.DesktopLauncher",
             "args": "",
             "projectName": "God-of-Forest-desktop"
         },
@@ -33,7 +33,7 @@
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",
             "stopOnEntry": false,
-            "mainClass": "com.gof.IOSLauncher",
+            "mainClass": "com.gentlemansoftware.pixelworld.IOSLauncher",
             "args": "",
             "projectName": "God-of-Forest-ios"
         },
