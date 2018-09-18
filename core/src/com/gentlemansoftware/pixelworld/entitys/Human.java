@@ -102,7 +102,7 @@ public class Human extends Entity {
 				if (item.isNature()) {
 					// this.getMapTile().setNature(item.getNature());
 				} else {
-					this.getMapTile().setMaterial(item.getMaterial());
+//					this.getMapTile().setMaterial(item.getMaterial());
 				}
 			}
 			if (activItem instanceof Tool) {
@@ -137,11 +137,9 @@ public class Human extends Entity {
 		this.speed = Speed.walk;
 	}
 
-	public List<Sprite> getSprite() {
-		// return PlayerSpriteCreator.getPlayerSprite(this);
-		List<Sprite> sprites = new ArrayList<Sprite>();
-		sprites.add(new Sprite(FoxSpriteAnimations.getTexture(getMotionState(), this.world.time)));
-		return sprites;
+	@Override
+	public Sprite getSprite(Direction camdir) {
+		return new Sprite(FoxSpriteAnimations.getTexture(getMotionState(), this.world.time));
 	}
 
 	@Override

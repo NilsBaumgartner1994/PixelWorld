@@ -41,7 +41,10 @@ public class Chunk extends SaveAndLoadable{
 	MapTile[][] tiles;
 	List<Entity> entitys;
 	
-	public Chunk(){
+	public transient TileWorld world;
+	
+	public Chunk(TileWorld world){
+		this.world = world;
 		generated = false;
 	}
 	
@@ -76,6 +79,15 @@ public class Chunk extends SaveAndLoadable{
 		Main.log(getClass(), "Generation: start");
 		tiles = noise.Generate2DNoise(this, tiles, cell2, NatureGenerator.octave0, NatureGenerator.octave1, y, x);
 		this.generated = true;
+
+	}
+	
+	public void spawnAllBlocks(){
+		for(MapTile[] tile1 : tiles){
+			for(MapTile tile : tile1){
+				tile.block.spawn();
+			}	
+		}	
 	}
 
 	public void registerEntity(Entity body) {

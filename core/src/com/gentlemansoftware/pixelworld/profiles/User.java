@@ -37,10 +37,11 @@ public class User {
 		Position startPos = new Position(0, MapTile.tileWidth / 2, 0, MapTile.tileHeight / 2);
 		
 		this.human = new Human(this.activGameWorld, startPos, "Bob");
+		this.human.spawn();
 		cameraController.setTrack(human);
 		
 		Bat bat = new Bat(this.activGameWorld,startPos.cpy().addAndSet(2, 0, 0, 0));
-		bat.spawn();
+//		bat.spawn();
 	}
 
 	public void initCamera() {

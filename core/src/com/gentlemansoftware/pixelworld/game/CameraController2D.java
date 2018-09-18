@@ -66,31 +66,30 @@ public class CameraController2D implements CameraControllerInterface {
 		this.user = localUser;
 		camera.setPosition(0, 0);
 		initFont();
-		
+
 		layout = new GlyphLayout();
 	}
-	
-	public void initFont(){
+
+	public void initFont() {
 		font = new BitmapFont();
 		FileHandle f = Gdx.files.internal("./data/fonts/NicerNightie.ttf");
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(f);
 		FreeTypeFontParameter param = new FreeTypeFontParameter();
 		param.size = 15;
-		
+
 		setFont(generator.generateFont(param));
-		System.out.println("Font Null: "+font==null);
-		
-		
+		System.out.println("Font Null: " + font == null);
+
 		generator.dispose();
-		
+
 		font.setColor(Color.BLACK);
 	}
-	
-	public void setFont(BitmapFont f){
+
+	public void setFont(BitmapFont f) {
 		this.font = f;
 	}
-	
-	public Position getCameraPosition(){
+
+	public Position getCameraPosition() {
 		return this.camera.getPosition().cpy();
 	}
 
@@ -197,8 +196,8 @@ public class CameraController2D implements CameraControllerInterface {
 	public int scaleZoom(int orginalPixel) {
 		return orginalPixel * numerator / denumerator;
 	}
-	
-	public float scaleZoom(float orginalPixel){
+
+	public float scaleZoom(float orginalPixel) {
 		return orginalPixel * numerator / denumerator;
 	}
 
@@ -227,7 +226,7 @@ public class CameraController2D implements CameraControllerInterface {
 
 				nature.setScale(1, shaddowLength);
 				drawTileSprite(nature, tile.getGlobalPosition(), tileWidthHalf, tileHeightHalf, shaddowRotation,
-						tile.height);
+						0);
 			}
 		}
 
@@ -243,9 +242,8 @@ public class CameraController2D implements CameraControllerInterface {
 
 		for (MapTile tile : area) {
 			for (Entity e : tile.entitys) {
-				for (Sprite s : e.getSprite()) {
-					drawOnGround(s, tile, e.getPosition(), tileWidthHalf, tileHeightHalf);
-				}
+				Sprite s = e.getSprite(this.cameraDirection);
+				drawOnGround(s, tile, e.getPosition(), tileWidthHalf, tileHeightHalf);
 			}
 
 			Sprite nature = tile.getNatureTexture();
@@ -258,7 +256,7 @@ public class CameraController2D implements CameraControllerInterface {
 
 		Color save = fboBatch.getColor();
 
-		drawTileSprite(sprite, globalPos, tileWidthHalf, tileHeightHalf, tile.getRotation(), tile.height);
+		drawTileSprite(sprite, globalPos, tileWidthHalf, tileHeightHalf, 0, 0);
 
 		if (tile.isInShaddow()) {
 			fboBatch.setColor(save);
@@ -284,28 +282,17 @@ public class CameraController2D implements CameraControllerInterface {
 
 		drawOrderNumber = 0;
 		for (MapTile tile : area) {
-			Sprite sprite = tile.getMaterialSprite();
-			Color save = fboBatch.getColor();
-
-			// if (tile.isInShaddow()) {
-			// fboBatch.setColor(save.cpy().add(-0.5f, -0.5f, -0.5f, 0));
-			// }
-
-			drawTileSprite(sprite, tile.getGlobalPosition(), tileWidthHalf, tileHeightHalf, tile.getRotation(),
-					tile.height);
-
-			if (tile.isInShaddow()) {
-				fboBatch.setColor(save);
+			for(Entity e : tile.entitys){
+				Sprite sprite = e.getSprite(cameraDirection);
+				
+				drawTileSprite(sprite, tile.getGlobalPosition(), tileWidthHalf, tileHeightHalf, 0,
+						0);
+				drawOrderNumber++;
 			}
-			
-			drawOrderNumber++;
-
-			fboBatch.setColor(save);
-
 		}
 
 	}
-	
+
 	int drawOrderNumber = 0;
 
 	private void drawTileSprite(Sprite sprite, Position globalPos, int tileWidthHalf, int tileHeightHalf, int rotation,
@@ -325,17 +312,17 @@ public class CameraController2D implements CameraControllerInterface {
 		drawSprite(sprite);
 		if (this.user.profile.debugProfile.showCoordinatesOnMapTiles.getVar()) {
 			Sprite mouse = new Sprite(ResourceLoader.getInstance().getTile("mouseMatter"));
-			
+
 			drawInformationCenteredAtPos(xy[0] + scaleZoom(sprite.getRegionWidth() / 2),
-					xy[1] + tileHeightHalf*3+tileHeightHalf/2, globalPos.x + "/" + globalPos.y);
+					xy[1] + tileHeightHalf * 3 + tileHeightHalf / 2, globalPos.x + "/" + globalPos.y);
 		}
 		if (this.user.profile.debugProfile.showMapTilesDrawOrder.getVar()) {
 			Sprite mouse = new Sprite(ResourceLoader.getInstance().getTile("mouseMatter"));
-			
+
 			drawInformationCenteredAtPos(xy[0] + scaleZoom(sprite.getRegionWidth() / 2),
-					xy[1] + tileHeightHalf*3+tileHeightHalf/2, ""+drawOrderNumber);
+					xy[1] + tileHeightHalf * 3 + tileHeightHalf / 2, "" + drawOrderNumber);
 		}
-		
+
 	}
 
 	public void drawSprite(Sprite sprite) {
@@ -647,8 +634,8 @@ public class CameraController2D implements CameraControllerInterface {
 					+ bodyPos.yFraction);
 			MapTile standOn = world.getMapTileFromGlobalPos((int) bodyPos.x, (int) bodyPos.y);
 			drawInformationLine("Body Chunk: " + standOn.chunk.x + "|" + standOn.chunk.y);
-			drawInformationLine("Stand On: " + standOn.material.getName());
-			drawInformationLine("MapTile Height: " + standOn.height);
+//			drawInformationLine("Stand On: " + standOn.material.getName());
+//			drawInformationLine("MapTile Height: " + standOn.height);
 			if (standOn.nature != null) {
 				drawInformationLine("Nature: " + standOn.nature.getName());
 			}

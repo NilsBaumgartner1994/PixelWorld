@@ -22,6 +22,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.gentlemansoftware.pixelworld.materials.MyMaterial;
 import com.gentlemansoftware.pixelworld.nature.Nature;
 import com.gentlemansoftware.pixelworld.physics.Direction;
+import com.gentlemansoftware.pixelworld.world.Block;
 import com.gentlemansoftware.pixelworld.world.Chunk;
 import com.gentlemansoftware.pixelworld.world.MapTile;
 
@@ -290,21 +291,21 @@ public class Amortized2DNoise {
 
 		for (int cy = 0; cy < CELLSIZE2D; cy++) {
 			for (int cx = 0; cx < CELLSIZE2D; cx++) {
-
+				MapTile t = new MapTile(c,cx,cy);
+				tiles[cx][cy] = t;
+				
+				if (cell[cx][cy] < seaLevel) {
+					t.setBlock(new Block(t,MyMaterial.WATER));
+				}
 				if (cell[cx][cy] >= seaLevel && cell[cx][cy] <= seaLevel + sandAmount) {
-					tiles[cx][cy] = new MapTile(c, cx, cy, false, MyMaterial.SAND);
+					t.setBlock(new Block(t,MyMaterial.SAND));
 				}
 				if (cell[cx][cy] > seaLevel + 0.1f && cell[cx][cy] <= seaLevel + 0.4f) {
-					tiles[cx][cy] = new MapTile(c, cx, cy, false, MyMaterial.GRASS);
+					t.setBlock(new Block(t,MyMaterial.GRASS));
 				}
 				if (cell[cx][cy] > seaLevel + 0.4f) {
-					tiles[cx][cy] = new MapTile(c, cx, cy, false, MyMaterial.STONE);
+					t.setBlock(new Block(t,MyMaterial.STONE));
 				}
-				if (cell[cx][cy] < seaLevel) {
-					tiles[cx][cy] = new MapTile(c, cx, cy, false, MyMaterial.WATER);
-				}
-
-//				 tiles[cx][cy].setHeight((int) (cell[cx][cy]*100)); //For debugging
 			}
 		}
 
@@ -324,7 +325,7 @@ public class Amortized2DNoise {
 			int xx = x + rand.nextInt(15) - rand.nextInt(15);
 			int yy = y + rand.nextInt(15) - rand.nextInt(15);
 			if (xx >= 0 && yy >= 0 && xx < CELLSIZE2D && yy < CELLSIZE2D) {
-				if (tiles[xx][yy].material.equals(MyMaterial.GRASS)) {
+				if (tiles[xx][yy].block.material.equals(MyMaterial.GRASS)) {
 					if (tiles[xx][yy].nature == null) {
 						tiles[xx][yy].setNature(Nature.TALLGRASS);
 					}
@@ -341,9 +342,9 @@ public class Amortized2DNoise {
 			int xx = x + rand.nextInt(15) - rand.nextInt(15);
 			int yy = y + rand.nextInt(15) - rand.nextInt(15);
 			if (xx >= 0 && yy >= 0 && xx < CELLSIZE2D && yy < CELLSIZE2D) {
-				if (tiles[xx][yy].material.equals(MyMaterial.GRASS)) {
+				if (tiles[xx][yy].block.material.equals(MyMaterial.GRASS)) {
 					tiles[xx][yy].setNature(Nature.TREE);
-					tiles[xx][yy].setSolid(true);
+//					tiles[xx][yy].b.setSolid(true);
 				}
 			}
 		}

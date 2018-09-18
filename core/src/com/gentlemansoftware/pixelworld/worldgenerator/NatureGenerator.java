@@ -42,9 +42,10 @@ public class NatureGenerator implements GeneratorInterface {
 	@Override
 	public void generateChunkAt(int cx, int cy) {
 		Main.log(getClass(), "Chunk(" + cx + "|" + cy + "): generating");
-		Chunk c = new Chunk();
+		Chunk c = new Chunk(this.world);
 		c.create(cx, cy, noise);
 		world.setChunk(c);
+		c.spawnAllBlocks();
 		Main.log(getClass(), "Chunk(" + cx + "|" + cy + "): ready");
 	}
 

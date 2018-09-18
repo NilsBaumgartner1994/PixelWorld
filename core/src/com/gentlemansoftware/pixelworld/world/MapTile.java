@@ -24,25 +24,25 @@ public class MapTile extends Position implements Serializable {
 	public final static transient int tileWidth = 128;
 	public final static transient int tileHeight = 64;
 
-	public int height;
-	public short direction;
-	private boolean solid;
-
-	public MyMaterial material;
 	public Nature nature;
 	
 	private boolean shaddow;
 
 	public transient Chunk chunk;
+	public Block block;
 	
 	public List<Entity> entitys;
+	private boolean solid;
 
-	public MapTile(Chunk c, int x, int y, boolean solid, MyMaterial m) {
+	public MapTile(Chunk c, int x, int y) {
 		super(x, y);
 		entitys = new ArrayList<Entity>();
 		this.chunk = c;
 		setSolid(solid);
-		setMaterial(m);
+	}
+	
+	public void setBlock(Block b){
+		this.block = b;
 	}
 	
 	public void registerEntity(Entity body){
@@ -65,9 +65,7 @@ public class MapTile extends Position implements Serializable {
 		return chunk.getMapTileFromLocalPos(xi, yi);
 	}
 
-	public int getRotation() {
-		return direction * 90;
-	}
+
 	
 	public Position getGlobalPosition(){
 		return new Position(getGlobalX(),getGlobalY());
@@ -79,10 +77,6 @@ public class MapTile extends Position implements Serializable {
 
 	public int getGlobalY() {
 		return (int) (chunk.y * Chunk.CHUNKSIZE + this.getPosition().y);
-	}
-
-	public void setSolid(boolean solid) {
-		this.solid = solid;
 	}
 	
 	public Sprite getNatureTexture(){
@@ -97,28 +91,12 @@ public class MapTile extends Position implements Serializable {
 		}
 	}
 	
-	public Sprite getMaterialSprite(){
-		return new Sprite(material.getTexture());
-	}
-	
-	public void setMaterial(MyMaterial m){
-		this.material = m;
-		if(m.equals(MyMaterial.WATER)){
-			setSolid(true);
-		}
-		setHeight(MyMaterial.getDefaultHeightByID(this.material.getID()));
-	}
-	
-	public void setHeight(int height){
-		this.height = height;
-	}
-
 	public boolean isSolid() {
 		return this.solid;
 	}
-
-	public void setDirection(short dir) {
-		this.direction = dir;
+	
+	private void setSolid(boolean bool){
+		this.solid = bool;
 	}
 	
 	private void setShaddow(boolean selected){

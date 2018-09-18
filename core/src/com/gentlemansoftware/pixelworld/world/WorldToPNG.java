@@ -191,7 +191,7 @@ public class WorldToPNG {
 
 		for (int x = 0; x < this.width; x++) {
 			for (int y = 0; y < this.height; y++) {
-				Color color = mapping.get(this.chunk.getMapTileFromLocalPos(x, y).material);
+				Color color = mapping.get(this.chunk.getMapTileFromLocalPos(x, y).block.material);
 				_pixmap.setColor(color);
 				_pixmap.drawPixel(x, height - y - 1);
 			}

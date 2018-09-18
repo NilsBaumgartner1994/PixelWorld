@@ -1,13 +1,7 @@
 package com.gentlemansoftware.pixelworld.entitys;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.UUID;
-
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector2;
-import com.gentlemansoftware.pixelworld.game.Main;
-import com.gentlemansoftware.pixelworld.materials.MyMaterial;
 import com.gentlemansoftware.pixelworld.physics.Body;
 import com.gentlemansoftware.pixelworld.physics.Direction;
 import com.gentlemansoftware.pixelworld.physics.Navigation;
@@ -17,18 +11,17 @@ import com.gentlemansoftware.pixelworld.world.Chunk;
 import com.gentlemansoftware.pixelworld.world.MapTile;
 import com.gentlemansoftware.pixelworld.world.TileWorld;
 
-public class Entity extends Body implements Serializable {
+public class Entity extends Body implements Serializable, EasyDrawableInterface {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5098608000401492288L;
 	private MotionState state;
-	private MyMaterial material;
+	private Direction lookDir;
 	private EntityHostileType type;
 	protected int speed;
 	transient protected TileWorld world;
-	private int id;
 
 	Navigation nav;
 
@@ -38,7 +31,7 @@ public class Entity extends Body implements Serializable {
 		this.nav = new Navigation(position);
 		this.state = state;
 		this.type = type;
-		spawn();
+//		spawn();
 	}
 
 	public Entity(TileWorld world, Position position, EntityHostileType type) {
@@ -86,16 +79,8 @@ public class Entity extends Body implements Serializable {
 		// Set Goals and Other calculations about the AI
 	}
 
-	public List<Sprite> getSprite() {
-		return null;
-	}
-
 	public EntityHostileType getEntityHostileType() {
 		return this.type;
-	}
-
-	public MyMaterial getMaterial() {
-		return this.material;
 	}
 
 	public MotionState getMotionState() {
@@ -158,6 +143,11 @@ public class Entity extends Body implements Serializable {
 			oldChunkReffer.unregisterEntity(this);
 			newChunkReffer.registerEntity(this);
 		}
+	}
+
+	@Override
+	public Sprite getSprite(Direction cameraDirection) {
+		return null;
 	}
 
 }
