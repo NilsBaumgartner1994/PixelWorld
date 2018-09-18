@@ -198,12 +198,13 @@ public class WorldToPNG {
 		}
 
 		List<Entity> entitys = new LinkedList<>(this.chunk.entitys);
-		
-		for(Entity entity : entitys){
-			_pixmap.setColor(Color.RED);
-			Position p = entity.getPositionInChunk();
-			_pixmap.drawPixel(p.x, height - p.y - 1);
-			
+
+		for (Entity entity : entitys) {
+			if (!(entity instanceof Block)) {
+				_pixmap.setColor(Color.RED);
+				Position p = entity.getPositionInChunk();
+				_pixmap.drawPixel(p.x, height - p.y - 1);
+			}
 		}
 
 		return _pixmap;

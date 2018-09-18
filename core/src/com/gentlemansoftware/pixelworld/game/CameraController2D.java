@@ -72,15 +72,15 @@ public class CameraController2D implements CameraControllerInterface {
 
 	public void initFont() {
 		font = new BitmapFont();
-		FileHandle f = Gdx.files.internal("./data/fonts/NicerNightie.ttf");
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(f);
-		FreeTypeFontParameter param = new FreeTypeFontParameter();
-		param.size = 15;
-
-		setFont(generator.generateFont(param));
-		System.out.println("Font Null: " + font == null);
-
-		generator.dispose();
+//		FileHandle f = Gdx.files.internal("./data/fonts/NicerNightie.ttf");
+//		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(f);
+//		FreeTypeFontParameter param = new FreeTypeFontParameter();
+//		param.size = 15;
+//
+//		setFont(generator.generateFont(param));
+//		System.out.println("Font Null: " + font == null);
+//
+//		generator.dispose();
 
 		font.setColor(Color.BLACK);
 	}

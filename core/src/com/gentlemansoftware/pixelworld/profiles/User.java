@@ -41,7 +41,7 @@ public class User {
 		cameraController.setTrack(human);
 		
 		Bat bat = new Bat(this.activGameWorld,startPos.cpy().addAndSet(2, 0, 0, 0));
-//		bat.spawn();
+		bat.spawn();
 	}
 
 	public void initCamera() {
