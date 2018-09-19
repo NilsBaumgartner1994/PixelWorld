@@ -113,7 +113,7 @@ public class PositionComperator implements Comparator<Position> {
 
 	public float heightCompareLength(Position p) {
 		if (direction == Direction.NORTH || direction == Direction.SOUTH) {
-			return p.x + p.y + fractionLength(p);
+			return p.x + p.y - p.z + fractionLength(p);
 		}
 		if (direction == Direction.EAST || direction == Direction.WEST) {
 			return - p.x + p.y + fractionLength(p);

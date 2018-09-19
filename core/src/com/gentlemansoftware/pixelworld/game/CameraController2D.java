@@ -225,8 +225,7 @@ public class CameraController2D implements CameraControllerInterface {
 			if (nature != null) {
 
 				nature.setScale(1, shaddowLength);
-				drawTileSprite(nature, tile.getGlobalPosition(), tileWidthHalf, tileHeightHalf, shaddowRotation,
-						0);
+				drawTileSprite(nature, tile.getGlobalPosition(), tileWidthHalf, tileHeightHalf, shaddowRotation);
 			}
 		}
 
@@ -256,7 +255,7 @@ public class CameraController2D implements CameraControllerInterface {
 
 		Color save = fboBatch.getColor();
 
-		drawTileSprite(sprite, globalPos, tileWidthHalf, tileHeightHalf, 0, 0);
+		drawTileSprite(sprite, globalPos, tileWidthHalf, tileHeightHalf, 0);
 
 		if (tile.isInShaddow()) {
 			fboBatch.setColor(save);
@@ -285,8 +284,7 @@ public class CameraController2D implements CameraControllerInterface {
 			for(Entity e : tile.entitys){
 				Sprite sprite = e.getSprite(cameraDirection);
 				
-				drawTileSprite(sprite, tile.getGlobalPosition(), tileWidthHalf, tileHeightHalf, 0,
-						0);
+				drawTileSprite(sprite, tile.getGlobalPosition(), tileWidthHalf, tileHeightHalf, 0);
 				drawOrderNumber++;
 			}
 		}
@@ -295,17 +293,16 @@ public class CameraController2D implements CameraControllerInterface {
 
 	int drawOrderNumber = 0;
 
-	private void drawTileSprite(Sprite sprite, Position globalPos, int tileWidthHalf, int tileHeightHalf, int rotation,
-			int heightDifference) {
+	private void drawTileSprite(Sprite sprite, Position globalPos, int tileWidthHalf, int tileHeightHalf, int rotation) {
 		if (sprite == null) {
 			return;
 		}
 		int[] xy = globalPosToScreenPos(globalPos, tileHeightHalf, tileWidthHalf, sprite);
 
-		sprite.setPosition(xy[0], xy[1] + scaleZoom(heightDifference));
+		sprite.setPosition(xy[0], xy[1] + scaleZoom(globalPos.zFraction));
 
 		// sprite.setOrigin(tileWidthHalf, tileHeightHalf);
-		sprite.setOrigin(scaleZoom(90), scaleZoom(240 - 145));
+		sprite.setOrigin(scaleZoom(90), scaleZoom(128 - MapTile.tileHeight/2));
 		sprite.setSize(scaleZoom(sprite.getWidth()), scaleZoom(sprite.getHeight()));
 		sprite.setRotation(rotation);
 

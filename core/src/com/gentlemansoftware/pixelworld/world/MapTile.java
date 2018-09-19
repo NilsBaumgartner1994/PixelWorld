@@ -23,6 +23,7 @@ public class MapTile extends Position implements Serializable {
 	private static final long serialVersionUID = 216668977777721960L;
 	public final static transient int tileWidth = 128;
 	public final static transient int tileHeight = 64;
+	
 
 	public Nature nature;
 	

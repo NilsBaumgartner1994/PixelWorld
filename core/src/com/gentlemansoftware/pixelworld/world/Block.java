@@ -26,7 +26,6 @@ public class Block extends Entity implements Serializable {
 	
 	private boolean solid;
 	public MyMaterial material;
-	private int height;
 
 	public Block(MapTile tile, MyMaterial m){
 		super(tile.chunk.world,tile.getGlobalPosition(), MotionState.STOP,EntityHostileType.FRIENDLY);
@@ -50,7 +49,7 @@ public class Block extends Entity implements Serializable {
 	}
 	
 	public void setHeight(int height){
-		this.height = height;
+		this.position.zFraction = height;
 	}
 
 	public boolean isSolid() {

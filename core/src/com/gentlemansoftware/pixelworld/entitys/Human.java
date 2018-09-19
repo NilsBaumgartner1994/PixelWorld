@@ -6,6 +6,7 @@ import java.util.List;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
+import com.gentlemansoftware.pixelworld.game.ResourceLoader;
 import com.gentlemansoftware.pixelworld.physics.Direction;
 import com.gentlemansoftware.pixelworld.physics.Position;
 import com.gentlemansoftware.pixelworld.physics.Speed;
@@ -118,15 +119,15 @@ public class Human extends Entity {
 			this.direction = Position.getPositionDirectionFromVector(this.stickLeft);
 			MapTile nextBlock = getNextBlockInDirection();
 //			if (!nextBlock.isSolid()) {
-				Position nextBlockMiddle = nextBlock.getGlobalPosition().addAndSet(0, MapTile.tileWidth / 2, 0,
-						MapTile.tileHeight / 2);
+				Position nextBlockMiddle = nextBlock.getGlobalPosition().addAndSet(0, 0, 0,
+						0);
 				this.nav.setPath(nextBlockMiddle);
 //			}
 		}
 	}
 
 	public MapTile getNextBlockInDirection() {
-		Position oneBlockDir = this.direction.cpy().scaleAndSet(MapTile.tileHeight);
+		Position oneBlockDir = this.direction.cpy().scaleAndSet(MapTile.tileHeight/2);
 		Position nextBlock = this.getPosition().cpy().addAndSet(oneBlockDir);
 		return this.world.getMapTileFromGlobalPos(nextBlock.getPosition().x, nextBlock.getPosition().y);
 	}
@@ -139,7 +140,9 @@ public class Human extends Entity {
 
 	@Override
 	public Sprite getSprite(Direction camdir) {
-		return new Sprite(FoxSpriteAnimations.getTexture(getMotionState(), this.world.time));
+		return new Sprite(ResourceLoader.getInstance().getEntity("layerTest","layerTest"));
+		
+//		return new Sprite(FoxSpriteAnimations.getTexture(getMotionState(), this.world.time));
 	}
 
 	@Override

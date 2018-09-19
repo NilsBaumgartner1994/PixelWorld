@@ -34,7 +34,8 @@ public class User {
 		
 //		Position startPos = new Position(51721, MapTile.tileWidth / 2, 50811, MapTile.tileHeight / 2);
 //		Position startPos = new Position(Integer.MAX_VALUE, MapTile.tileWidth / 2, Integer.MAX_VALUE, MapTile.tileHeight / 2);
-		Position startPos = new Position(0, MapTile.tileWidth / 2, 0, MapTile.tileHeight / 2);
+//		Position startPos = new Position(0, MapTile.tileWidth / 2, 0, MapTile.tileHeight / 2);
+		Position startPos = new Position(0, 0, 0, 0, 1, 0);
 		
 		this.human = new Human(this.activGameWorld, startPos, "Bob");
 		this.human.spawn();

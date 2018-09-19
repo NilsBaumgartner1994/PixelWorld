@@ -52,7 +52,6 @@ public class MyMaterial implements Serializable{
 	
 	public static int getDefaultHeightByID(Byte id){
 		return materialHeightList.get(id);
-//		return 0;
 	}
 	
 	private static String getNameByID(Byte id) {

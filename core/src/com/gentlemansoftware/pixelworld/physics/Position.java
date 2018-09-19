@@ -18,7 +18,6 @@ public class Position {
 
 	public static final transient int fractionMax_x = MapTile.tileWidth;
 	public static final transient int fractionMax_y = MapTile.tileHeight;
-	public static final transient int fractionMax_z = MapTile.tileHeight;
 
 	static transient int speed = 1;
 	public static transient final Position STOP = new Position(0, 0, 0, 0, 0, 0);
@@ -85,9 +84,6 @@ public class Position {
 		if (velocity.lengthY() > distance.lengthY()) {
 			back.set(velocity.x, velocity.xFraction, distance.y, distance.yFraction, velocity.z, velocity.zFraction);
 		}
-		if (velocity.lengthZ() > distance.lengthZ()) {
-			back.set(velocity.x, velocity.xFraction, velocity.y, velocity.yFraction, distance.z, distance.zFraction);
-		}
 
 		return back;
 	}
@@ -127,17 +123,11 @@ public class Position {
 			yFraction += fractionMax_y;
 			this.y--;
 		}
-		if (zFraction < 0) {
-			zFraction += fractionMax_z;
-			this.z--;
-		}
 
 		this.x = this.x + xFraction / fractionMax_x;
 		this.y = this.y + yFraction / fractionMax_y;
-		this.z = this.z + zFraction / fractionMax_z;
 		this.xFraction = this.xFraction % fractionMax_x;
 		this.yFraction = this.yFraction % fractionMax_y;
-		this.zFraction = this.zFraction % fractionMax_z;
 		return this;
 	}
 
@@ -204,10 +194,6 @@ public class Position {
 
 	public float lengthY() {
 		return Math.abs(this.y + fractionLengthY());
-	}
-
-	public float lengthZ() {
-		return Math.abs(this.z * fractionMax_z + this.zFraction);
 	}
 
 	public float length() {
