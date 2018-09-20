@@ -48,8 +48,8 @@ public class TileWorld extends SaveAndLoadable {
 		setEntityMap(entitys);
 		setGenerator(generator);
 	}
-	
-	public void setGeneratedChunks(List<Chunk> generatedChunks){
+
+	public void setGeneratedChunks(List<Chunk> generatedChunks) {
 		if (generatedChunks != null) {
 			for (Chunk chunk : generatedChunks) {
 				setChunk(chunk);
@@ -86,15 +86,15 @@ public class TileWorld extends SaveAndLoadable {
 
 		FileHandle dirHandle;
 
-		dirHandle = Gdx.files.internal("./"+WORLDS+name+"/");
+		dirHandle = Gdx.files.internal("./" + WORLDS + name + "/");
 
 		System.out.println("Show me All Files");
 		for (FileHandle entry : dirHandle.list()) {
-			if(entry.extension().equals(Chunk.ENDINGNAME)){
+			if (entry.extension().equals(Chunk.ENDINGNAME)) {
 				chunks.add(Chunk.loadFromInternal(entry.path(), Chunk.class));
 			}
 		}
-		
+
 		world.setGeneratedChunks(chunks);
 
 		// return loadFromExternal(WORLDS + name + ENDING, TileWorld.class);
@@ -117,7 +117,13 @@ public class TileWorld extends SaveAndLoadable {
 		}
 	}
 
-	public void updateEntitysBodys(int steps) {
+	public void timePassed(float deltaTime) {
+		int steps = time.timePassed(deltaTime);
+		time.addTicks(steps);
+		updateEntitysBodys(steps);
+	}
+
+	private void updateEntitysBodys(int steps) {
 		for (Chunk c : activeChunks) {
 			List<Entity> copiedEntitys = new LinkedList<Entity>(c.entitys);
 			for (Entity e : copiedEntitys) {

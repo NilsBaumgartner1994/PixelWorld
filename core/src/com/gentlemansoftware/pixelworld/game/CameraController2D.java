@@ -24,6 +24,7 @@ import com.gentlemansoftware.pixelworld.entitys.EntityHostileType;
 import com.gentlemansoftware.pixelworld.entitys.Human;
 import com.gentlemansoftware.pixelworld.physics.Body;
 import com.gentlemansoftware.pixelworld.physics.Direction;
+import com.gentlemansoftware.pixelworld.physics.EntityComperator;
 import com.gentlemansoftware.pixelworld.physics.Position;
 import com.gentlemansoftware.pixelworld.physics.PositionComperator;
 import com.gentlemansoftware.pixelworld.profiles.User;
@@ -72,15 +73,15 @@ public class CameraController2D implements CameraControllerInterface {
 
 	public void initFont() {
 		font = new BitmapFont();
-//		FileHandle f = Gdx.files.internal("./data/fonts/NicerNightie.ttf");
-//		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(f);
-//		FreeTypeFontParameter param = new FreeTypeFontParameter();
-//		param.size = 15;
-//
-//		setFont(generator.generateFont(param));
-//		System.out.println("Font Null: " + font == null);
-//
-//		generator.dispose();
+		// FileHandle f = Gdx.files.internal("./data/fonts/NicerNightie.ttf");
+		// FreeTypeFontGenerator generator = new FreeTypeFontGenerator(f);
+		// FreeTypeFontParameter param = new FreeTypeFontParameter();
+		// param.size = 15;
+		//
+		// setFont(generator.generateFont(param));
+		// System.out.println("Font Null: " + font == null);
+		//
+		// generator.dispose();
 
 		font.setColor(Color.BLACK);
 	}
@@ -141,10 +142,9 @@ public class CameraController2D implements CameraControllerInterface {
 		if (world != null) {
 			world.deactivateAllChunks();
 			world.activateChunk(world.getChunkGlobalPos(camera.getPosition().x, camera.getPosition().y));
-			List<MapTile> area = getAreaToDraw(world);
-			Collections.sort(area, new PositionComperator(this.cameraDirection));
-			drawGround(area, world);
-			drawNatureShaddow(area, world);
+			List<Entity> area = getAreaToDraw(world);
+			Collections.sort(area, new EntityComperator(this.cameraDirection));
+//			drawNatureShaddow(area, world);
 			drawNatureAndEntitys(area);
 		}
 
@@ -158,18 +158,18 @@ public class CameraController2D implements CameraControllerInterface {
 		return this.cameraDirection;
 	}
 
-	public List<MapTile> getAreaToDraw(TileWorld world) {
+	public List<Entity> getAreaToDraw(TileWorld world) {
 		if (track != null) {
 			camera.setPosition(track);
 		}
 
-		List<MapTile> area = new ArrayList<MapTile>();
+		List<Entity> entitys = new ArrayList<Entity>();
 
 		int xcenter = camera.getPosition().x;
 		int ycenter = camera.getPosition().y;
 
 		// int safetytiles = 7;
-		int safetytiles = 9;
+		int safetytiles = 7;
 
 		int breite = this.width / scaleZoom(MapTile.tileWidth) + safetytiles;
 		int hoehe = this.height / scaleZoom(MapTile.tileHeight) + safetytiles;
@@ -182,7 +182,7 @@ public class CameraController2D implements CameraControllerInterface {
 				int y = (a - b) / 2;
 				MapTile m = world.getMapTileFromGlobalPos(xcenter + x, ycenter + y);
 				if (m != null) {
-					area.add(m);
+					entitys.addAll(m.entitys);
 				}
 			}
 		}
@@ -190,7 +190,7 @@ public class CameraController2D implements CameraControllerInterface {
 		numerator = getZoomLevelScaleFactorNumerator();
 		denumerator = getZoomLevelScaleFactorDenumerator();
 
-		return area;
+		return entitys;
 	}
 
 	public int scaleZoom(int orginalPixel) {
@@ -221,79 +221,36 @@ public class CameraController2D implements CameraControllerInterface {
 		fboBatch.setColor(shaddow);
 
 		for (MapTile tile : area) {
-			Sprite nature = tile.getNatureTexture();
-			if (nature != null) {
-
-				nature.setScale(1, shaddowLength);
-				drawTileSprite(nature, tile.getGlobalPosition(), tileWidthHalf, tileHeightHalf, shaddowRotation);
-			}
+//			Sprite nature = tile.getNatureTexture();
+//			if (nature != null) {
+//
+//				nature.setScale(1, shaddowLength);
+//				drawTileSprite(nature, tile.getGlobalPosition(), tileWidthHalf, tileHeightHalf, shaddowRotation);
+//			}
 		}
 
 		fboBatch.setShader(null);
 		fboBatch.setColor(save);
 	}
 
-	private void drawNatureAndEntitys(List<MapTile> area) {
+	private void drawNatureAndEntitys(List<Entity> entitys) {
 		int tileWidth = scaleZoom(MapTile.tileWidth);
 		int tileHeight = scaleZoom(MapTile.tileHeight);
 		int tileWidthHalf = tileWidth / 2;
 		int tileHeightHalf = tileHeight / 2;
-
-		for (MapTile tile : area) {
-			for (Entity e : tile.entitys) {
-				Sprite s = e.getSprite(this.cameraDirection);
-				drawOnGround(s, tile, e.getPosition(), tileWidthHalf, tileHeightHalf);
-			}
-
-			Sprite nature = tile.getNatureTexture();
-			drawOnGround(nature, tile, tile.getGlobalPosition(), tileWidthHalf, tileHeightHalf);
-
-		}
-	}
-
-	private void drawOnGround(Sprite sprite, MapTile tile, Position globalPos, int tileWidthHalf, int tileHeightHalf) {
-
-		Color save = fboBatch.getColor();
-
-		drawTileSprite(sprite, globalPos, tileWidthHalf, tileHeightHalf, 0);
-
-		if (tile.isInShaddow()) {
-			fboBatch.setColor(save);
-		}
-
-		fboBatch.setColor(save);
-	}
-
-	private void drawGround(List<MapTile> area, TileWorld world) {
-		int tileWidth = scaleZoom(MapTile.tileWidth);
-		int tileHeight = scaleZoom(MapTile.tileHeight);
-		int tileWidthHalf = tileWidth / 2;
-		int tileHeightHalf = tileHeight / 2;
-
-		Mouse m = Main.getInstance().inputHandler.keyboardHandler.mouse;
-
-		MapTile mouseTile = null;
-
-		if (m != null) {
-			Position globalPos = getGlobalPosFromScreenPos(m.getX(), this.height - m.getY());
-			mouseTile = world.getMapTileFromGlobalPos(globalPos.x, globalPos.y);
-		}
 
 		drawOrderNumber = 0;
-		for (MapTile tile : area) {
-			for(Entity e : tile.entitys){
-				Sprite sprite = e.getSprite(cameraDirection);
-				
-				drawTileSprite(sprite, tile.getGlobalPosition(), tileWidthHalf, tileHeightHalf, 0);
-				drawOrderNumber++;
-			}
+		for (Entity e : entitys) {
+			Sprite s = e.getSprite(this.cameraDirection);
+			drawTileSprite(s, e.getPosition(), tileWidthHalf, tileHeightHalf, 0);
+			drawOrderNumber++;
 		}
-
 	}
 
 	int drawOrderNumber = 0;
 
-	private void drawTileSprite(Sprite sprite, Position globalPos, int tileWidthHalf, int tileHeightHalf, int rotation) {
+	private void drawTileSprite(Sprite sprite, Position globalPos, int tileWidthHalf, int tileHeightHalf,
+			int rotation) {
 		if (sprite == null) {
 			return;
 		}
@@ -302,7 +259,7 @@ public class CameraController2D implements CameraControllerInterface {
 		sprite.setPosition(xy[0], xy[1] + scaleZoom(globalPos.zFraction));
 
 		// sprite.setOrigin(tileWidthHalf, tileHeightHalf);
-		sprite.setOrigin(scaleZoom(90), scaleZoom(128 - MapTile.tileHeight/2));
+		sprite.setOrigin(scaleZoom(90), scaleZoom(128 - MapTile.tileHeight / 2));
 		sprite.setSize(scaleZoom(sprite.getWidth()), scaleZoom(sprite.getHeight()));
 		sprite.setRotation(rotation);
 
@@ -316,8 +273,10 @@ public class CameraController2D implements CameraControllerInterface {
 		if (this.user.profile.debugProfile.showMapTilesDrawOrder.getVar()) {
 			Sprite mouse = new Sprite(ResourceLoader.getInstance().getTile("mouseMatter"));
 
+			PositionComperator comp = new PositionComperator(this.cameraDirection);
 			drawInformationCenteredAtPos(xy[0] + scaleZoom(sprite.getRegionWidth() / 2),
-					xy[1] + tileHeightHalf * 3 + tileHeightHalf / 2, "" + drawOrderNumber);
+					xy[1] + tileHeightHalf * 5 + scaleZoom(globalPos.zFraction),
+					"" + drawOrderNumber + "\n" + comp.heightCompareLength(globalPos));
 		}
 
 	}
@@ -627,15 +586,14 @@ public class CameraController2D implements CameraControllerInterface {
 
 		if (track != null) {
 			Position bodyPos = track.getPosition();
-			drawInformationLine("Body Position: " + bodyPos.x + ":" + bodyPos.xFraction + "|" + bodyPos.y + ":"
-					+ bodyPos.yFraction);
+			drawInformationLine("Body Position: " + bodyPos.toString());
 			MapTile standOn = world.getMapTileFromGlobalPos((int) bodyPos.x, (int) bodyPos.y);
 			drawInformationLine("Body Chunk: " + standOn.chunk.x + "|" + standOn.chunk.y);
-//			drawInformationLine("Stand On: " + standOn.material.getName());
-//			drawInformationLine("MapTile Height: " + standOn.height);
-			if (standOn.nature != null) {
-				drawInformationLine("Nature: " + standOn.nature.getName());
-			}
+			// drawInformationLine("Stand On: " + standOn.material.getName());
+			// drawInformationLine("MapTile Height: " + standOn.height);
+//			if (standOn.nature != null) {
+//				drawInformationLine("Nature: " + standOn.nature.getName());
+//			}
 		}
 	}
 

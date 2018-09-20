@@ -89,53 +89,27 @@ public class Main extends ApplicationAdapter {
 	@Override
 	public void resize(int width, int height) {
 		// viewport.update(width, height);
-	}
+	}	
 
-	float renderTime = 0;
-	public float ticksPerSecond = 60;
-	float refreshRate = 1 / ticksPerSecond;
-
-	float timeSpeed = 1f;
-
-	public int calcPhysicSteps() {
+	public void updateWorlds() {
 		float deltaTime = Gdx.graphics.getDeltaTime();
-
-		deltaTime *= timeSpeed;
-
-		renderTime += deltaTime;
-
-		int steps = 0;
-		if (renderTime >= refreshRate) {
-			steps = (int) (renderTime / refreshRate);
-		}
-		renderTime %= refreshRate;
 		
-		// Main.log(getClass(), "RenderTime: "+renderTime+" | DeltaTime:
-		// "+deltaTime+" | Steps: "+steps);
-		
-		return steps;
+		this.titleScreenWorld.timePassed(deltaTime);
 	}
 
 	@Override
 	public void render() {
-		int steps = calcPhysicSteps();
-		
 		inputHandler.updateInputLogic();
 
 		camera.update();
 		userHandler.updateUserInputs();
 
-		updatePhysics(steps);
+		updateWorlds();
 
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		renderForUsers();
-	}
-
-	public void updatePhysics(int steps) {
-		this.titleScreenWorld.time.addTicks(steps);
-		this.titleScreenWorld.updateEntitysBodys(steps);
 	}
 
 	public void renderForUsers() {

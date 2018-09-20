@@ -127,7 +127,7 @@ public class Human extends Entity {
 	}
 
 	public MapTile getNextBlockInDirection() {
-		Position oneBlockDir = this.direction.cpy().scaleAndSet(MapTile.tileHeight/2);
+		Position oneBlockDir = this.direction.cpy().scaleAndSet(MapTile.tileWidth,MapTile.tileHeight);
 		Position nextBlock = this.getPosition().cpy().addAndSet(oneBlockDir);
 		return this.world.getMapTileFromGlobalPos(nextBlock.getPosition().x, nextBlock.getPosition().y);
 	}

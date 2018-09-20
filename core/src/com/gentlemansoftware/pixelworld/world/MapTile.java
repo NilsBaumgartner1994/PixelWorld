@@ -8,9 +8,9 @@ import java.util.Random;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.math.Vector2;
 import com.gentlemansoftware.pixelworld.entitys.Entity;
 import com.gentlemansoftware.pixelworld.materials.MyMaterial;
-import com.gentlemansoftware.pixelworld.nature.Nature;
 import com.gentlemansoftware.pixelworld.physics.Body;
 import com.gentlemansoftware.pixelworld.physics.Direction;
 import com.gentlemansoftware.pixelworld.physics.Position;
@@ -23,9 +23,6 @@ public class MapTile extends Position implements Serializable {
 	private static final long serialVersionUID = 216668977777721960L;
 	public final static transient int tileWidth = 128;
 	public final static transient int tileHeight = 64;
-	
-
-	public Nature nature;
 	
 	private boolean shaddow;
 
@@ -65,8 +62,6 @@ public class MapTile extends Position implements Serializable {
 		}
 		return chunk.getMapTileFromLocalPos(xi, yi);
 	}
-
-
 	
 	public Position getGlobalPosition(){
 		return new Position(getGlobalX(),getGlobalY());
@@ -78,18 +73,6 @@ public class MapTile extends Position implements Serializable {
 
 	public int getGlobalY() {
 		return (int) (chunk.y * Chunk.CHUNKSIZE + this.getPosition().y);
-	}
-	
-	public Sprite getNatureTexture(){
-		if(nature==null) return null;
-		return new Sprite(nature.getTexture());
-	}
-	
-	public void setNature(Nature n){
-		this.nature = n;
-		if(n.equals(Nature.TREE)){
-			setSolid(true);
-		}
 	}
 	
 	public boolean isSolid() {

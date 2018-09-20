@@ -164,6 +164,10 @@ public class Position {
 		return set((this.x * scale_x), (this.xFraction * scale_x), (this.y * scale_y), (this.yFraction * scale_y),
 				(this.z * scale_z), (this.zFraction * scale_z));
 	}
+	
+	public Position scaleAndSet(int scale_x, int scale_y) {
+		return scaleAndSet(scale_x,scale_y,1);
+	}
 
 	public Position scaleAndSet(int scale) {
 		return scaleAndSet(scale, scale, scale);
@@ -254,7 +258,7 @@ public class Position {
 	}
 
 	public String toString() {
-		return "X: " + this.x + "," + this.xFraction + " | Y: " + this.y + "," + this.yFraction;
+		return "X: " + this.x + "," + this.xFraction + " | Y: " + this.y + "," + this.yFraction+ " | Z: "+this.z+","+this.zFraction;
 	}
 
 }

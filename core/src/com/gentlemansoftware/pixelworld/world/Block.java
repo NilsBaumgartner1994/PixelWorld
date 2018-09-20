@@ -1,21 +1,12 @@
 package com.gentlemansoftware.pixelworld.world;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g3d.Model;
 import com.gentlemansoftware.pixelworld.entitys.Entity;
 import com.gentlemansoftware.pixelworld.entitys.EntityHostileType;
 import com.gentlemansoftware.pixelworld.entitys.MotionState;
 import com.gentlemansoftware.pixelworld.materials.MyMaterial;
-import com.gentlemansoftware.pixelworld.nature.Nature;
-import com.gentlemansoftware.pixelworld.physics.Body;
 import com.gentlemansoftware.pixelworld.physics.Direction;
-import com.gentlemansoftware.pixelworld.physics.Position;
 
 public class Block extends Entity implements Serializable {
 

@@ -31,21 +31,8 @@ public class PositionComperator implements Comparator<Position> {
 		}
 		return -getDirectionNorthCompare(pos1, pos2);
 	}
-	
-	private Position getGlobalPosIfMapTile(Position pos){
-		if(pos instanceof MapTile){
-			MapTile tile = (MapTile)pos;
-			return tile.getGlobalPosition();
-		}
-		
-		return pos;
-	}
 
-	public int getDirectionNorthCompare(Position pos1n, Position pos2n) {
-		Position pos1 = getGlobalPosIfMapTile(pos1n);
-		Position pos2 = getGlobalPosIfMapTile(pos2n);
-		
-		
+	public int getDirectionNorthCompare(Position pos1, Position pos2) {
 		float me = heightCompareLength(pos1);
 		float other = heightCompareLength(pos2);
 
@@ -57,6 +44,15 @@ public class PositionComperator implements Comparator<Position> {
 		}
 
 		// both bodys same vertical height
+
+		// no that are realy object on same height
+		if(pos1.zFraction>pos2.zFraction){
+			return -1;
+		}
+		if(pos1.zFraction<pos2.zFraction){
+			return 1;
+		}
+		
 		if (pos1.x < pos2.x) {
 			return 1;
 		}
@@ -106,17 +102,17 @@ public class PositionComperator implements Comparator<Position> {
 	public int getDirectionSouthCompare(Position pos1, Position pos2) {
 		return -getDirectionNorthCompare(pos1, pos2);
 	}
-	
+
 	public int getDirectionEastCompare(Position pos1, Position pos2) {
-		return -getDirectionWestCompare(pos1,pos2);
+		return -getDirectionWestCompare(pos1, pos2);
 	}
 
 	public float heightCompareLength(Position p) {
 		if (direction == Direction.NORTH || direction == Direction.SOUTH) {
-			return p.x + p.y - p.z + fractionLength(p);
+			return p.x + p.y + fractionLength(p) - p.z - (p.zFraction > 0 ? 1 : 0);
 		}
 		if (direction == Direction.EAST || direction == Direction.WEST) {
-			return - p.x + p.y + fractionLength(p);
+			return -p.x + p.y + fractionLength(p);
 		}
 		return p.x + p.y + fractionLength(p);
 	}
@@ -126,7 +122,7 @@ public class PositionComperator implements Comparator<Position> {
 			return p.fractionLengthX() + p.fractionLengthY();
 		}
 		if (direction == Direction.EAST || direction == Direction.WEST) {
-			return  - p.fractionLengthX() + p.fractionLengthY();
+			return -p.fractionLengthX() + p.fractionLengthY();
 		}
 		return p.fractionLengthX() + p.fractionLengthY();
 	}

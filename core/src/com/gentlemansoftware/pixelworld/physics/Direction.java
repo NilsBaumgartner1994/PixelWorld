@@ -26,7 +26,7 @@ public enum Direction {
 		return getDirectionFromVector(vec);
 	}
 
-	private static Vector2 getVectorFromDirection(Direction dir) {
+	public static Vector2 getVectorFromDirection(Direction dir) {
 		switch (dir) {
 		case MIDDLE:
 			return new Vector2(0, 0);

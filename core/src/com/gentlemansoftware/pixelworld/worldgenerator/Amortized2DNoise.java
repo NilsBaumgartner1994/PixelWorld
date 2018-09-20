@@ -20,8 +20,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.gentlemansoftware.pixelworld.materials.MyMaterial;
-import com.gentlemansoftware.pixelworld.nature.Nature;
-import com.gentlemansoftware.pixelworld.physics.Direction;
 import com.gentlemansoftware.pixelworld.world.Block;
 import com.gentlemansoftware.pixelworld.world.Chunk;
 import com.gentlemansoftware.pixelworld.world.MapTile;
@@ -326,9 +324,9 @@ public class Amortized2DNoise {
 			int yy = y + rand.nextInt(15) - rand.nextInt(15);
 			if (xx >= 0 && yy >= 0 && xx < CELLSIZE2D && yy < CELLSIZE2D) {
 				if (tiles[xx][yy].block.material.equals(MyMaterial.GRASS)) {
-					if (tiles[xx][yy].nature == null) {
-						tiles[xx][yy].setNature(Nature.TALLGRASS);
-					}
+//					if (tiles[xx][yy].nature == null) {
+//						tiles[xx][yy].setNature(Nature.TALLGRASS);
+//					}
 				}
 			}
 		}
@@ -343,7 +341,7 @@ public class Amortized2DNoise {
 			int yy = y + rand.nextInt(15) - rand.nextInt(15);
 			if (xx >= 0 && yy >= 0 && xx < CELLSIZE2D && yy < CELLSIZE2D) {
 				if (tiles[xx][yy].block.material.equals(MyMaterial.GRASS)) {
-					tiles[xx][yy].setNature(Nature.TREE);
+//					tiles[xx][yy].setNature(Nature.TREE);
 //					tiles[xx][yy].b.setSolid(true);
 				}
 			}

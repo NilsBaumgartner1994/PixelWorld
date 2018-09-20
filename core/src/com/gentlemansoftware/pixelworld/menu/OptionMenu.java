@@ -7,6 +7,7 @@ import com.gentlemansoftware.pixelworld.profiles.VarHolder;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenu;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuBooleanEditable;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuComponent;
+import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuFloatEditable;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuNameTypes;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuRunnableItem;
 import com.gentlemansoftware.pixelworld.world.WorldToPNG;
@@ -25,6 +26,8 @@ public class OptionMenu extends SimpleMenu {
 			SimpleMenuComponent c = new SimpleMenuBooleanEditable(var);
 			menuComponents.add(c);
 		}
+		
+//		menuComponents.add(new SimpleMenuFloatEditable(this.handler.user.activGameWorld.time.timeSpeed));
 		
 		Runnable quitRunnable = new Runnable() {
 			public void run() {
