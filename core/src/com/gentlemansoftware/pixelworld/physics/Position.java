@@ -78,10 +78,10 @@ public class Position {
 	public static Position clambIfDistanceToLong(Position from, Position to, Position velocity) {
 		Position distance = to.distance(from);
 		Position back = velocity.cpy();
-		if (velocity.lengthX() > distance.lengthX()) {
+		if (velocity.lengthAbsoluteX() > distance.lengthAbsoluteX()) {
 			back.set(distance.x, distance.xFraction, velocity.y, velocity.yFraction, velocity.z, velocity.zFraction);
 		}
-		if (velocity.lengthY() > distance.lengthY()) {
+		if (velocity.lengthAbsoluteY() > distance.lengthAbsoluteY()) {
 			back.set(velocity.x, velocity.xFraction, distance.y, distance.yFraction, velocity.z, velocity.zFraction);
 		}
 
@@ -192,16 +192,24 @@ public class Position {
 		return me.addAndSet(ot.scaleAndSet(-1));
 	}
 
+	public float lengthAbsoluteX() {
+		return Math.abs(lengthX());
+	}
+	
 	public float lengthX() {
-		return Math.abs(this.x + fractionLengthX());
+		return this.x + fractionLengthX();
 	}
 
+	public float lengthAbsoluteY() {
+		return Math.abs(lengthY());
+	}
+	
 	public float lengthY() {
-		return Math.abs(this.y + fractionLengthY());
+		return this.y + fractionLengthY();
 	}
 
 	public float length() {
-		return lengthX() + lengthY();
+		return lengthAbsoluteX() + lengthAbsoluteY();
 	}
 
 	public Position rotate(float degree) {

@@ -94,36 +94,21 @@ public class PositionComperator implements Comparator<Position> {
 
 	public float heightCompareLength(Position p) {
 		int zHeight = -p.z - (p.zFraction > 0 ? 1 : 0);
-		float x = p.fractionLengthX();
-		float y = p.fractionLengthY();
+		float xLength = p.lengthX();
+		float yLength = p.lengthY();
 
 		switch (direction) {
 		case NORTH:
-			return zHeight + (p.x + p.y + x + y);
+			return zHeight + xLength + yLength;
 		case SOUTH:
-			return zHeight + (-p.x - p.y - x - y);
+			return zHeight - xLength - yLength;
 		case WEST:
-			return zHeight + (-p.x + p.y - x + y);
+			return zHeight - xLength + yLength;
 		case EAST:
-			return zHeight + (p.x - p.y + x - y);
+			return zHeight + xLength - yLength;
 		default:
 			return 0;
 		}
-	}
-
-	private float fractionLength(Position p) {
-		float x = p.fractionLengthX();
-		float y = p.fractionLengthY();
-		boolean northSouth = (direction == Direction.NORTH || direction == Direction.SOUTH);
-		return northSouth ? x + y : -x + y;
-
-		// if (direction == Direction.NORTH || direction == Direction.SOUTH) {
-		// return p.fractionLengthX() + p.fractionLengthY();
-		// }
-		// if (direction == Direction.EAST || direction == Direction.WEST) {
-		// return -p.fractionLengthX() + p.fractionLengthY();
-		// }
-		// return p.fractionLengthX() + p.fractionLengthY();
 	}
 
 }
