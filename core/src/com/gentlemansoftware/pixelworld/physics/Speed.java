@@ -3,7 +3,7 @@ package com.gentlemansoftware.pixelworld.physics;
 public class Speed {
 	
 	public static int sneak = 1;
-	public static int walk = 2;
+	public static int walk = 4;
 	public static int run = 16;
 
 	public Position direction;

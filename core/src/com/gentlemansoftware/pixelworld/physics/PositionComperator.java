@@ -2,11 +2,6 @@ package com.gentlemansoftware.pixelworld.physics;
 
 import java.util.Comparator;
 
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.gentlemansoftware.pixelworld.game.SaveAndLoadable;
-import com.gentlemansoftware.pixelworld.world.MapTile;
-
 public class PositionComperator implements Comparator<Position> {
 
 	Direction direction;

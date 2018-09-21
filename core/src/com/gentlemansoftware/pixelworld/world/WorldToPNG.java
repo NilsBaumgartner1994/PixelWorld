@@ -25,15 +25,18 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
 import com.gentlemansoftware.pixelworld.entitys.Entity;
+import com.gentlemansoftware.pixelworld.helper.EasyColor;
 import com.gentlemansoftware.pixelworld.materials.MyMaterial;
 import com.gentlemansoftware.pixelworld.physics.Position;
 
 public class WorldToPNG {
 
 	private Pixmap _pixmap;
-	private int width;
-	private int height;
-	private Chunk chunk;
+	private int right;
+	private int up;
+	private int left;
+	private int down;
+	private MapTile tile;
 
 	private static Map<MyMaterial, Color> mapping = new HashMap<MyMaterial, Color>();
 
@@ -41,6 +44,7 @@ public class WorldToPNG {
 		mapping.put(MyMaterial.DEBUG, Color.PINK);
 		mapping.put(MyMaterial.DIRT, Color.BROWN);
 		mapping.put(MyMaterial.ERROR, Color.RED);
+		mapping.put(null, EasyColor.TRANSPARENT);
 		mapping.put(MyMaterial.GRASS, Color.GREEN);
 		mapping.put(MyMaterial.SAND, Color.YELLOW);
 		mapping.put(MyMaterial.STONE, Color.GRAY);
@@ -48,7 +52,15 @@ public class WorldToPNG {
 	}
 
 	public WorldToPNG(final Chunk c) {
-		this.chunk = c;
+		this(c.getMapTileFromLocalPos(0, 0), 0, 0, Chunk.CHUNKSIZE, Chunk.CHUNKSIZE);
+	}
+
+	public WorldToPNG(MapTile tile, int left, int down, int up, int right) {
+		this.tile = tile;
+		this.left = left;
+		this.down = down;
+		this.up = up;
+		this.right = right;
 		initVariables();
 	}
 
@@ -57,10 +69,15 @@ public class WorldToPNG {
 		toPNG.renderPixmap();
 		return toPNG._pixmap;
 	}
+	
+	public static Pixmap getPixmap(MapTile tile) {
+		WorldToPNG toPNG = new WorldToPNG(tile,-Chunk.CHUNKSIZE/2,-Chunk.CHUNKSIZE/2,Chunk.CHUNKSIZE/2,Chunk.CHUNKSIZE/2);
+		toPNG.renderPixmap();
+		return toPNG._pixmap;
+	}
 
 	private void initVariables() {
-		this.width = this.height = Chunk.CHUNKSIZE;
-		_pixmap = new Pixmap(this.width, this.height, Format.RGBA8888);
+		_pixmap = new Pixmap(right - left, up - down, Format.RGBA8888);
 	}
 
 	public static void saveToImage(TileWorld world) {
@@ -171,7 +188,7 @@ public class WorldToPNG {
 		System.out.println("Render Pixmap");
 		renderPixmap();
 		System.out.println("Save Pixmap");
-		savePixmap(_pixmap, this.chunk.x + "-" + this.chunk.y);
+		savePixmap(_pixmap, tile.chunk.x + "-" + tile.chunk.y);
 		dispose();
 	}
 
@@ -186,26 +203,34 @@ public class WorldToPNG {
 	}
 
 	private Pixmap renderPixmap() {
+		int width = _pixmap.getWidth();
+		int height = _pixmap.getHeight();
+		
 		_pixmap.setColor(Color.alpha(1));
 		_pixmap.fillRectangle(0, 0, width, height);
 
-		for (int x = 0; x < this.width; x++) {
-			for (int y = 0; y < this.height; y++) {
-				Color color = mapping.get(this.chunk.getMapTileFromLocalPos(x, y).block.material);
-				_pixmap.setColor(color);
-				_pixmap.drawPixel(x, height - y - 1);
-			}
-		}
+		int gx = tile.getGlobalX();
+		int gy = tile.getGlobalY();
 
-		List<Entity> entitys = new LinkedList<>(this.chunk.entitys);
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				MapTile t = tile.chunk.world.getMapTileFromGlobalPos(left + x + gx, down + y + gy);
+				if (t != null) {
+					Color color = mapping.get(t.block.material);
+					_pixmap.setColor(color);
+					_pixmap.drawPixel(x, height - y - 1);
+					
+					List<Entity> entitys = new LinkedList<>(t.entitys);
 
-		for (Entity entity : entitys) {
-			if (!(entity instanceof Block)) {
-				_pixmap.setColor(Color.RED);
-				Position p = entity.getPositionInChunk();
-				_pixmap.drawPixel(p.x, height - p.y - 1);
+					for (Entity entity : entitys) {
+						if (!(entity instanceof Block)) {
+							_pixmap.setColor(Color.RED);
+							_pixmap.drawPixel(x, height - y - 1);
+						}
+					}
+				}
 			}
-		}
+		}		
 
 		return _pixmap;
 	}

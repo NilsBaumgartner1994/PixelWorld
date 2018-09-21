@@ -27,7 +27,7 @@ public class MiniMapOverlay implements SimpleMenuComponent {
 	private final int WIDTH = 128;
 
 	public void updateMap() {
-		Pixmap pixmap = WorldToPNG.getPixmap(getMapTileCameraIsLookingAt().chunk);
+		Pixmap pixmap = WorldToPNG.getPixmap(getMapTileCameraIsLookingAt());
 		this.map = new Sprite(new Texture(pixmap));
 		this.map = SpriteHelper.setToWidth(map, WIDTH);
 		pixmap.dispose();
@@ -55,7 +55,8 @@ public class MiniMapOverlay implements SimpleMenuComponent {
 			int xPixel = WIDTH*tile.x/Chunk.CHUNKSIZE;
 			int yPixel = WIDTH*tile.y/Chunk.CHUNKSIZE;
 
-			display.drawSpriteAndSubtractYpos(map, x-xPixel+WIDTH/2, y-yPixel+WIDTH/2);
+//			display.drawSpriteAndSubtractYpos(map, x-xPixel+WIDTH/2, y-yPixel+WIDTH/2);
+			display.drawSpriteAndSubtractYpos(map, x, y);
 			
 //			Sprite minimapBlack = new Sprite(ResourceLoader.getInstance().getGUI("minimap/minimap-black"));
 //			display.drawSpriteAndSubtractYpos(minimapBlack, x, y);

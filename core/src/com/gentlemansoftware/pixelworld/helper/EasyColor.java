@@ -3,6 +3,8 @@ package com.gentlemansoftware.pixelworld.helper;
 import com.badlogic.gdx.graphics.Color;
 
 public class EasyColor extends Color{
+	
+	public static final Color TRANSPARENT = getColorFrom255RGB(0,0,0,0);
 
 	public static final Color GREENLIGHT = getColorFrom255RGB(154,235,0);
 	public static final Color GREENDARK = getColorFrom255RGB(81,162,0);
