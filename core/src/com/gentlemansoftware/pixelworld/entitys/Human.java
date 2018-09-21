@@ -44,7 +44,7 @@ public class Human extends Entity {
 	public long lastUse = System.currentTimeMillis();
 	public Position usePosition;
 
-	public Human(TileWorld world, Position startPos,String name) {
+	public Human(TileWorld world, Position startPos, String name) {
 		super(world, startPos, EntityHostileType.PLAYER);
 		this.name = name;
 
@@ -103,7 +103,7 @@ public class Human extends Entity {
 				if (item.isNature()) {
 					// this.getMapTile().setNature(item.getNature());
 				} else {
-//					this.getMapTile().setMaterial(item.getMaterial());
+					// this.getMapTile().setMaterial(item.getMaterial());
 				}
 			}
 			if (activItem instanceof Tool) {
@@ -118,16 +118,15 @@ public class Human extends Entity {
 		if (this.stickLeft.len() != 0) {
 			this.direction = Position.getPositionDirectionFromVector(this.stickLeft);
 			MapTile nextBlock = getNextBlockInDirection();
-//			if (!nextBlock.isSolid()) {
-				Position nextBlockMiddle = nextBlock.getGlobalPosition().addAndSet(0, 0, 0,
-						0);
+			if (!nextBlock.isSolid()) {
+				Position nextBlockMiddle = nextBlock.getGlobalPosition().addAndSet(0, 0, 0, 0);
 				this.nav.setPath(nextBlockMiddle);
-//			}
+			}
 		}
 	}
 
 	public MapTile getNextBlockInDirection() {
-		Position oneBlockDir = this.direction.cpy().scaleAndSet(MapTile.tileWidth,MapTile.tileHeight);
+		Position oneBlockDir = this.direction.cpy().scaleAndSet(MapTile.tileWidth, MapTile.tileHeight);
 		Position nextBlock = this.getPosition().cpy().addAndSet(oneBlockDir);
 		return this.world.getMapTileFromGlobalPos(nextBlock.getPosition().x, nextBlock.getPosition().y);
 	}
@@ -140,9 +139,10 @@ public class Human extends Entity {
 
 	@Override
 	public Sprite getSprite(Direction camdir) {
-		return new Sprite(ResourceLoader.getInstance().getEntity("layerTest","layerTest"));
-		
-//		return new Sprite(FoxSpriteAnimations.getTexture(getMotionState(), this.world.time));
+		return new Sprite(ResourceLoader.getInstance().getEntity("layerTest", "layerTest"));
+
+		// return new Sprite(FoxSpriteAnimations.getTexture(getMotionState(),
+		// this.world.time));
 	}
 
 	@Override

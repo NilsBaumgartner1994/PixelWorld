@@ -25,23 +25,26 @@ public class User {
 		new UserProfile().save();
 		this.profile = UserProfile.load("Default");
 		System.out.println(this.profile.name);
-		
+
 		this.gamepad = new GamePad();
 		this.menuHandler = new MenuHandler(this);
 
 		this.activGameWorld = Main.getInstance().titleScreenWorld;
 		initCamera();
-		
-//		Position startPos = new Position(51721, MapTile.tileWidth / 2, 50811, MapTile.tileHeight / 2);
-//		Position startPos = new Position(Integer.MAX_VALUE, MapTile.tileWidth / 2, Integer.MAX_VALUE, MapTile.tileHeight / 2);
-//		Position startPos = new Position(0, MapTile.tileWidth / 2, 0, MapTile.tileHeight / 2);
+
+		// Position startPos = new Position(51721, MapTile.tileWidth / 2, 50811,
+		// MapTile.tileHeight / 2);
+		// Position startPos = new Position(Integer.MAX_VALUE, MapTile.tileWidth
+		// / 2, Integer.MAX_VALUE, MapTile.tileHeight / 2);
+		// Position startPos = new Position(0, MapTile.tileWidth / 2, 0,
+		// MapTile.tileHeight / 2);
 		Position startPos = new Position(0, 0, 0, 0, 1, 0);
-		
+
 		this.human = new Human(this.activGameWorld, startPos, "Bob");
 		this.human.spawn();
 		cameraController.setTrack(human);
-		
-		Bat bat = new Bat(this.activGameWorld,startPos.cpy().addAndSet(2, 0, 0, 0));
+
+		Bat bat = new Bat(this.activGameWorld, startPos.cpy().addAndSet(2, 0, 0, 0, 1, 0));
 		bat.spawn();
 	}
 

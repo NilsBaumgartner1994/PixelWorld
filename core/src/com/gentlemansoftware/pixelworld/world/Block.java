@@ -36,6 +36,9 @@ public class Block extends Entity implements Serializable {
 		if(m.equals(MyMaterial.WATER)){
 			setSolid(true);
 		}
+		if(m.equals(MyMaterial.STONE)){
+			setSolid(true);
+		}
 		setHeight(MyMaterial.getDefaultHeightByID(this.material.getID()));
 	}
 	

@@ -7,6 +7,8 @@ import java.util.Random;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
+import com.gentlemansoftware.pixelworld.game.ResourceLoader;
+import com.gentlemansoftware.pixelworld.physics.Direction;
 import com.gentlemansoftware.pixelworld.physics.Position;
 import com.gentlemansoftware.pixelworld.physics.Speed;
 import com.gentlemansoftware.pixelworld.world.MapTile;
@@ -43,7 +45,7 @@ public class Bat extends Entity {
 			nextGoal = getNextGoal();
 		}
 
-		this.nav.setPath(nextGoal.getGlobalPosition().addAndSet(0, MapTile.tileWidth / 2, 0, MapTile.tileHeight / 2));
+		this.nav.setPath(nextGoal.getGlobalPosition().addAndSet(0, 0, 0, 0, 1, 0));
 	}
 
 	private MapTile getNextGoal() {
@@ -68,10 +70,9 @@ public class Bat extends Entity {
 		this.speed = Speed.sneak;
 	}
 
-	public List<Sprite> getSprite() {
-		List<Sprite> sprites = new ArrayList<Sprite>();
-		sprites.add(new Sprite(BatSpriteAnimations.getTexture(getMotionState(), this.world.time)));
-		return sprites;
+	@Override
+	public Sprite getSprite(Direction camdir) {
+		return new Sprite(BatSpriteAnimations.getTexture(getMotionState(), this.world.time));
 	}
 
 }

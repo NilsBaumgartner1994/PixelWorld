@@ -41,6 +41,7 @@ public class MapTile extends Position implements Serializable {
 	
 	public void setBlock(Block b){
 		this.block = b;
+		setSolid(this.block.isSolid());
 	}
 	
 	public void registerEntity(Entity body){
