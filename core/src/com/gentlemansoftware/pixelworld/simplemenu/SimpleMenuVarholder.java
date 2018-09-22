@@ -1,30 +1,24 @@
 package com.gentlemansoftware.pixelworld.simplemenu;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
-import com.gentlemansoftware.pixelworld.game.Main;
-import com.gentlemansoftware.pixelworld.game.ResourceLoader;
-import com.gentlemansoftware.pixelworld.inputs.GamePad;
-import com.gentlemansoftware.pixelworld.inputs.GamePadButtons;
 import com.gentlemansoftware.pixelworld.menu.Menu;
 import com.gentlemansoftware.pixelworld.menu.MenuHandler;
-import com.gentlemansoftware.pixelworld.profiles.UserProfile;
+import com.gentlemansoftware.pixelworld.profiles.UserVariableProfile;
 import com.gentlemansoftware.pixelworld.profiles.VarHolder;
-import com.gentlemansoftware.pixelworld.world.WorldToPNG;
 
 public class SimpleMenuVarholder extends SimpleMenu {
 
-	public SimpleMenuVarholder(MenuHandler handler, Menu parent, String title, VarHolder[] vars) {
+	public SimpleMenuVarholder(MenuHandler handler, Menu parent, String title, List<VarHolder<? extends Serializable>> list) {
 		super(handler, parent, title, null);
-		this.setContent(initMenuComponents(vars));
+		this.setContent(initMenuComponents(list));
 	}
 
-	public List<SimpleMenuComponent> initMenuComponents(VarHolder[] vars) {
+	public List<SimpleMenuComponent> initMenuComponents(List<VarHolder<? extends Serializable>> list) {
 		List<SimpleMenuComponent> menuComponents = new LinkedList<SimpleMenuComponent>();
-		menuComponents.addAll(SimpleMenuVarHolderComponentHelper.getRightComponents(vars));
+		menuComponents.addAll(SimpleMenuVarHolderComponentHelper.getRightComponents(list));
 		menuComponents.add(parent);
 
 		return menuComponents;

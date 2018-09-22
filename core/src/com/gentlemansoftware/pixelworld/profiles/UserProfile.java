@@ -19,7 +19,6 @@ public class UserProfile extends SaveAndLoadable {
 	public UserDebugProfile debugProfile;
 	public UserSoundProfile soundProfile;
 
-
 	public static final transient String DATA = "data/";
 	public static final transient String PROFILES = DATA + "profiles/";
 	public static final transient String ENDING = ".profile";

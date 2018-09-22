@@ -1,8 +1,6 @@
 package com.gentlemansoftware.pixelworld.profiles;
 
-import java.io.Serializable;
-
-public class UserSoundProfile implements Serializable, UserVariableProfileInterface {
+public class UserSoundProfile extends UserVariableProfile {
 
 	/**
 	 * 
@@ -13,13 +11,15 @@ public class UserSoundProfile implements Serializable, UserVariableProfileInterf
 	public VarHolder<Float> natureSound;
 
 	public UserSoundProfile() {
-		this.uiSound = new VarHolder<Float>(1f,"UI Sound");
-		this.natureSound = new VarHolder<Float>(1f,"Nature Sound");
+		super("Sound Options");
+		initVars();
 	}
 
-	@Override
-	public VarHolder<?>[] getVars() {
-		return new VarHolder[] { uiSound, natureSound };
+	private void initVars() {
+		this.uiSound = new VarHolder<Float>(1f, "UI Sound");
+		this.addVar(uiSound);
+		this.natureSound = new VarHolder<Float>(1f, "Nature Sound");
+		this.addVar(natureSound);
 	}
 
 }

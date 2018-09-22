@@ -31,9 +31,6 @@ public class OptionMenu extends SimpleMenu {
 
 	public List<SimpleMenuComponent> initMenuComponents() {
 		List<SimpleMenuComponent> menuComponents = new LinkedList<SimpleMenuComponent>();
-		UserProfile profile = this.handler.user.profile;
-
-		
 
 		Runnable quitRunnable = new Runnable() {
 			public void run() {

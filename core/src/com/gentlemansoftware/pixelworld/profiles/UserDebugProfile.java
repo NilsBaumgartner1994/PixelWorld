@@ -1,29 +1,28 @@
 package com.gentlemansoftware.pixelworld.profiles;
 
-import java.io.Serializable;
-
-public class UserDebugProfile implements Serializable,UserVariableProfileInterface {
-
+public class UserDebugProfile extends UserVariableProfile {
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 3207593096419342158L;
+	private static final long serialVersionUID = -4049832344375766584L;
 	
 	public VarHolder<Boolean> showDebugInformationSide;
 	public VarHolder<Boolean> showCoordinatesOnMapTiles;
 	public VarHolder<Boolean> showMapTilesDrawOrder;
 	
 	public UserDebugProfile(){
+		super("Debug Options");
+		initVariables();
+	}
+	
+	private void initVariables(){
 		this.showDebugInformationSide = new VarHolder<Boolean>(false,"Side Information");
+		this.addVar(showDebugInformationSide);
 		this.showCoordinatesOnMapTiles = new VarHolder<Boolean>(false,"Map Coordinates");
-		this.showMapTilesDrawOrder = new VarHolder<Boolean>(false,"Draw Order");
+		this.addVar(showCoordinatesOnMapTiles);
+		this.showMapTilesDrawOrder = new VarHolder<Boolean>(false,"Draw Order");		
+		this.addVar(showMapTilesDrawOrder);
 	}
-	
-	@Override
-	public VarHolder<?>[] getVars(){
-		return new VarHolder[]{showDebugInformationSide,showCoordinatesOnMapTiles,showMapTilesDrawOrder};
-	}
-	
-	
 	
 }
