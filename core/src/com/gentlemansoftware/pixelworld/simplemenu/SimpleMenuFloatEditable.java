@@ -8,7 +8,7 @@ import com.gentlemansoftware.pixelworld.inputs.GamePad;
 import com.gentlemansoftware.pixelworld.inputs.GamePadButtons;
 import com.gentlemansoftware.pixelworld.profiles.VarHolder;
 
-public class SimpleMenuFloatEditable implements SimpleMenuComponent{
+public class SimpleMenuFloatEditable implements SimpleMenuComponent {
 
 	VarHolder<Float> number;
 	boolean active;
@@ -29,15 +29,15 @@ public class SimpleMenuFloatEditable implements SimpleMenuComponent{
 	public int render(CameraControllerInterface display, int yposStart) {
 		int ypos = yposStart;
 		int helper = ypos;
-		
+
 		ypos = drawSingleContent(display, ypos);
-		drawText(display,this.number.getName(),helper);
+		drawText(display, this.number.getName(), helper);
 		helper = ypos;
-		
+
 		ypos = drawSingleContent(display, ypos);
-		int percent = (int) (this.number.value*100);
+		int percent = (int) (this.number.value * 100);
 		drawSlider(display, helper, percent);
-		
+
 		return ypos;
 	}
 
@@ -48,19 +48,19 @@ public class SimpleMenuFloatEditable implements SimpleMenuComponent{
 		ypos = display.drawSpriteAndSubtractYpos(post_middle, xpos, ypos);
 		return ypos;
 	}
-	
-	private void drawText(CameraControllerInterface display, String text, int ypos){
+
+	private void drawText(CameraControllerInterface display, String text, int ypos) {
 		Sprite post_middle = new Sprite(ResourceLoader.getInstance().getGUI("menus/menu_information_top"));
-	
+
 		display.getFont().setColor(getColor());
 		display.getLayout().setText(display.getFont(), text);
 		int stringWidth = (int) display.getLayout().width;
 		int stringHeight = (int) display.getLayout().height;
 
 		int xpos = display.getWidth() / 2;
-		
-		display.getFont().draw(display.getSpriteBatch(), text, xpos-stringWidth/2,
-				ypos - post_middle.getHeight()/2 + stringHeight / 2);
+
+		display.getFont().draw(display.getSpriteBatch(), text, xpos - stringWidth / 2,
+				ypos - post_middle.getHeight() / 2 + stringHeight / 2);
 	}
 
 	private int drawSlider(CameraControllerInterface display, int ypos, int percent) {
@@ -91,13 +91,17 @@ public class SimpleMenuFloatEditable implements SimpleMenuComponent{
 
 	@Override
 	public void select() {
-		number.setVar((number.getVar()+0.1f)%1.1f);
+		float nextVal = number.getVar() + 0.1f;
+		nextVal = nextVal > 1.1 ? 0 : nextVal;
+		nextVal = nextVal > 1 ? 1 : nextVal;
+		number.setVar(nextVal);
+		System.out.println("Value is now: " + number.getVar());
 	}
 
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

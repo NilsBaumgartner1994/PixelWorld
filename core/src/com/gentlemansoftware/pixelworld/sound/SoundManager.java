@@ -27,14 +27,14 @@ public class SoundManager {
 		soundMap.put(EasySounds.STEP, createSound("footstep01.ogg"));
 	}
 	
-	public Sound getSound(EasySounds sound){
+	private Sound getSound(EasySounds sound){
 		return soundMap.get(sound);
 	}
 	
-	public void playSound(EasySounds sound){
+	public void playSound(EasySounds sound, float volume){
 		Sound s = getSound(sound);
 		if(s != null){
-			s.play();
+			s.play(volume);
 		}
 	}
 	

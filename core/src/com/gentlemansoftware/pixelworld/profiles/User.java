@@ -9,6 +9,8 @@ import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
 import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.menu.MenuHandler;
 import com.gentlemansoftware.pixelworld.physics.Position;
+import com.gentlemansoftware.pixelworld.sound.SoundManager;
+import com.gentlemansoftware.pixelworld.sound.UserSoundManager;
 import com.gentlemansoftware.pixelworld.world.MapTile;
 import com.gentlemansoftware.pixelworld.world.TileWorld;
 
@@ -16,6 +18,7 @@ public class User {
 
 	public UserProfile profile;
 	public CameraControllerInterface cameraController;
+	public UserSoundManager soundManager;
 	public GamePad gamepad;
 	public TileWorld activGameWorld;
 	public Human human;
@@ -26,11 +29,9 @@ public class User {
 		this.profile = UserProfile.load("Default");
 		System.out.println(this.profile.name);
 
-		this.gamepad = new GamePad();
-		this.menuHandler = new MenuHandler(this);
+		initHandlers();
 
 		this.activGameWorld = Main.getInstance().titleScreenWorld;
-		initCamera();
 
 		// Position startPos = new Position(51721, MapTile.tileWidth / 2, 50811,
 		// MapTile.tileHeight / 2);
@@ -47,10 +48,12 @@ public class User {
 		Bat bat = new Bat(this.activGameWorld, startPos.cpy().addAndSet(2, 0, 0, 0, 1, 0));
 		bat.spawn();
 	}
-
-	public void initCamera() {
-		cameraController = new CameraController2D(this, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		// cameraController.setTrack(this);
+	
+	private void initHandlers(){
+		this.gamepad = new GamePad();
+		this.menuHandler = new MenuHandler(this);
+		this.soundManager = new UserSoundManager(this.profile.soundProfile);
+		this.cameraController = new CameraController2D(this, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 	}
 
 	public void updateControlledEntitys() {

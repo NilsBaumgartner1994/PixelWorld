@@ -144,7 +144,7 @@ public class CameraController2D implements CameraControllerInterface {
 			world.activateChunk(world.getChunkGlobalPos(camera.getPosition().x, camera.getPosition().y));
 			List<Entity> area = getAreaToDraw(world);
 			Collections.sort(area, new EntityComperator(this.cameraDirection));
-//			drawNatureShaddow(area, world);
+			// drawNatureShaddow(area, world);
 			drawNatureAndEntitys(area);
 		}
 
@@ -221,12 +221,13 @@ public class CameraController2D implements CameraControllerInterface {
 		fboBatch.setColor(shaddow);
 
 		for (MapTile tile : area) {
-//			Sprite nature = tile.getNatureTexture();
-//			if (nature != null) {
-//
-//				nature.setScale(1, shaddowLength);
-//				drawTileSprite(nature, tile.getGlobalPosition(), tileWidthHalf, tileHeightHalf, shaddowRotation);
-//			}
+			// Sprite nature = tile.getNatureTexture();
+			// if (nature != null) {
+			//
+			// nature.setScale(1, shaddowLength);
+			// drawTileSprite(nature, tile.getGlobalPosition(), tileWidthHalf,
+			// tileHeightHalf, shaddowRotation);
+			// }
 		}
 
 		fboBatch.setShader(null);
@@ -591,9 +592,9 @@ public class CameraController2D implements CameraControllerInterface {
 			drawInformationLine("Body Chunk: " + standOn.chunk.x + "|" + standOn.chunk.y);
 			// drawInformationLine("Stand On: " + standOn.material.getName());
 			// drawInformationLine("MapTile Height: " + standOn.height);
-//			if (standOn.nature != null) {
-//				drawInformationLine("Nature: " + standOn.nature.getName());
-//			}
+			// if (standOn.nature != null) {
+			// drawInformationLine("Nature: " + standOn.nature.getName());
+			// }
 		}
 	}
 
@@ -683,7 +684,7 @@ public class CameraController2D implements CameraControllerInterface {
 	}
 
 	public void changeDistance(int amount) {
-		SoundManager.getInstance().playSound(EasySounds.CLICK);
+		this.user.soundManager.playSound(EasySounds.CLICK);
 
 		zoomLevel += amount;
 		if (zoomLevel < zoomLevelmin)

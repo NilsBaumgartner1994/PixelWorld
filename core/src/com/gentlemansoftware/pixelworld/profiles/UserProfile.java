@@ -4,6 +4,9 @@ import com.gentlemansoftware.pixelworld.game.SaveAndLoadable;
 
 public class UserProfile extends SaveAndLoadable {
 
+	public UserDebugProfile debugProfile;
+	public UserSoundProfile soundProfile;
+	
 	/**
 	 * 
 	 */
@@ -15,9 +18,6 @@ public class UserProfile extends SaveAndLoadable {
 		this.debugProfile = new UserDebugProfile();
 		this.soundProfile = new UserSoundProfile();
 	}
-
-	public UserDebugProfile debugProfile;
-	public UserSoundProfile soundProfile;
 
 	public static final transient String DATA = "data/";
 	public static final transient String PROFILES = DATA + "profiles/";
