@@ -7,6 +7,8 @@ import com.gentlemansoftware.pixelworld.physics.Direction;
 import com.gentlemansoftware.pixelworld.physics.Navigation;
 import com.gentlemansoftware.pixelworld.physics.Position;
 import com.gentlemansoftware.pixelworld.physics.Speed;
+import com.gentlemansoftware.pixelworld.profiles.User;
+import com.gentlemansoftware.pixelworld.profiles.UserSoundProfile;
 import com.gentlemansoftware.pixelworld.world.Chunk;
 import com.gentlemansoftware.pixelworld.world.MapTile;
 import com.gentlemansoftware.pixelworld.world.TileWorld;
@@ -99,6 +101,10 @@ public class Entity extends Body implements Serializable, EasyDrawableInterface 
 		registerEntityOnChunk(newpos);
 		super.setPosition(newpos);
 		return this;
+	}
+	
+	public void playSoundForUser(Position playerPos, User user){
+
 	}
 
 	public MapTile getMapTile() {

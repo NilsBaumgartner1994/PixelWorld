@@ -2,7 +2,7 @@ package com.gentlemansoftware.pixelworld.sound;
 
 public enum EasySounds {
 
-	STEP, CLICK, PRESS, RELEASE;
+	STEP, CLICK, PRESS, RELEASE, BAT_WING_FLAP;
 
 	public static boolean isUISound(EasySounds sound) {
 		switch (sound) {
@@ -18,6 +18,15 @@ public enum EasySounds {
 	public static boolean isNatureSound(EasySounds sound){
 		switch (sound) {
 		case STEP:
+			return true;
+		default:
+			return false;
+		}
+	}
+	
+	public static boolean isEntitySound(EasySounds sound){
+		switch (sound) {
+		case BAT_WING_FLAP:
 			return true;
 		default:
 			return false;

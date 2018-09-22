@@ -13,6 +13,7 @@ public class UserSoundProfile implements UserVariableProfile {
 
 	public VarHolder<Float> uiSound;
 	public VarHolder<Float> natureSound;
+	public VarHolder<Float> entitySound;
 
 	public UserSoundProfile() {
 		initVars();
@@ -20,9 +21,8 @@ public class UserSoundProfile implements UserVariableProfile {
 
 	private void initVars() {
 		this.uiSound = new VarHolder<Float>(1f, "UI Sound");
-//		this.addVar(uiSound);
 		this.natureSound = new VarHolder<Float>(1f, "Nature Sound");
-//		this.addVar(natureSound);
+		this.entitySound = new VarHolder<Float>(1f, "Entity Sound");
 	}
 	
 	@Override
@@ -30,6 +30,7 @@ public class UserSoundProfile implements UserVariableProfile {
 		List<VarHolder<?>> list = new LinkedList<VarHolder<?>>();
 		list.add(uiSound);
 		list.add(natureSound);
+		list.add(entitySound);
 		return list;
 	}
 	

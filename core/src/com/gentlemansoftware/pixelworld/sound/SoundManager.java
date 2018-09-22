@@ -25,17 +25,19 @@ public class SoundManager {
 		soundMap = new HashMap<EasySounds,Sound>();
 		soundMap.put(EasySounds.CLICK, createSound("click1.ogg"));
 		soundMap.put(EasySounds.STEP, createSound("footstep01.ogg"));
+		soundMap.put(EasySounds.BAT_WING_FLAP, createSound("entitys/bat/bat_moving_flap.ogg"));
 	}
 	
-	private Sound getSound(EasySounds sound){
+	public Sound getSound(EasySounds sound){
 		return soundMap.get(sound);
 	}
 	
-	public void playSound(EasySounds sound, float volume){
+	public long playSound(EasySounds sound, float volume){
 		Sound s = getSound(sound);
 		if(s != null){
-			s.play(volume);
+			return s.play(volume);
 		}
+		return -1;
 	}
 	
 	private static final String soundPath = "data/sounds/";

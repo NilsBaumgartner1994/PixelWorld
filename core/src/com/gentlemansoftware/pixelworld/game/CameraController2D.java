@@ -242,6 +242,7 @@ public class CameraController2D implements CameraControllerInterface {
 
 		drawOrderNumber = 0;
 		for (Entity e : entitys) {
+			e.playSoundForUser(getCameraPosition(), this.user);
 			Sprite s = e.getSprite(this.cameraDirection);
 			drawTileSprite(s, e.getPosition(), tileWidthHalf, tileHeightHalf, 0);
 			drawOrderNumber++;
@@ -684,7 +685,7 @@ public class CameraController2D implements CameraControllerInterface {
 	}
 
 	public void changeDistance(int amount) {
-		this.user.soundManager.playSound(EasySounds.CLICK);
+		this.user.soundManager.playSound(EasySounds.CLICK, 1f);
 
 		zoomLevel += amount;
 		if (zoomLevel < zoomLevelmin)

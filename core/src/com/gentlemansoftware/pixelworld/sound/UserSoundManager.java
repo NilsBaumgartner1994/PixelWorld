@@ -11,25 +11,26 @@ public class UserSoundManager {
 		setSoundProfile(profile);
 	}
 
-	public void playSound(EasySounds sound) {
-		float volume = getVolume(sound);
-		System.out.println("Play at Volume: " + volume);
-		SoundManager.getInstance().playSound(sound, volume);
+	public long playSound(EasySounds sound, float volume) {
+		volume = volume > 1 ? 1 : volume;
+		float multiplier = getMultiplier(sound);
+		return SoundManager.getInstance().playSound(sound, volume * multiplier);
 	}
 
 	public void setSoundProfile(UserSoundProfile profile) {
 		this.profile = profile;
 	}
 
-	private float getVolume(EasySounds sound) {
+	private float getMultiplier(EasySounds sound) {
 		float volume = 1f;
 		if (EasySounds.isUISound(sound)) {
-			System.out.println("is UI Sound: "+profile.uiSound.getVar());
 			return profile.uiSound.getVar();
 		}
 		if (EasySounds.isNatureSound(sound)) {
-			System.out.println("is Nature Sound");
 			return profile.natureSound.getVar();
+		}
+		if(EasySounds.isEntitySound(sound)){
+			return profile.entitySound.getVar();
 		}
 
 		return volume;
