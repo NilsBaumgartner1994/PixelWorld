@@ -2,7 +2,7 @@ package com.gentlemansoftware.pixelworld.profiles;
 
 import java.io.Serializable;
 
-public class UserDebugProfile implements Serializable {
+public class UserDebugProfile implements Serializable,UserVariableProfileInterface {
 
 	/**
 	 * 
@@ -19,7 +19,8 @@ public class UserDebugProfile implements Serializable {
 		this.showMapTilesDrawOrder = new VarHolder<Boolean>(false,"Draw Order");
 	}
 	
-	public VarHolder[] getVars(){
+	@Override
+	public VarHolder<?>[] getVars(){
 		return new VarHolder[]{showDebugInformationSide,showCoordinatesOnMapTiles,showMapTilesDrawOrder};
 	}
 	
