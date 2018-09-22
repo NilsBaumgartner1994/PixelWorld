@@ -25,17 +25,7 @@ public class Human extends Entity {
 	/**
 	 * InputVariables
 	 */
-	private Vector2 stickLeft;
-	public boolean stickLeftDown;
-
-	private Vector2 stickRight;
-	public boolean stickRightDown;
-
-	public CameraControllerInterface cameraController;
-
 	private boolean sneaking;
-
-	public Position direction;
 
 	public Inventory inventory;
 
@@ -75,14 +65,6 @@ public class Human extends Entity {
 		// this.inventory.addItem(new Item(new Grass()));
 	}
 
-	public void setLeftStick(Vector2 dir) {
-		this.stickLeft = dir.cpy();
-	}
-
-	public void setRightStick(Vector2 dir) {
-
-	}
-
 	public void use(Position pos) {
 		if (this.lastUse + USECOOLDOWN < System.currentTimeMillis()) {
 			this.use = true;
@@ -114,26 +96,24 @@ public class Human extends Entity {
 		}
 	}
 
-	private void updateLeftStick() {
-		if (this.stickLeft.len() != 0) {
-			this.direction = Position.getPositionDirectionFromVector(this.stickLeft);
-			MapTile nextBlock = getNextBlockInDirection();
+	public void updateLeftStick(Vector2 stickLeft) {
+		if (stickLeft.len() != 0) {
+			Position dir = Position.getPositionDirectionFromVector(stickLeft);
+			MapTile nextBlock = getNextBlockInDirection(dir);
 			if (!nextBlock.isSolid()) {
-				Position nextBlockMiddle = nextBlock.getGlobalPosition().addAndSet(0, 0, 0, 0);
-				this.nav.setPath(nextBlockMiddle);
+				Position nextBlockMiddle = nextBlock.getGlobalPosition().addAndSet(0, 0, 0, 0, 1, 0);
+				this.nav.setSecondDestiny(nextBlockMiddle);
 			}
 		}
 	}
 
-	public MapTile getNextBlockInDirection() {
-		Position oneBlockDir = this.direction.cpy().scaleAndSet(MapTile.tileWidth, MapTile.tileHeight);
+	public MapTile getNextBlockInDirection(Position direction) {
+		Position oneBlockDir = direction.cpy().scaleAndSet(MapTile.tileWidth, MapTile.tileHeight);
 		Position nextBlock = this.getPosition().cpy().addAndSet(oneBlockDir);
 		return this.world.getMapTileFromGlobalPos(nextBlock.getPosition().x, nextBlock.getPosition().y);
 	}
 
 	public void resetInputVariables() {
-		stickLeft = new Vector2();
-		stickRight = new Vector2();
 		this.speed = Speed.walk;
 	}
 
@@ -147,7 +127,6 @@ public class Human extends Entity {
 
 	@Override
 	public void updateLogic() {
-		updateLeftStick();
 		updateUse();
 	}
 

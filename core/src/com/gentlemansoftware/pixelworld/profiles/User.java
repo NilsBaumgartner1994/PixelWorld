@@ -53,6 +53,27 @@ public class User {
 		// cameraController.setTrack(this);
 	}
 
+	public void updateControlledEntitys() {
+		if (human != null) {
+			switch (cameraController.getCameraDirection()) {
+			case NORTH:
+				human.updateLeftStick(gamepad.getLeftStick().getVec());
+				break;
+			case EAST:
+				human.updateLeftStick(gamepad.getLeftStick().getVec().rotate90(2).scl(-1));
+				break;
+			case SOUTH:
+				human.updateLeftStick(gamepad.getLeftStick().getVec().scl(-1));
+				break;
+			case WEST:
+				human.updateLeftStick(gamepad.getLeftStick().getVec().rotate90(3));
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
 	public void updateUserInputs() {
 		if (menuHandler != null && gamepad != null) {
 			menuHandler.updateInput(gamepad);

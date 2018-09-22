@@ -2,6 +2,7 @@ package com.gentlemansoftware.pixelworld.physics;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Navigation {
@@ -13,7 +14,7 @@ public class Navigation {
 	}
 
 	public Navigation(final Position path) {
-		this(new ArrayList<Position>() {
+		this(new LinkedList<Position>() {
 			{
 				add(path);
 			}
@@ -31,10 +32,14 @@ public class Navigation {
 	}
 
 	public Position getActualDestiny() {
-		if(hasFinished()){
+		if (hasFinished()) {
 			return null;
 		}
 		return path.get(0);
+	}
+
+	public void addDestiny(Position destiny) {
+		path.add(destiny);
 	}
 
 	public void addDestiny(Position destiny, int position) {
@@ -42,17 +47,36 @@ public class Navigation {
 	}
 
 	public void setPath(List<Position> newPath) {
+		if (newPath == null) {
+			newPath = new LinkedList<Position>();
+		}
 		this.path = newPath;
 	}
 
 	public void setPath(Position singleTarget) {
-		List<Position> newPath = new ArrayList<Position>();
+		List<Position> newPath = new LinkedList<Position>();
 		newPath.add(singleTarget);
 		setPath(newPath);
 	}
 
+	public void setSecondDestiny(Position pos) {
+		if (hasFinished()) {
+			addDestiny(pos);
+		} else {
+			Position first = this.path.get(0);
+			if(pos.equals(first)) return;
+			removeAllDestinys();
+			addDestiny(first);
+			addDestiny(pos);
+		}
+	}
+
 	public void removeDestiny(int position) {
 		this.path.remove(position);
+	}
+
+	public void removeAllDestinys() {
+		this.path = new LinkedList<Position>();
 	}
 
 	public void removeDestinys(List<Position> path) {

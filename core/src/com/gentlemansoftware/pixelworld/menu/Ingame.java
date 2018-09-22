@@ -53,24 +53,9 @@ public class Ingame extends SimpleMenu {
 		if (gamepad.isButtonTyped(GamePadButtons.UP)) {
 			user.cameraController.changeDistance(-1);
 		}
-
+		
+		user.updateControlledEntitys();
 		Human human = user.human;
-		switch (this.handler.user.cameraController.getCameraDirection()) {
-		case NORTH:
-			human.setLeftStick(gamepad.getLeftStick().getVec());
-			break;
-		case EAST:
-			human.setLeftStick(gamepad.getLeftStick().getVec().rotate90(2).scl(-1));
-			break;
-		case SOUTH:
-			human.setLeftStick(gamepad.getLeftStick().getVec().scl(-1));
-			break;
-		case WEST:
-			human.setLeftStick(gamepad.getLeftStick().getVec().rotate90(3));
-			break;
-		default:
-			break;
-		}
 
 		if (gamepad.isButtonTyped(GamePadButtons.R2)) {
 			user.cameraController.rotateCamera(10);
