@@ -71,10 +71,8 @@ public class TileWorld extends SaveAndLoadable {
 	public void save() {
 		for (Chunk c : chunks.values()) {
 			if (c != null) {
-				if (c.isGenerated()) {
-					System.out.println("Save Chunk: " + c.x + ":" + c.y);
-					c.save(this);
-				}
+				System.out.println("Save Chunk: " + c.x + ":" + c.y);
+				c.save(this);
 			}
 		}
 	}
@@ -216,13 +214,9 @@ public class TileWorld extends SaveAndLoadable {
 	}
 
 	public Chunk getChunk(int cx, int cy) {
-		// if (cx < 0 || cx > worldSize)
-		// return null;
-		// if (cy < 0 || cy > worldSize)
-		// return null;
 
 		Chunk c = chunks.get(cx + "-" + cy);
-		if (c == null || !c.isGenerated()) {
+		if (c == null) {
 			generator.generateChunkAt(cx, cy);
 		}
 

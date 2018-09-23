@@ -36,16 +36,23 @@ public class Chunk extends SaveAndLoadable{
 
 //	public static final int CHUNKSIZE = 1024;
 	public static final int CHUNKSIZE = 32;
-	private boolean generated;
 
 	MapTile[][] tiles;
 	List<Entity> entitys;
 	
 	public transient TileWorld world;
 	
-	public Chunk(TileWorld world){
+	public Chunk(TileWorld world, int cx, int cy){
 		this.world = world;
-		generated = false;
+		this.x = cx;
+		this.y = cy;
+		tiles = new MapTile[CHUNKSIZE][CHUNKSIZE];
+		for(int x = 0; x<CHUNKSIZE; x++){
+			for(int y = 0; y<CHUNKSIZE; y++){
+				tiles[x][y]= new MapTile(this,x,y);
+			}
+		}
+		entitys = new ArrayList<Entity>();
 	}
 	
 	public final static String ENDINGNAME = "chunk";
@@ -55,39 +62,6 @@ public class Chunk extends SaveAndLoadable{
 		System.out.println("Saving: "+x+"-"+y+ENDING);
 		saveToInternal(TileWorld.WORLDS+world.name+"/"+x+"-"+y+ENDING);
 		System.out.println("Saved to: "+TileWorld.WORLDS+world.name+"/"+x+"-"+y+ENDING);
-	}
-	
-	public boolean isGenerated(){
-		return this.generated;
-	}
-
-	public void create(int _x, int _y, Amortized2DNoise noise) {
-
-		tiles = new MapTile[CHUNKSIZE][CHUNKSIZE];
-		entitys = new ArrayList<Entity>();
-
-		x = _x;
-		y = _y;
-
-		float[][] cell2 = new float[CHUNKSIZE][CHUNKSIZE];
-		for (int i = 0; i < CHUNKSIZE; i++) {
-			for (int j = 0; j < CHUNKSIZE; j++) {
-				cell2[i][j] = 0.0f;
-			}
-		}
-
-		Main.log(getClass(), "Generation: start");
-		tiles = noise.Generate2DNoise(this, tiles, cell2, NatureGenerator.octave0, NatureGenerator.octave1, y, x);
-		this.generated = true;
-
-	}
-	
-	public void spawnAllBlocks(){
-		for(MapTile[] tile1 : tiles){
-			for(MapTile tile : tile1){
-				tile.block.spawn();
-			}	
-		}	
 	}
 
 	public void registerEntity(Entity body) {

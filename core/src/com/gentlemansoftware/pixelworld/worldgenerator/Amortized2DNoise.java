@@ -19,6 +19,8 @@ import java.util.Random;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.gentlemansoftware.pixelworld.entitys.TallGrass;
+import com.gentlemansoftware.pixelworld.entitys.Tree;
 import com.gentlemansoftware.pixelworld.materials.MyMaterial;
 import com.gentlemansoftware.pixelworld.world.Block;
 import com.gentlemansoftware.pixelworld.world.Chunk;
@@ -275,11 +277,22 @@ public class Amortized2DNoise {
 		return new Color((float) r / 255, (float) g / 255, (float) b / 255, a);
 	}
 
-	public MapTile[][] Generate2DNoise(Chunk c, MapTile[][] tiles, float[][] cell, int octave0, int octave1, int nRow,
-			int nCol) {
+	public void Generate2DNoise(Chunk c) {
+		int octave0 = NatureGenerator.octave0;
+		int octave1 = NatureGenerator.octave1;
+		int nCol = c.x;
+		int nRow = c.y;
+
 		for (int i = 1; i < octave0; i++) {
 			nCol = nCol * 2;
 			nRow = nRow * 2;
+		}
+
+		float[][] cell = new float[Chunk.CHUNKSIZE][Chunk.CHUNKSIZE];
+		for (int i = 0; i < cell.length; i++) {
+			for (int j = 0; j < cell[i].length; j++) {
+				cell[i][j] = 0.0f;
+			}
 		}
 
 		generate(nCol, nRow, octave0, octave1, CELLSIZE2D, cell);
@@ -289,33 +302,35 @@ public class Amortized2DNoise {
 
 		for (int cy = 0; cy < CELLSIZE2D; cy++) {
 			for (int cx = 0; cx < CELLSIZE2D; cx++) {
-				MapTile t = new MapTile(c,cx,cy);
-				tiles[cx][cy] = t;
-				
+				MapTile t = c.getMapTileFromLocalPos(cx, cy);
+
+				Block b = null;
 				if (cell[cx][cy] < seaLevel) {
-					t.setBlock(new Block(t,MyMaterial.WATER));
+					b = new Block(t, MyMaterial.WATER);
 				}
 				if (cell[cx][cy] >= seaLevel && cell[cx][cy] <= seaLevel + sandAmount) {
-					t.setBlock(new Block(t,MyMaterial.SAND));
+					b = new Block(t, MyMaterial.SAND);
 				}
 				if (cell[cx][cy] > seaLevel + 0.1f && cell[cx][cy] <= seaLevel + 0.4f) {
-					t.setBlock(new Block(t,MyMaterial.GRASS));
+					b = new Block(t, MyMaterial.GRASS);
 				}
 				if (cell[cx][cy] > seaLevel + 0.4f) {
-					t.setBlock(new Block(t,MyMaterial.STONE));
+					b = new Block(t, MyMaterial.STONE);
 				}
+				t.setBlock(b);
+				b.spawn();
 			}
 		}
 
 		for (int i = 0; i < CELLSIZE2D * CELLSIZE2D / 400; i++) {
-			randomTree(cell, tiles);
-			randomGrass(cell, tiles);
+			randomTree(c);
+			randomGrass(c);
 		}
 
-		return tiles;
+		// return tiles;
 	}
 
-	private void randomGrass(float[][] cell, MapTile[][] tiles) {
+	private void randomGrass(Chunk c) {
 		Random rand = NatureGenerator.random;
 		int x = rand.nextInt(CELLSIZE2D);
 		int y = rand.nextInt(CELLSIZE2D);
@@ -323,16 +338,16 @@ public class Amortized2DNoise {
 			int xx = x + rand.nextInt(15) - rand.nextInt(15);
 			int yy = y + rand.nextInt(15) - rand.nextInt(15);
 			if (xx >= 0 && yy >= 0 && xx < CELLSIZE2D && yy < CELLSIZE2D) {
-				if (tiles[xx][yy].block.material.equals(MyMaterial.GRASS)) {
-//					if (tiles[xx][yy].nature == null) {
-//						tiles[xx][yy].setNature(Nature.TALLGRASS);
-//					}
+				MapTile tile = c.getMapTileFromLocalPos(xx, yy);
+				if (tile.block.material.equals(MyMaterial.GRASS)) {
+					TallGrass grass = new TallGrass(c.world, tile.getGlobalPosition().addAndSet(0, 0, 0, 0, 1, 0));
+					grass.spawn();
 				}
 			}
 		}
 	}
 
-	private void randomTree(float[][] cell, MapTile[][] tiles) {
+	private void randomTree(Chunk c) {
 		Random rand = NatureGenerator.random;
 		int x = rand.nextInt(CELLSIZE2D);
 		int y = rand.nextInt(CELLSIZE2D);
@@ -340,9 +355,10 @@ public class Amortized2DNoise {
 			int xx = x + rand.nextInt(15) - rand.nextInt(15);
 			int yy = y + rand.nextInt(15) - rand.nextInt(15);
 			if (xx >= 0 && yy >= 0 && xx < CELLSIZE2D && yy < CELLSIZE2D) {
-				if (tiles[xx][yy].block.material.equals(MyMaterial.GRASS)) {
-//					tiles[xx][yy].setNature(Nature.TREE);
-//					tiles[xx][yy].b.setSolid(true);
+				MapTile tile = c.getMapTileFromLocalPos(xx, yy);
+				if (tile.block.material.equals(MyMaterial.GRASS)) {
+					Tree tree = new Tree(c.world, tile.getGlobalPosition().addAndSet(0, 0, 0, 0, 1, 0));
+					tree.spawn();
 				}
 			}
 		}

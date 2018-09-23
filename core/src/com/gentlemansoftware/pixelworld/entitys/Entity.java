@@ -33,7 +33,6 @@ public class Entity extends Body implements Serializable, EasyDrawableInterface 
 		this.nav = new Navigation(position);
 		this.state = state;
 		this.type = type;
-//		spawn();
 	}
 
 	public Entity(TileWorld world, Position position, EntityHostileType type) {
