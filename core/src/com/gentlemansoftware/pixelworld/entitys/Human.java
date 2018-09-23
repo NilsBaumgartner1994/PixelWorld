@@ -98,7 +98,7 @@ public class Human extends Entity {
 
 	public void updateLeftStick(Vector2 stickLeft) {
 		if (stickLeft.len() != 0) {
-			Position dir = Position.getPositionDirectionFromVector(stickLeft);
+			Direction dir = Direction.getDirectionFromVector(stickLeft);
 			MapTile nextBlock = getNextBlockInDirection(dir);
 			if (!nextBlock.isSolid()) {
 				Position nextBlockMiddle = nextBlock.getGlobalPosition().addAndSet(0, 0, 0, 0, 1, 0);
@@ -107,10 +107,30 @@ public class Human extends Entity {
 		}
 	}
 
-	public MapTile getNextBlockInDirection(Position direction) {
-		Position oneBlockDir = direction.cpy().scaleAndSet(MapTile.tileWidth, MapTile.tileHeight);
-		Position nextBlock = this.getPosition().cpy().addAndSet(oneBlockDir);
-		return this.world.getMapTileFromGlobalPos(nextBlock.getPosition().x, nextBlock.getPosition().y);
+	public MapTile getNextBlockInDirection(Direction direction) {
+		Position pos = this.getPosition();
+
+		int x = pos.x;
+		int y = pos.y;
+
+		if (direction == Direction.NORTH) {
+			y += 1;
+		}
+		if (direction == Direction.EAST) {
+			x += 1;
+		}
+		if (direction == Direction.SOUTH) {
+			if (pos.yFraction == 0) {
+				y -= 1;
+			}
+		}
+		if (direction == Direction.WEST) {
+			if (pos.xFraction == 0) {
+				x -= 1;
+			}
+		}
+
+		return this.world.getMapTileFromGlobalPos(x, y);
 	}
 
 	public void resetInputVariables() {
