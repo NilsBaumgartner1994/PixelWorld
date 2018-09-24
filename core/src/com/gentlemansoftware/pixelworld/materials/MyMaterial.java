@@ -66,6 +66,10 @@ public class MyMaterial implements Serializable{
 		return null;
 	}
 	
+	public static boolean isSolidMaterial(MyMaterial m){
+		return m.equals(MyMaterial.WATER) || m.equals(MyMaterial.STONE);
+	}
+	
 	public static boolean registerNewModelWithID(Byte id,String name){
 		if(materialList.containsKey(id)){
 			return false;

@@ -21,22 +21,28 @@ public class Entity extends Body implements Serializable, EasyDrawableInterface 
 	private static final long serialVersionUID = -5098608000401492288L;
 	private MotionState state;
 	private Direction lookDir;
+	private boolean solid;
 	private EntityHostileType type;
 	protected int speed;
 	transient protected TileWorld world;
 
 	Navigation nav;
 
-	public Entity(TileWorld world, Position position, MotionState state, EntityHostileType type) {
+	public Entity(TileWorld world, Position position, MotionState state, EntityHostileType type, boolean solid) {
 		super(position);
 		this.world = world;
 		this.nav = new Navigation(position);
 		this.state = state;
 		this.type = type;
+		this.setSolid(solid);
 	}
 
+	public Entity(TileWorld world, Position position, EntityHostileType type, boolean solid) {
+		this(world, position, MotionState.STOP, type,solid);
+	}
+	
 	public Entity(TileWorld world, Position position, EntityHostileType type) {
-		this(world, position, MotionState.STOP, type);
+		this(world, position, MotionState.STOP, type,true);
 	}
 
 	public Entity(TileWorld world, int x, int y, EntityHostileType type) {
@@ -53,6 +59,14 @@ public class Entity extends Body implements Serializable, EasyDrawableInterface 
 
 	public void setDestinyByOffset(Position pos) {
 		setDestiny(this.getPosition().addAndSet(pos));
+	}
+	
+	public void setSolid(boolean solid) {
+		this.solid = solid;
+	}
+
+	public boolean isSolid() {
+		return this.solid;
 	}
 
 	/**

@@ -41,17 +41,29 @@ public class MapTile extends Position implements Serializable {
 	
 	public void setBlock(Block b){
 		this.block = b;
-		setSolid(this.block.isSolid());
+	}
+	
+	public void checkSolid(){
+		this.setSolid(false);
+		
+		for(Entity e : entitys){
+			if(e.isSolid()){
+				this.setSolid(true);
+				return;
+			}
+		}
 	}
 	
 	public void registerEntity(Entity body){
 		if(!entitys.contains(body)){
 			entitys.add(body);
+			checkSolid();
 		}
 	}
 	
 	public void unregisterEntity(Body body){
 		entitys.remove(body);
+		checkSolid();
 	}
 
 	private MapTile getOffset(int xi, int yi) {

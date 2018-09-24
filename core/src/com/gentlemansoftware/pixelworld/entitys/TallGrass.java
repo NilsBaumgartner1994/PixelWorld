@@ -14,7 +14,7 @@ public class TallGrass extends Entity {
 	private static final long serialVersionUID = -5731904582913542561L;
 
 	public TallGrass(TileWorld world, Position startPos) {
-		super(world, startPos, EntityHostileType.FRIENDLY);
+		super(world, startPos, EntityHostileType.FRIENDLY,false);
 	}
 
 	@Override

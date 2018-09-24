@@ -15,16 +15,11 @@ public class Block extends Entity implements Serializable {
 	 */
 	private static final long serialVersionUID = 4737139312313773562L;
 	
-	private boolean solid;
 	public MyMaterial material;
 
 	public Block(MapTile tile, MyMaterial m){
-		super(tile.chunk.world,tile.getGlobalPosition(), MotionState.STOP,EntityHostileType.FRIENDLY);
+		super(tile.chunk.world,tile.getGlobalPosition(), MotionState.STOP,EntityHostileType.FRIENDLY,MyMaterial.isSolidMaterial(m));
 		setMaterial(m);
-	}
-
-	public void setSolid(boolean solid) {
-		this.solid = solid;
 	}
 
 	private Sprite getMaterialSprite(){
@@ -33,21 +28,12 @@ public class Block extends Entity implements Serializable {
 	
 	public void setMaterial(MyMaterial m){
 		this.material = m;
-		if(m.equals(MyMaterial.WATER)){
-			setSolid(true);
-		}
-		if(m.equals(MyMaterial.STONE)){
-			setSolid(true);
-		}
+		this.setSolid(MyMaterial.isSolidMaterial(m));
 		setHeight(MyMaterial.getDefaultHeightByID(this.material.getID()));
 	}
 	
 	public void setHeight(int height){
 		this.position.zFraction = height;
-	}
-
-	public boolean isSolid() {
-		return this.solid;
 	}
 
 	@Override
