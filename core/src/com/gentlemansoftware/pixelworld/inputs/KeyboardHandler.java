@@ -52,16 +52,16 @@ public class KeyboardHandler {
 		u.gamepad.setButtonState(GamePadButtons.SHIFT, keyboard.isPressed(Keys.SHIFT_LEFT, Keys.SHIFT_RIGHT));
 		u.gamepad.setButtonState(GamePadButtons.CTRL, keyboard.isPressed(Keys.CONTROL_LEFT, Keys.CONTROL_RIGHT));
 		
-		u.gamepad.setButtonState(GamePadButtons.DOWN, keyboard.isPressed(Keys.SLASH)); //- on mac
+		u.gamepad.setButtonState(GamePadButtons.LEFTPAD_DOWN, keyboard.isPressed(Keys.SLASH)); //- on mac
 		u.gamepad.setButtonState(GamePadButtons.UP, keyboard.isPressed(Keys.RIGHT_BRACKET)); //+ on mac
 		
-		u.gamepad.setButtonState(GamePadButtons.LEFT, keyboard.isPressed(Keys.LEFT));
-		u.gamepad.setButtonState(GamePadButtons.RIGHT, keyboard.isPressed(Keys.RIGHT));
+		u.gamepad.setButtonState(GamePadButtons.LEFTPAD_LEFT, keyboard.isPressed(Keys.LEFT));
+		u.gamepad.setButtonState(GamePadButtons.LEFTPAD_RIGHT, keyboard.isPressed(Keys.RIGHT));
 		
-		u.gamepad.setButtonState(GamePadButtons.X, keyboard.isPressed(Keys.J));
-		u.gamepad.setButtonState(GamePadButtons.Y, keyboard.isPressed(Keys.I));
-		u.gamepad.setButtonState(GamePadButtons.A, keyboard.isPressed(Keys.K));
-		u.gamepad.setButtonState(GamePadButtons.B, keyboard.isPressed(Keys.L));
+		u.gamepad.setButtonState(GamePadButtons.RIGHTPAD_LEFT, keyboard.isPressed(Keys.J));
+		u.gamepad.setButtonState(GamePadButtons.RIGHTPAD_UP, keyboard.isPressed(Keys.I));
+		u.gamepad.setButtonState(GamePadButtons.RIGHTPAD_DOWN, keyboard.isPressed(Keys.K));
+		u.gamepad.setButtonState(GamePadButtons.RIGHTPAD_RIGHT, keyboard.isPressed(Keys.L));
 		
 		
 		u.gamepad.setButtonState(GamePadButtons.ESC, keyboard.isPressed(Keys.ESCAPE));
@@ -113,11 +113,11 @@ public class KeyboardHandler {
 
 	public boolean scrolled(int amount) {
 		User u = getUser();
-		u.gamepad.setButtonState(GamePadButtons.RIGHT,false);
-		u.gamepad.setButtonState(GamePadButtons.LEFT, false);
+		u.gamepad.setButtonState(GamePadButtons.LEFTPAD_RIGHT,false);
+		u.gamepad.setButtonState(GamePadButtons.LEFTPAD_LEFT, false);
 		
-		u.gamepad.setButtonState(GamePadButtons.RIGHT, amount > 0 ? true : false);
-		u.gamepad.setButtonState(GamePadButtons.LEFT, amount < 0 ? true : false);
+		u.gamepad.setButtonState(GamePadButtons.LEFTPAD_RIGHT, amount > 0 ? true : false);
+		u.gamepad.setButtonState(GamePadButtons.LEFTPAD_LEFT, amount < 0 ? true : false);
 
 		return true;
 	}

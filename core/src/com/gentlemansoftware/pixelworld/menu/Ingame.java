@@ -47,7 +47,7 @@ public class Ingame extends SimpleMenu {
 			this.handler.setActivMenu(this.handler.pauseMenu);
 		}
 		User user = this.handler.user;
-		if (gamepad.isButtonTyped(GamePadButtons.DOWN)) {
+		if (gamepad.isButtonTyped(GamePadButtons.LEFTPAD_DOWN)) {
 			user.cameraController.changeDistance(1);
 		}
 		if (gamepad.isButtonTyped(GamePadButtons.UP)) {
@@ -62,10 +62,10 @@ public class Ingame extends SimpleMenu {
 			// human.use(human.getNextBlockInDirection());
 		}
 		human.run(gamepad.isButtonPressed(GamePadButtons.SHIFT));
-		if (gamepad.isButtonTyped(GamePadButtons.LEFT)) {
+		if (gamepad.isButtonTyped(GamePadButtons.LEFTPAD_LEFT)) {
 			human.inventory.setActivSlot(human.inventory.getActivSlot() - 1);
 		}
-		if (gamepad.isButtonTyped(GamePadButtons.RIGHT)) {
+		if (gamepad.isButtonTyped(GamePadButtons.LEFTPAD_RIGHT)) {
 			human.inventory.setActivSlot(human.inventory.getActivSlot() + 1);
 		}
 

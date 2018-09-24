@@ -39,14 +39,14 @@ public class ControllerOverlay implements SimpleMenuComponent {
 		rightStickBackgroundSprite.setPosition(display.getWidth() - rightStickBackgroundSprite.getWidth() * scale, 0);
 		display.drawSprite(rightStickBackgroundSprite);
 
-		ControllerButtonOverlay left = new ControllerButtonOverlay(leftButton, this.gamepad.getButton(GamePadButtons.X),
-				EasyColor.BLUELIGHT);
-		ControllerButtonOverlay top = new ControllerButtonOverlay(topButton, this.gamepad.getButton(GamePadButtons.Y),
-				EasyColor.YELLOWLIGHT);
+		ControllerButtonOverlay left = new ControllerButtonOverlay(leftButton,
+				this.gamepad.getButton(GamePadButtons.RIGHTPAD_LEFT), EasyColor.BLUELIGHT);
+		ControllerButtonOverlay top = new ControllerButtonOverlay(topButton,
+				this.gamepad.getButton(GamePadButtons.RIGHTPAD_UP), EasyColor.YELLOWLIGHT);
 		ControllerButtonOverlay right = new ControllerButtonOverlay(rightButton,
-				this.gamepad.getButton(GamePadButtons.B), EasyColor.REDLIGHT);
+				this.gamepad.getButton(GamePadButtons.RIGHTPAD_RIGHT), EasyColor.REDLIGHT);
 		ControllerButtonOverlay bottom = new ControllerButtonOverlay(bottomButton,
-				this.gamepad.getButton(GamePadButtons.A), EasyColor.GREENLIGHT);
+				this.gamepad.getButton(GamePadButtons.RIGHTPAD_DOWN), EasyColor.GREENLIGHT);
 
 		float xpos = display.getWidth() - rightStickBackgroundSprite.getWidth() / 2 * scale;
 		top.draw(display, xpos,
@@ -76,24 +76,10 @@ public class ControllerOverlay implements SimpleMenuComponent {
 
 	@Override
 	public boolean update(GamePad gamepad) {
-		if (gamepad.layouttype == GamePadType.KEYBOARD) {
-			leftButton = GlyphAndSymbols.j;
-			topButton = GlyphAndSymbols.i;
-			rightButton = GlyphAndSymbols.l;
-			bottomButton = GlyphAndSymbols.k;
-		}
-		if (gamepad.layouttype == GamePadType.PLAYSTATION) {
-			leftButton = GlyphAndSymbols.XboxX;
-			topButton = GlyphAndSymbols.XboxY;
-			rightButton = GlyphAndSymbols.XboxB;
-			bottomButton = GlyphAndSymbols.XboxA;
-		}
-		if (gamepad.layouttype == GamePadType.XBOX) {
-			leftButton = GlyphAndSymbols.PlaystationSquare;
-			topButton = GlyphAndSymbols.PlaystationTriangle;
-			rightButton = GlyphAndSymbols.PlaystationCircle;
-			bottomButton = GlyphAndSymbols.PlaystationX;
-		}
+		leftButton = gamepad.layouttype.getTextureForButton(GamePadButtons.RIGHTPAD_LEFT);
+		topButton = gamepad.layouttype.getTextureForButton(GamePadButtons.RIGHTPAD_UP);
+		rightButton = gamepad.layouttype.getTextureForButton(GamePadButtons.RIGHTPAD_RIGHT);
+		bottomButton = gamepad.layouttype.getTextureForButton(GamePadButtons.RIGHTPAD_DOWN);
 
 		Stick leftStick = gamepad.getLeftStick();
 		leftStickBackgroundSprite = new Sprite(ResourceLoader.getInstance().getGUI("controlls/leftStick-Background"));

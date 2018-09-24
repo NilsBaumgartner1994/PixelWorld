@@ -7,7 +7,7 @@ public class Stick {
 
 	private Vector2 vec;
 	private float threshold = 0.2f;
-	public static final int STICKMAX = 2;
+	public static final int STICKMAX = 1;
 	private Button state;
 	private Direction lastDirection;
 	

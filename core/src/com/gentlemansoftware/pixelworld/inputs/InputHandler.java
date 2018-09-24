@@ -31,7 +31,7 @@ public class InputHandler implements InputProcessor, GestureListener {
 	
 	private void updateHandlerInputs(){
 		keyboardHandler.updateInputLogic();
-//		controllerHandler.updateInputLogic();
+		controllerHandler.updateInputLogic();
 	}
 
 	///////////////////////////

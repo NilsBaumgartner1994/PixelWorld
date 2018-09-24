@@ -2,13 +2,13 @@ package com.gentlemansoftware.pixelworld.inputs;
 
 public class GamePad {
 
-	public GamePadType layouttype;
+	public GamePadLayout layouttype;
 	private Stick leftStick;
 	private Stick rightStick;
 	private Button[] buttons;
 
 	public GamePad() {
-		layouttype = GamePadType.KEYBOARD;
+		layouttype = new GamePadLayoutKeyboard();
 		initValues();
 		resetValues();
 	}

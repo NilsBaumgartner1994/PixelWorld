@@ -1,5 +1,8 @@
 package com.gentlemansoftware.pixelworld.inputs;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
@@ -8,64 +11,82 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.gentlemansoftware.pixelworld.entitys.Human;
 import com.gentlemansoftware.pixelworld.game.Main;
+import com.gentlemansoftware.pixelworld.profiles.User;
 
 public class ControllerHandler implements ControllerListener {
 
-	public ControllerHandler(InputHandler inputHandler) {
+	public static String inputHandlerName;
+	Map<Controller, GamePadLayout> controllerInterfaceMap;
 
+	public ControllerHandler(InputHandler inputHandler) {
+		controllerInterfaceMap = new HashMap<Controller, GamePadLayout>();
+		inputHandlerName = "Keyboard";
+	}
+
+	public User getUser(Controller controller) {
+		return Main.getInstance().userHandler.getUserByInput(inputHandlerName);
 	}
 
 	public void updateInputLogic() {
 		for (Controller controller : Controllers.getControllers()) {
-//			Human p = Main.getInstance().userHandler.getPlayerByInput("controller:" + controller.hashCode());
-//			updateLeftStick(p,controller);
-//			updateRightStick(p,controller);
-//			updateABXY(p,controller);
-//			updateTrigger(p,controller);
+			GamePadLayout padinterface = controllerInterfaceMap.get(controller);
+			if (padinterface == null) {
+				padinterface = new GamePadLayoutPlaystation4();
+				controllerInterfaceMap.put(controller, padinterface);
+			} else {
+				User user = getUser(controller);
+				updateButtons(user, controller, padinterface);
+				updateLeftStick(user, controller);
+			}
 		}
 	}
 	
-	public void updateLeftStick(Human p, Controller controller) {
-		float dy = -controller.getAxis(XBox360Pad.AXIS_LEFT_Y);
-		float dx = controller.getAxis(XBox360Pad.AXIS_LEFT_X);
-		
-//		Vector2 dir = ;
-		p.setLeftStick(new Vector2(dx, dy));
-		p.stickLeftDown = controller.getButton(XBox360Pad.BUTTON_L3);
-	}
-	
-	public void updateRightStick(Human p, Controller controller) {
-		float dy = controller.getAxis(XBox360Pad.AXIS_RIGHT_Y);
-		float dx = controller.getAxis(XBox360Pad.AXIS_RIGHT_X);
 
-		p.setRightStick(new Vector2(dx, dy));
-		p.stickRightDown = controller.getButton(XBox360Pad.BUTTON_R3);
-	}
-	
-	public void updateTrigger(Human p, Controller controller){
-		float leftTrigger = controller.getAxis(XBox360Pad.AXIS_LEFT_TRIGGER);
-		if(leftTrigger<2E-5){
-			leftTrigger=0;
+	public void updateButtons(User user, Controller controller, GamePadLayout padinterface) {
+		for (int buttonCode : padinterface.buttons) {
+			GamePadButtons button = padinterface.getButton(buttonCode);
+			user.gamepad.setButtonState(button, controller.getButton(buttonCode));
 		}
-		
-		float rightTrigger = -controller.getAxis(XBox360Pad.AXIS_RIGHT_TRIGGER);
-		if(rightTrigger<2E-5){
-			rightTrigger=0;
+	}
+
+	public void updateLeftStick(User user, Controller controller) {
+		float dy = -controller.getAxis(GamePadLayoutXBox360.AXIS_LEFT_Y);
+		float dx = -controller.getAxis(GamePadLayoutXBox360.AXIS_LEFT_X);
+
+		float thresholdStick = 0.7f;
+		Vector2 vec = new Vector2(dx, dy).rotate(45);
+		if(vec.len2()<thresholdStick){
+			vec = new Vector2(0,0);
 		}
-		
-//		float thresholdRightTrigger = 0.7f;
-		
+
+		user.gamepad.getLeftStick().setVec(vec);
 	}
 
-	public void updateABXY(Human p, Controller controller) {
-			
+	public void updateRightStick(User user, Controller controller) {
+		float dy = controller.getAxis(GamePadLayoutXBox360.AXIS_RIGHT_Y);
+		float dx = controller.getAxis(GamePadLayoutXBox360.AXIS_RIGHT_X);
+
+		// p.setRightStick(new Vector2(dx, dy));
+		// p.stickRightDown = controller.getButton(XBox360Pad.BUTTON_R3);
 	}
 
-//	private float threshold = 0.4f; // spielraum, ab 20% wird Stick erst
+	public void updateTrigger(User user, Controller controller) {
+		float leftTrigger = controller.getAxis(GamePadLayoutXBox360.AXIS_LEFT_TRIGGER);
+		if (leftTrigger < 2E-5) {
+			leftTrigger = 0;
+		}
+
+		float rightTrigger = -controller.getAxis(GamePadLayoutXBox360.AXIS_RIGHT_TRIGGER);
+		if (rightTrigger < 2E-5) {
+			rightTrigger = 0;
+		}
+
+		// float thresholdRightTrigger = 0.7f;
+
+	}
+
+	// private float threshold = 0.4f; // spielraum, ab 20% wird Stick erst
 	// gemessen
-
-
-
 
 	@Override
 	public void connected(Controller controller) {
@@ -81,22 +102,20 @@ public class ControllerHandler implements ControllerListener {
 
 	@Override
 	public boolean buttonDown(Controller controller, int buttonCode) {
-		// TODO Auto-generated method stub
-		Main.log(getClass(), "ButtonDown: " + buttonCode);
+		// setButtonStateForController(controller, buttonCode, true);
 		return false;
 	}
 
 	@Override
 	public boolean buttonUp(Controller controller, int buttonCode) {
-		// TODO Auto-generated method stub
-		Main.log(getClass(), "ButtonUp: " + buttonCode);
+		// setButtonStateForController(controller, buttonCode, false);
 		return false;
 	}
 
 	@Override
 	public boolean axisMoved(Controller controller, int axisCode, float value) {
 		// TODO Auto-generated method stub
-//		System.out.println("AxisMoved: "+axisCode+" value: "+value);
+		// System.out.println("AxisMoved: "+axisCode+" value: "+value);
 		return false;
 	}
 
@@ -104,15 +123,17 @@ public class ControllerHandler implements ControllerListener {
 	public boolean povMoved(Controller controller, int povCode, PovDirection value) {
 		// TODO Auto-generated method stub
 		Main.log(getClass(), "pov: " + povCode + " with " + value);
-		
-//		Human p = Main.getInstance().userHandler.getPlayerByInput("controller:" + controller.hashCode());
-//
-//		if (value == XBox360Pad.BUTTON_DPAD_DOWN) {
-//			p.cameraController.distanceIncrease();
-//		}
-//		if (value == XBox360Pad.BUTTON_DPAD_UP) {
-//			p.cameraController.distanceDecrease();
-//		}
+
+		// Human p =
+		// Main.getInstance().userHandler.getPlayerByInput("controller:" +
+		// controller.hashCode());
+		//
+		// if (value == XBox360Pad.BUTTON_DPAD_DOWN) {
+		// p.cameraController.distanceIncrease();
+		// }
+		// if (value == XBox360Pad.BUTTON_DPAD_UP) {
+		// p.cameraController.distanceDecrease();
+		// }
 
 		return false;
 	}
