@@ -14,7 +14,8 @@ public class UserSoundManager {
 	public long playSound(EasySounds sound, float volume) {
 		volume = volume > 1 ? 1 : volume;
 		float multiplier = getMultiplier(sound);
-		return SoundManager.getInstance().playSound(sound, volume * multiplier);
+		float masterVolume = profile.masterVolume.getVar();
+		return SoundManager.getInstance().playSound(sound, masterVolume * volume * multiplier);
 	}
 
 	public void setSoundProfile(UserSoundProfile profile) {
@@ -29,7 +30,7 @@ public class UserSoundManager {
 		if (EasySounds.isNatureSound(sound)) {
 			return profile.natureSound.getVar();
 		}
-		if(EasySounds.isEntitySound(sound)){
+		if (EasySounds.isEntitySound(sound)) {
 			return profile.entitySound.getVar();
 		}
 

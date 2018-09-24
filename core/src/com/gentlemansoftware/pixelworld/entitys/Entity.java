@@ -20,7 +20,6 @@ public class Entity extends Body implements Serializable, EasyDrawableInterface 
 	 */
 	private static final long serialVersionUID = -5098608000401492288L;
 	private MotionState state;
-	private Direction lookDir;
 	private boolean solid;
 	private EntityHostileType type;
 	protected int speed;
@@ -162,6 +161,21 @@ public class Entity extends Body implements Serializable, EasyDrawableInterface 
 			oldChunkReffer.unregisterEntity(this);
 			newChunkReffer.registerEntity(this);
 		}
+	}
+	
+	private void unregisterChunkReffer(){
+		Chunk oldChunkReffer = getMapTile().chunk;
+		oldChunkReffer.unregisterEntity(this);
+	}
+	
+	private void unregisterMapTileReffer(){
+		MapTile oldReffer = getMapTile();
+		oldReffer.unregisterEntity(this);
+	}
+	
+	public void destroy(){
+		unregisterChunkReffer();
+		unregisterMapTileReffer();
 	}
 
 	@Override
