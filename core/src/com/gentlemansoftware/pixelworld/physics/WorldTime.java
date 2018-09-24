@@ -18,6 +18,7 @@ public class WorldTime implements Serializable {
 	private int ticks;
 	private int days;
 	
+	private static float defaultTimeSpeed = 1f;
 	public VarHolder<Float> timeSpeed;
 	float renderTime = 0;
 	public float ticksPerSecond = 60;
@@ -26,7 +27,7 @@ public class WorldTime implements Serializable {
 	public WorldTime(int ticks, int days) {
 		this.ticks = ticks;
 		this.days = days;
-		timeSpeed = new VarHolder<Float>(1f);
+		timeSpeed = new VarHolder<Float>(defaultTimeSpeed);
 	}
 
 	public WorldTime(int ticks) {
