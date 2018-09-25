@@ -3,6 +3,7 @@ package com.gentlemansoftware.pixelworld.inputs;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.gentlemansoftware.pixelworld.helper.EasyColor;
 import com.gentlemansoftware.pixelworld.menuComponents.GlyphAndSymbols;
 
 //This code was taken from http://www.java-gaming.org/index.php?topic=29223.0
@@ -40,28 +41,15 @@ public class GamePadLayoutPlaystation4 extends GamePadLayout {
 	public GamePadLayoutPlaystation4() {
 		this.buttons[GamePadButtons.BACK.ordinal()] = BUTTON_SHARE;
 		this.buttons[GamePadButtons.START.ordinal()] = BUTTON_START;
-		this.buttons[GamePadButtons.RIGHTPAD_DOWN.ordinal()] = BUTTON_X;
-		this.buttons[GamePadButtons.RIGHTPAD_RIGHT.ordinal()] = BUTTON_CIRCLE;
-		this.buttons[GamePadButtons.RIGHTPAD_LEFT.ordinal()] = BUTTON_SQUARE;
-		this.buttons[GamePadButtons.RIGHTPAD_UP.ordinal()] = BUTTON_TRIANGLE;
+		this.setEntry(GamePadButtons.RIGHTPAD_DOWN, BUTTON_X, GlyphAndSymbols.PlaystationX,
+				EasyColor.PLAYSTATION_BUTTONBACKGROUND, EasyColor.PLAYSTATION_X);
+		this.setEntry(GamePadButtons.RIGHTPAD_LEFT, BUTTON_SQUARE, GlyphAndSymbols.PlaystationSquare,
+				EasyColor.PLAYSTATION_BUTTONBACKGROUND, EasyColor.PLAYSTATION_SQUARE);
+		this.setEntry(GamePadButtons.RIGHTPAD_RIGHT, BUTTON_CIRCLE, GlyphAndSymbols.PlaystationCircle,
+				EasyColor.PLAYSTATION_BUTTONBACKGROUND, EasyColor.PLAYSTATION_CIRCLE);
+		this.setEntry(GamePadButtons.RIGHTPAD_UP, BUTTON_TRIANGLE, GlyphAndSymbols.PlaystationTriangle,
+				EasyColor.PLAYSTATION_BUTTONBACKGROUND, EasyColor.PLAYSTATION_TRIANGLE);
 		this.buttons[GamePadButtons.SHIFT.ordinal()] = BUTTON_L1;
 		this.buttons[GamePadButtons.ESC.ordinal()] = BUTTON_START;
-	}
-
-	@Override
-	public TextureRegion getTextureForButton(GamePadButtons gamepadButton) {
-		int key = getButtonCode(gamepadButton);
-		switch (key) {
-		case BUTTON_X:
-			return GlyphAndSymbols.PlaystationSquare;
-		case BUTTON_CIRCLE:
-			return GlyphAndSymbols.PlaystationCircle;
-		case BUTTON_TRIANGLE:
-			return GlyphAndSymbols.PlaystationTriangle;
-		case BUTTON_SQUARE:
-			return GlyphAndSymbols.PlaystationSquare;
-		default:
-			return GlyphAndSymbols.EMPTY;
-		}
 	}
 }

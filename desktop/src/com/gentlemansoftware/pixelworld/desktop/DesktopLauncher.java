@@ -42,7 +42,5 @@ public class DesktopLauncher {
 		}
 		config.title = title;
 		new LwjglApplication(new Main(), config);
-		// new LwjglApplication(new MinecraftClone(), config);
-		// new LwjglApplication(new LoadModelsTest(), config);
 	}
 }

@@ -1,5 +1,6 @@
 package com.gentlemansoftware.pixelworld.menuComponents;
 
+import com.gentlemansoftware.pixelworld.inputs.Button;
 import com.gentlemansoftware.pixelworld.inputs.GamePad;
 import com.gentlemansoftware.pixelworld.inputs.GamePadButtons;
 import com.gentlemansoftware.pixelworld.inputs.GamePadType;
@@ -16,10 +17,6 @@ import com.gentlemansoftware.pixelworld.helper.EasyColor;
 public class ControllerOverlay implements SimpleMenuComponent {
 
 	GamePad gamepad;
-	TextureRegion leftButton = GlyphAndSymbols.j;
-	TextureRegion topButton = GlyphAndSymbols.i;
-	TextureRegion rightButton = GlyphAndSymbols.l;
-	TextureRegion bottomButton = GlyphAndSymbols.k;
 
 	Sprite leftStickBackgroundSprite;
 	Sprite leftStickDirectionSprite;
@@ -39,23 +36,26 @@ public class ControllerOverlay implements SimpleMenuComponent {
 		rightStickBackgroundSprite.setPosition(display.getWidth() - rightStickBackgroundSprite.getWidth() * scale, 0);
 		display.drawSprite(rightStickBackgroundSprite);
 
-		ControllerButtonOverlay left = new ControllerButtonOverlay(leftButton,
-				this.gamepad.getButton(GamePadButtons.RIGHTPAD_LEFT), EasyColor.BLUELIGHT);
-		ControllerButtonOverlay top = new ControllerButtonOverlay(topButton,
-				this.gamepad.getButton(GamePadButtons.RIGHTPAD_UP), EasyColor.YELLOWLIGHT);
-		ControllerButtonOverlay right = new ControllerButtonOverlay(rightButton,
-				this.gamepad.getButton(GamePadButtons.RIGHTPAD_RIGHT), EasyColor.REDLIGHT);
-		ControllerButtonOverlay bottom = new ControllerButtonOverlay(bottomButton,
-				this.gamepad.getButton(GamePadButtons.RIGHTPAD_DOWN), EasyColor.GREENLIGHT);
+		ControllerButtonOverlay left = this.gamepad.layouttype.getButton(GamePadButtons.RIGHTPAD_LEFT);
+		Button leftButton = this.gamepad.getButton(GamePadButtons.RIGHTPAD_LEFT);
 
-		float xpos = display.getWidth() - rightStickBackgroundSprite.getWidth() / 2 * scale;
-		top.draw(display, xpos,
-				(rightStickBackgroundSprite.getHeight() - rightStickBackgroundSprite.getHeight() / 4) * scale, scale);
-		left.draw(display, xpos - rightStickBackgroundSprite.getWidth() * scale / 4,
-				(rightStickBackgroundSprite.getHeight() / 2) * scale, scale);
-		right.draw(display, xpos + rightStickBackgroundSprite.getWidth() * scale / 4,
-				(rightStickBackgroundSprite.getHeight() / 2) * scale, scale);
-		bottom.draw(display, xpos, rightStickBackgroundSprite.getHeight() / 4 * scale, scale);
+		ControllerButtonOverlay top = this.gamepad.layouttype.getButton(GamePadButtons.RIGHTPAD_UP);
+		Button topButton = this.gamepad.getButton(GamePadButtons.RIGHTPAD_UP);
+
+		ControllerButtonOverlay down = this.gamepad.layouttype.getButton(GamePadButtons.RIGHTPAD_DOWN);
+		Button downButton = this.gamepad.getButton(GamePadButtons.RIGHTPAD_DOWN);
+
+		ControllerButtonOverlay right = this.gamepad.layouttype.getButton(GamePadButtons.RIGHTPAD_RIGHT);
+		Button rightButton = this.gamepad.getButton(GamePadButtons.RIGHTPAD_RIGHT);
+
+		float rsbsWidth = rightStickBackgroundSprite.getWidth();
+		float rsbsHeight = rightStickBackgroundSprite.getHeight();
+
+		float xpos = display.getWidth() - rsbsWidth / 2 * scale;
+		top.draw(display, xpos, (rsbsHeight - rsbsHeight / 4) * scale, scale, topButton);
+		left.draw(display, xpos - rsbsWidth * scale / 4, (rsbsHeight / 2) * scale, scale, leftButton);
+		right.draw(display, xpos + rsbsWidth * scale / 4, (rsbsHeight / 2) * scale, scale, rightButton);
+		down.draw(display, xpos, rsbsHeight / 4 * scale, scale, downButton);
 
 	}
 
@@ -76,10 +76,7 @@ public class ControllerOverlay implements SimpleMenuComponent {
 
 	@Override
 	public boolean update(GamePad gamepad) {
-		leftButton = gamepad.layouttype.getTextureForButton(GamePadButtons.RIGHTPAD_LEFT);
-		topButton = gamepad.layouttype.getTextureForButton(GamePadButtons.RIGHTPAD_UP);
-		rightButton = gamepad.layouttype.getTextureForButton(GamePadButtons.RIGHTPAD_RIGHT);
-		bottomButton = gamepad.layouttype.getTextureForButton(GamePadButtons.RIGHTPAD_DOWN);
+		System.out.println(gamepad.layouttype.getClass().getName());
 
 		Stick leftStick = gamepad.getLeftStick();
 		leftStickBackgroundSprite = new Sprite(ResourceLoader.getInstance().getGUI("controlls/leftStick-Background"));

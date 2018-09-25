@@ -27,6 +27,14 @@ public class ControllerHandler implements ControllerListener {
 		return Main.getInstance().userHandler.getUserByInput(inputHandlerName);
 	}
 
+	public void madeAnAction(Controller controller) {
+		User user = getUser(controller);
+		GamePadLayout padinterface = controllerInterfaceMap.get(controller);
+		if (padinterface != null) {
+			user.gamepad.layouttype = padinterface;
+		}
+	}
+
 	public void updateInputLogic() {
 		for (Controller controller : Controllers.getControllers()) {
 			GamePadLayout padinterface = controllerInterfaceMap.get(controller);
@@ -35,12 +43,20 @@ public class ControllerHandler implements ControllerListener {
 				controllerInterfaceMap.put(controller, padinterface);
 			} else {
 				User user = getUser(controller);
-				updateButtons(user, controller, padinterface);
 				updateLeftStick(user, controller);
+				if (isControllerLastInput(controller)) {
+					updateButtons(user, controller, padinterface);
+
+				}
 			}
 		}
 	}
-	
+
+	private boolean isControllerLastInput(Controller controller) {
+		User user = getUser(controller);
+		GamePadLayout padinterface = controllerInterfaceMap.get(controller);
+		return (user.gamepad.layouttype == padinterface);
+	}
 
 	public void updateButtons(User user, Controller controller, GamePadLayout padinterface) {
 		for (int buttonCode : padinterface.buttons) {
@@ -55,11 +71,15 @@ public class ControllerHandler implements ControllerListener {
 
 		float thresholdStick = 0.7f;
 		Vector2 vec = new Vector2(dx, dy).rotate(45);
-		if(vec.len2()<thresholdStick){
-			vec = new Vector2(0,0);
+		if (vec.len2() < thresholdStick) {
+			vec = new Vector2(0, 0);
+		} else {
+			madeAnAction(controller);
 		}
 
-		user.gamepad.getLeftStick().setVec(vec);
+		if (isControllerLastInput(controller)) {
+			user.gamepad.getLeftStick().setVec(vec);
+		}
 	}
 
 	public void updateRightStick(User user, Controller controller) {
@@ -103,12 +123,14 @@ public class ControllerHandler implements ControllerListener {
 	@Override
 	public boolean buttonDown(Controller controller, int buttonCode) {
 		// setButtonStateForController(controller, buttonCode, true);
+		madeAnAction(controller);
 		return false;
 	}
 
 	@Override
 	public boolean buttonUp(Controller controller, int buttonCode) {
 		// setButtonStateForController(controller, buttonCode, false);
+		madeAnAction(controller);
 		return false;
 	}
 
@@ -135,6 +157,7 @@ public class ControllerHandler implements ControllerListener {
 		// p.cameraController.distanceDecrease();
 		// }
 
+		madeAnAction(controller);
 		return false;
 	}
 
@@ -142,6 +165,7 @@ public class ControllerHandler implements ControllerListener {
 	public boolean xSliderMoved(Controller controller, int sliderCode, boolean value) {
 		// TODO Auto-generated method stub
 		Main.log(getClass(), "xSlider: " + sliderCode + " with " + value);
+		madeAnAction(controller);
 		return false;
 	}
 
@@ -149,6 +173,7 @@ public class ControllerHandler implements ControllerListener {
 	public boolean ySliderMoved(Controller controller, int sliderCode, boolean value) {
 		// TODO Auto-generated method stub
 		Main.log(getClass(), "ySlider: " + sliderCode + " with " + value);
+		madeAnAction(controller);
 		return false;
 	}
 

@@ -2,6 +2,7 @@ package com.gentlemansoftware.pixelworld.inputs;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.math.Vector2;
 import com.gentlemansoftware.pixelworld.entitys.Human;
 import com.gentlemansoftware.pixelworld.game.Main;
@@ -14,21 +15,35 @@ public class KeyboardHandler {
 
 	public KeyBoard keyboard;
 	public Mouse mouse;
-
+	public GamePadLayout keyboardLayout;
 	public static String inputHandlerName;
 
 	public KeyboardHandler(InputHandler inputHandler) {
 		inputHandlerName = "Keyboard";
 		keyboard = new KeyBoard();
+		keyboardLayout = new GamePadLayoutKeyboard();
 		mouse = new Mouse();
 	}
 
 	public void updateInputLogic() {
 		updateLeftStick();
+		if (isKeyboardLastInput()) {
+			updateButtons();
+		}
+	}
+
+	private boolean isKeyboardLastInput() {
+		User u = getUser();
+		return (u.gamepad.layouttype == this.keyboardLayout);
 	}
 
 	public User getUser() {
 		return Main.getInstance().userHandler.getUserByInput(inputHandlerName);
+	}
+
+	public void madeAnAction() {
+		User user = getUser();
+		user.gamepad.layouttype = keyboardLayout;
 	}
 
 	public void updateLeftStick() {
@@ -47,23 +62,39 @@ public class KeyboardHandler {
 		if (keyboard.isPressed(Keys.S) || keyboard.isPressed(Keys.DOWN)) {
 			dir.add(new Vector2(0, -1)); // down
 		}
-		u.gamepad.getLeftStick().setVec(dir);
 
+		float thresholdStick = 0.7f;
+		if (dir.len2() < thresholdStick) {
+			dir = new Vector2(0, 0);
+		} else {
+			madeAnAction();
+		}
+
+		if (isKeyboardLastInput()) {
+			u.gamepad.getLeftStick().setVec(dir.cpy());
+		}
+	}
+
+	public void updateButtons() {
+		User u = getUser();
 		u.gamepad.setButtonState(GamePadButtons.SHIFT, keyboard.isPressed(Keys.SHIFT_LEFT, Keys.SHIFT_RIGHT));
 		u.gamepad.setButtonState(GamePadButtons.CTRL, keyboard.isPressed(Keys.CONTROL_LEFT, Keys.CONTROL_RIGHT));
-		
-		u.gamepad.setButtonState(GamePadButtons.LEFTPAD_DOWN, keyboard.isPressed(Keys.SLASH)); //- on mac
-		u.gamepad.setButtonState(GamePadButtons.UP, keyboard.isPressed(Keys.RIGHT_BRACKET)); //+ on mac
-		
+
+		u.gamepad.setButtonState(GamePadButtons.LEFTPAD_DOWN, keyboard.isPressed(Keys.SLASH)); // -
+																								// on
+																								// mac
+		u.gamepad.setButtonState(GamePadButtons.UP, keyboard.isPressed(Keys.RIGHT_BRACKET)); // +
+																								// on
+																								// mac
+
 		u.gamepad.setButtonState(GamePadButtons.LEFTPAD_LEFT, keyboard.isPressed(Keys.LEFT));
 		u.gamepad.setButtonState(GamePadButtons.LEFTPAD_RIGHT, keyboard.isPressed(Keys.RIGHT));
-		
+
 		u.gamepad.setButtonState(GamePadButtons.RIGHTPAD_LEFT, keyboard.isPressed(Keys.J));
 		u.gamepad.setButtonState(GamePadButtons.RIGHTPAD_UP, keyboard.isPressed(Keys.I));
 		u.gamepad.setButtonState(GamePadButtons.RIGHTPAD_DOWN, keyboard.isPressed(Keys.K));
 		u.gamepad.setButtonState(GamePadButtons.RIGHTPAD_RIGHT, keyboard.isPressed(Keys.L));
-		
-		
+
 		u.gamepad.setButtonState(GamePadButtons.ESC, keyboard.isPressed(Keys.ESCAPE));
 		u.gamepad.setButtonState(GamePadButtons.R2, keyboard.isPressed(Keys.E));
 		u.gamepad.setButtonState(GamePadButtons.START, keyboard.isPressed(Keys.ENTER));
@@ -71,7 +102,7 @@ public class KeyboardHandler {
 
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		User u = getUser();
-		
+
 		if (button == Input.Buttons.LEFT) {
 			mouse.left.release();
 			u.gamepad.setButtonState(GamePadButtons.R2, false);
@@ -90,10 +121,10 @@ public class KeyboardHandler {
 
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		User u = getUser();
-		
+
 		if (button == Input.Buttons.LEFT) {
 			mouse.left.press();
-//			u.gamepad.setButtonState(GamePadButtons.R2, true);
+			// u.gamepad.setButtonState(GamePadButtons.R2, true);
 			// p.use(u.cameraController.getGlobalPosFromScreenPos(screenX,
 			// u.cameraController.height-screenY));
 		}
@@ -113,9 +144,9 @@ public class KeyboardHandler {
 
 	public boolean scrolled(int amount) {
 		User u = getUser();
-		u.gamepad.setButtonState(GamePadButtons.LEFTPAD_RIGHT,false);
+		u.gamepad.setButtonState(GamePadButtons.LEFTPAD_RIGHT, false);
 		u.gamepad.setButtonState(GamePadButtons.LEFTPAD_LEFT, false);
-		
+
 		u.gamepad.setButtonState(GamePadButtons.LEFTPAD_RIGHT, amount > 0 ? true : false);
 		u.gamepad.setButtonState(GamePadButtons.LEFTPAD_LEFT, amount < 0 ? true : false);
 
@@ -133,6 +164,7 @@ public class KeyboardHandler {
 
 	public boolean keyDown(int keycode) {
 		keyboard.key(keycode).press();
+		madeAnAction();
 		return false;
 	}
 
