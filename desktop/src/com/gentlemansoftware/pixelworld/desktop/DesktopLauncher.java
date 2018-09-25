@@ -9,6 +9,7 @@ public class DesktopLauncher {
 	public static String title = "God of Forest";
 
 	static Resolutions resolution = Resolutions.XGA;
+	static boolean borderless = false;
 
 	public static void main(String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
@@ -16,6 +17,8 @@ public class DesktopLauncher {
 		config.vSyncEnabled = true;
 		config.backgroundFPS = 0;
 		config.foregroundFPS = 0;
+		
+		setBorderless(borderless);
 
 		switch (resolution) {
 		case IPHONE:
@@ -42,5 +45,11 @@ public class DesktopLauncher {
 		}
 		config.title = title;
 		new LwjglApplication(new Main(), config);
+	}
+
+	private static void setBorderless(boolean borderless) {
+		if (borderless) {
+			System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
+		}
 	}
 }

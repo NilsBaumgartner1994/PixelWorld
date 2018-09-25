@@ -1,7 +1,9 @@
 package com.gentlemansoftware.pixelworld.inputs;
 
 import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.gentlemansoftware.pixelworld.helper.EasyColor;
 import com.gentlemansoftware.pixelworld.menuComponents.GlyphAndSymbols;
 
 //This code was taken from http://www.java-gaming.org/index.php?topic=29223.0
@@ -26,31 +28,19 @@ public class GamePadLayoutXBox360 extends GamePadLayout {
 	public static final PovDirection BUTTON_DPAD_LEFT = PovDirection.west;
 
 	public GamePadLayoutXBox360() {
+		Color buttonBackground = EasyColor.XBOX_BUTTONBACKGROUND;
+
 		this.buttons[GamePadButtons.BACK.ordinal()] = BUTTON_BACK;
 		this.buttons[GamePadButtons.START.ordinal()] = BUTTON_START;
-		this.buttons[GamePadButtons.RIGHTPAD_DOWN.ordinal()] = BUTTON_A;
-		this.buttons[GamePadButtons.RIGHTPAD_RIGHT.ordinal()] = BUTTON_B;
-		this.buttons[GamePadButtons.RIGHTPAD_LEFT.ordinal()] = BUTTON_X;
-		this.buttons[GamePadButtons.RIGHTPAD_UP.ordinal()] = BUTTON_Y;
+		this.setEntry(GamePadButtons.RIGHTPAD_DOWN, BUTTON_A, GlyphAndSymbols.XboxA, EasyColor.XBOX_A,
+				EasyColor.GREENLIGHT);
+		this.setEntry(GamePadButtons.RIGHTPAD_LEFT, BUTTON_X, GlyphAndSymbols.XboxX, EasyColor.XBOX_X,
+				EasyColor.XBOX_X);
+		this.setEntry(GamePadButtons.RIGHTPAD_RIGHT, BUTTON_B, GlyphAndSymbols.XboxB, EasyColor.XBOX_B,
+				EasyColor.REDLIGHT);
+		this.setEntry(GamePadButtons.RIGHTPAD_UP, BUTTON_Y, GlyphAndSymbols.XboxY, EasyColor.XBOX_Y, EasyColor.YELLOWLIGHT);
 		this.buttons[GamePadButtons.SHIFT.ordinal()] = BUTTON_LB;
 		this.buttons[GamePadButtons.ESC.ordinal()] = BUTTON_START;
-	}
-	
-	@Override
-	public TextureRegion getTextureForButton(GamePadButtons gamepadButton) {
-		int key = getButtonCode(gamepadButton);
-		switch (key) {
-		case BUTTON_X:
-			return GlyphAndSymbols.XboxX;
-		case BUTTON_Y:
-			return GlyphAndSymbols.XboxY;
-		case BUTTON_A:
-			return GlyphAndSymbols.XboxA;
-		case BUTTON_B:
-			return GlyphAndSymbols.XboxB;
-		default:
-			return GlyphAndSymbols.EMPTY;
-		}
 	}
 
 	public static final int AXIS_LEFT_X = 1; // -1 is left | +1 is right

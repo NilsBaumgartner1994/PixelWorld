@@ -11,8 +11,8 @@ public class GlyphAndSymbols {
 	
 	public static TextureRegion XboxX = getGlyph(0,3);
 	public static TextureRegion XboxY = getGlyph(1,3);
-	public static TextureRegion XboxA = getGlyph(2,3);
-	public static TextureRegion XboxB = getGlyph(3,3);
+	public static TextureRegion XboxB = getGlyph(2,3);
+	public static TextureRegion XboxA = getGlyph(3,3);
 	
 	public static TextureRegion PlaystationSquare = getGlyph(0,2);
 	public static TextureRegion PlaystationTriangle = getGlyph(1,2);
