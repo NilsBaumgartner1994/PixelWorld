@@ -33,13 +33,12 @@ public class User {
 
 		this.activGameWorld = Main.getInstance().titleScreenWorld;
 
-		// Position startPos = new Position(51721, MapTile.tileWidth / 2, 50811,
-		// MapTile.tileHeight / 2);
+//		Position startPos = new Position(51721, 0, 50811, 0, 1, 0);
 		// Position startPos = new Position(Integer.MAX_VALUE, MapTile.tileWidth
 		// / 2, Integer.MAX_VALUE, MapTile.tileHeight / 2);
 		// Position startPos = new Position(0, MapTile.tileWidth / 2, 0,
 		// MapTile.tileHeight / 2);
-		Position startPos = new Position(0, 0, 0, 0, 1, 0);
+		 Position startPos = new Position(0, 0, 0, 0, 1, 0);
 
 		this.human = new Human(this.activGameWorld, startPos, "Bob");
 		this.human.spawn();
@@ -48,8 +47,8 @@ public class User {
 		Bat bat = new Bat(this.activGameWorld, startPos.cpy().addAndSet(2, 0, 0, 0, 1, 0));
 		bat.spawn();
 	}
-	
-	private void initHandlers(){
+
+	private void initHandlers() {
 		this.gamepad = new GamePad();
 		this.menuHandler = new MenuHandler(this);
 		this.soundManager = new UserSoundManager(this.profile.soundProfile);
