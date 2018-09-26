@@ -21,6 +21,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.gentlemansoftware.pixelworld.entitys.TallGrass;
 import com.gentlemansoftware.pixelworld.entitys.Tree;
+import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.materials.MyMaterial;
 import com.gentlemansoftware.pixelworld.world.Block;
 import com.gentlemansoftware.pixelworld.world.Chunk;
@@ -33,7 +34,7 @@ public class Amortized2DNoise {
 	float[][] workspace; // /< Temporary workspace.
 	int size; // /< Size of workspace.
 
-	public static int CELLSIZE2D = Chunk.CHUNKSIZE;
+	public static int CELLSIZE2D = Chunk.CHUNKSIZE*8;
 
 	Pixmap pixmap;
 
@@ -277,44 +278,69 @@ public class Amortized2DNoise {
 		return new Color((float) r / 255, (float) g / 255, (float) b / 255, a);
 	}
 
+	private int chunkPosToRowCol(int chunkPos) {
+		return chunkPos / CELLSIZE2D;
+	}
+
+	private int chunkPosInCellArray(int chunkPos) {
+		chunkPos = chunkPos*Chunk.CHUNKSIZE % CELLSIZE2D;
+		if (chunkPos < 0) {
+			chunkPos += CELLSIZE2D;
+		}
+		return chunkPos;
+	}
+
 	public void Generate2DNoise(Chunk c) {
 		int octave0 = NatureGenerator.octave0;
 		int octave1 = NatureGenerator.octave1;
-		int nCol = c.x;
-		int nRow = c.y;
+		int nCol = chunkPosToRowCol(c.x);
+		int nRow = chunkPosToRowCol(c.y);
+
+		Main.log(getClass(), "Generate Cell[" + nCol + "][" + nRow + "]");
 
 		for (int i = 1; i < octave0; i++) {
 			nCol = nCol * 2;
 			nRow = nRow * 2;
 		}
 
-		float[][] cell = new float[Chunk.CHUNKSIZE][Chunk.CHUNKSIZE];
+		Main.log(getClass(), "Create Cell Array " + c.x + " " + c.y);
+
+		float[][] cell = new float[CELLSIZE2D][CELLSIZE2D];
 		for (int i = 0; i < cell.length; i++) {
 			for (int j = 0; j < cell[i].length; j++) {
 				cell[i][j] = 0.0f;
 			}
 		}
 
-		generate(nCol, nRow, octave0, octave1, CELLSIZE2D, cell);
+		Main.log(getClass(), "Generate Cell Array  for Chunk: " + c.x + " " + c.y);
 
+		generate(nCol, nRow, octave0, octave1, CELLSIZE2D, cell);
 		float seaLevel = NatureGenerator.seaLevel;
 		float sandAmount = NatureGenerator.sandAmount;
 
-		for (int cy = 0; cy < CELLSIZE2D; cy++) {
-			for (int cx = 0; cx < CELLSIZE2D; cx++) {
+		int cxStart = chunkPosInCellArray(c.x);
+		int cyStart = chunkPosInCellArray(c.y);
+
+		Main.log(getClass(),
+				"Chunk is in Cellarray: " + cxStart + " : " + cyStart + " --> Chunk is " + c.x + " " + c.y);
+
+		for (int cy = 0; cy < Chunk.CHUNKSIZE; cy++) {
+//			Main.log(getClass(), "Chunk Row: " + cy);
+			for (int cx = 0; cx < Chunk.CHUNKSIZE; cx++) {
 				MapTile t = c.getMapTileFromLocalPos(cx, cy);
+				float cellValue = cell[cxStart + cx][cyStart + cy];
 
 				Block b = null;
-				if (cell[cx][cy] < seaLevel) {
+				if (cellValue < seaLevel) {
 					b = new Block(t, MyMaterial.WATER);
 				}
-				if (cell[cx][cy] >= seaLevel && cell[cx][cy] <= seaLevel + sandAmount) {
+				if (cellValue >= seaLevel && cellValue <= seaLevel + sandAmount) {
 					b = new Block(t, MyMaterial.SAND);
 				}
-				if (cell[cx][cy] > seaLevel + 0.1f && cell[cx][cy] <= seaLevel + 0.4f) {
+				if (cellValue > seaLevel + 0.1f && cellValue <= seaLevel + 0.4f) {
 					b = new Block(t, MyMaterial.GRASS);
 				}
-				if (cell[cx][cy] > seaLevel + 0.4f) {
+				if (cellValue > seaLevel + 0.4f) {
 					b = new Block(t, MyMaterial.STONE);
 				}
 				t.setBlock(b);
@@ -322,8 +348,12 @@ public class Amortized2DNoise {
 			}
 		}
 
-		for (int i = 0; i < CELLSIZE2D * CELLSIZE2D / 400; i++) {
+		Main.log(getClass(), "Blocks all Spawned: Chunk; " + c.x + " " + c.y);
+
+		for (int i = 0; i < Chunk.CHUNKSIZE * Chunk.CHUNKSIZE / 400; i++) {
+			// Main.log(getClass(), "Start Spawning Random Trees");
 			randomTree(c);
+			// Main.log(getClass(), "Start Spawning Random Grass");
 			randomGrass(c);
 		}
 
@@ -332,12 +362,12 @@ public class Amortized2DNoise {
 
 	private void randomGrass(Chunk c) {
 		Random rand = NatureGenerator.random;
-		int x = rand.nextInt(CELLSIZE2D);
-		int y = rand.nextInt(CELLSIZE2D);
+		int x = rand.nextInt(Chunk.CHUNKSIZE);
+		int y = rand.nextInt(Chunk.CHUNKSIZE);
 		for (int j = 0; j < 10; j++) {
 			int xx = x + rand.nextInt(15) - rand.nextInt(15);
 			int yy = y + rand.nextInt(15) - rand.nextInt(15);
-			if (xx >= 0 && yy >= 0 && xx < CELLSIZE2D && yy < CELLSIZE2D) {
+			if (xx >= 0 && yy >= 0 && xx < Chunk.CHUNKSIZE && yy < Chunk.CHUNKSIZE) {
 				MapTile tile = c.getMapTileFromLocalPos(xx, yy);
 				if (tile.block.material.equals(MyMaterial.GRASS)) {
 					TallGrass grass = new TallGrass(c.world, tile.getGlobalPosition().addAndSet(0, 0, 0, 0, 1, 0));
@@ -349,12 +379,12 @@ public class Amortized2DNoise {
 
 	private void randomTree(Chunk c) {
 		Random rand = NatureGenerator.random;
-		int x = rand.nextInt(CELLSIZE2D);
-		int y = rand.nextInt(CELLSIZE2D);
+		int x = rand.nextInt(Chunk.CHUNKSIZE);
+		int y = rand.nextInt(Chunk.CHUNKSIZE);
 		for (int j = 0; j < 10; j++) {
 			int xx = x + rand.nextInt(15) - rand.nextInt(15);
 			int yy = y + rand.nextInt(15) - rand.nextInt(15);
-			if (xx >= 0 && yy >= 0 && xx < CELLSIZE2D && yy < CELLSIZE2D) {
+			if (xx >= 0 && yy >= 0 && xx < Chunk.CHUNKSIZE && yy < Chunk.CHUNKSIZE) {
 				MapTile tile = c.getMapTileFromLocalPos(xx, yy);
 				if (tile.block.material.equals(MyMaterial.GRASS)) {
 					Tree tree = new Tree(c.world, tile.getGlobalPosition().addAndSet(0, 0, 0, 0, 1, 0));

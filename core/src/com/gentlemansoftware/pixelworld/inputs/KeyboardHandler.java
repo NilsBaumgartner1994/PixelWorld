@@ -22,7 +22,8 @@ public class KeyboardHandler {
 		inputHandlerName = "Keyboard";
 		keyboard = new KeyBoard();
 		keyboardLayout = new GamePadLayoutKeyboard();
-		keyboardLayout = new GamePadLayoutXBox360();
+//		keyboardLayout = new GamePadLayoutXBox360();
+//		keyboardLayout = new GamePadLayoutPlaystation4();
 		mouse = new Mouse();
 	}
 
