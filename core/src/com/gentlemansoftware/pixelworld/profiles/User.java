@@ -13,6 +13,7 @@ import com.gentlemansoftware.pixelworld.sound.SoundManager;
 import com.gentlemansoftware.pixelworld.sound.UserSoundManager;
 import com.gentlemansoftware.pixelworld.world.MapTile;
 import com.gentlemansoftware.pixelworld.world.TileWorld;
+import com.gentlemansoftware.pixelworld.worldgenerator.Amortized2DNoise;
 
 public class User {
 
@@ -33,19 +34,17 @@ public class User {
 
 		this.activGameWorld = Main.getInstance().titleScreenWorld;
 
-//		Position startPos = new Position(51721, 0, 50811, 0, 1, 0);
-		// Position startPos = new Position(Integer.MAX_VALUE, MapTile.tileWidth
-		// / 2, Integer.MAX_VALUE, MapTile.tileHeight / 2);
-		// Position startPos = new Position(0, MapTile.tileWidth / 2, 0,
-		// MapTile.tileHeight / 2);
-		 Position startPos = new Position(0, 0, 0, 0, 1, 0);
+		Position startPos = new Position(0, 0, 0, 0, 1, 0);
 
 		this.human = new Human(this.activGameWorld, startPos, "Bob");
 		this.human.spawn();
 		cameraController.setTrack(human);
+		
 
+		// for (int i = 0; i < 1000; i++) {
 		Bat bat = new Bat(this.activGameWorld, startPos.cpy().addAndSet(2, 0, 0, 0, 1, 0));
 		bat.spawn();
+		// }
 	}
 
 	private void initHandlers() {

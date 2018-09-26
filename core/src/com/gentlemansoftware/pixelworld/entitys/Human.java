@@ -33,6 +33,10 @@ public class Human extends Entity {
 	public final long USECOOLDOWN = 1000 / 10L;
 	public long lastUse = System.currentTimeMillis();
 	public Position usePosition;
+	
+	public Human(){
+		super();
+	}
 
 	public Human(TileWorld world, Position startPos, String name) {
 		super(world, startPos, EntityHostileType.PLAYER);
@@ -100,10 +104,10 @@ public class Human extends Entity {
 		if (stickLeft.len() != 0) {
 			Direction dir = Direction.getDirectionFromVector(stickLeft);
 			MapTile nextBlock = getNextBlockInDirection(dir);
-			if (!nextBlock.isSolid()) {
+//			if (!nextBlock.isSolid()) {
 				Position nextBlockMiddle = nextBlock.getGlobalPosition().addAndSet(0, 0, 0, 0, 1, 0);
 				this.nav.setSecondDestiny(nextBlockMiddle);
-			}
+//			}
 		}
 	}
 

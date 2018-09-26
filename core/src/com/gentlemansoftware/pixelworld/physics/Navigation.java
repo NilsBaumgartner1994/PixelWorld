@@ -1,13 +1,20 @@
 package com.gentlemansoftware.pixelworld.physics;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Navigation {
+public class Navigation implements Serializable{
 
-	List<Position> path;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3738207424213463129L;
+	private List<Position> path;
+	
+	public Navigation(){
+		path = new LinkedList<Position>();
+	}
 
 	public Navigation(List<Position> path) {
 		this.path = path;

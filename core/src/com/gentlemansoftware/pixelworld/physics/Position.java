@@ -16,15 +16,15 @@ public class Position {
 	public int yFraction;
 	public int zFraction;
 
-	public static final transient int fractionMax_x = MapTile.tileWidth;
-	public static final transient int fractionMax_y = MapTile.tileHeight;
+	public static final int fractionMax_x = MapTile.tileWidth;
+	public static final int fractionMax_y = MapTile.tileHeight;
 
-	static transient int speed = 1;
-	public static transient final Position STOP = new Position(0, 0, 0, 0, 0, 0);
-	public static transient final Position NORTH = new Position(0, 0, 0, speed, 0, 0);
-	public static transient final Position EAST = new Position(0, 2 * speed, 0, 0, 0, 0);
-	public static transient final Position SOUTH = new Position(0, 0, 0, -speed, 0, 0);
-	public static transient final Position WEST = new Position(0, -2 * speed, 0, 0, 0, 0);
+	private static int speed = 1;
+	public static final Position STOP = new Position(0, 0, 0, 0, 0, 0);
+	public static final Position NORTH = new Position(0, 0, 0, speed, 0, 0);
+	public static final Position EAST = new Position(0, 2 * speed, 0, 0, 0, 0);
+	public static final Position SOUTH = new Position(0, 0, 0, -speed, 0, 0);
+	public static final Position WEST = new Position(0, -2 * speed, 0, 0, 0, 0);
 
 	public Position(int x, int xFraction, int y, int yFraction, int z, int zFraction) {
 		set(x, xFraction, y, yFraction, z, zFraction);
@@ -45,7 +45,7 @@ public class Position {
 	public static Position getDirection(Position from, Position to) {
 		Position distance = from.distance(to);
 
-		if (distance.length() < NORTH.length()) {
+		if (distance.length() < EAST.length()) {
 			return distance;
 		}
 

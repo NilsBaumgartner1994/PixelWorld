@@ -13,6 +13,8 @@
 
 package com.gentlemansoftware.pixelworld.world;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,6 +27,7 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
 import com.gentlemansoftware.pixelworld.entitys.Entity;
+import com.gentlemansoftware.pixelworld.game.FileController;
 import com.gentlemansoftware.pixelworld.helper.EasyColor;
 import com.gentlemansoftware.pixelworld.materials.MyMaterial;
 import com.gentlemansoftware.pixelworld.physics.Position;
@@ -69,9 +72,10 @@ public class WorldToPNG {
 		toPNG.renderPixmap();
 		return toPNG._pixmap;
 	}
-	
+
 	public static Pixmap getPixmap(MapTile tile) {
-		WorldToPNG toPNG = new WorldToPNG(tile,-Chunk.CHUNKSIZE/2,-Chunk.CHUNKSIZE/2,Chunk.CHUNKSIZE/2,Chunk.CHUNKSIZE/2);
+		WorldToPNG toPNG = new WorldToPNG(tile, -Chunk.CHUNKSIZE / 2, -Chunk.CHUNKSIZE / 2, Chunk.CHUNKSIZE / 2,
+				Chunk.CHUNKSIZE / 2);
 		toPNG.renderPixmap();
 		return toPNG._pixmap;
 	}
@@ -205,7 +209,7 @@ public class WorldToPNG {
 	private Pixmap renderPixmap() {
 		int width = _pixmap.getWidth();
 		int height = _pixmap.getHeight();
-		
+
 		_pixmap.setColor(Color.alpha(1));
 		_pixmap.fillRectangle(0, 0, width, height);
 
@@ -214,23 +218,28 @@ public class WorldToPNG {
 
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				MapTile t = tile.chunk.world.getMapTileFromGlobalPos(left + x + gx, down + y + gy);
-				if (t != null) {
-					Color color = mapping.get(t.block.material);
-					_pixmap.setColor(color);
-					_pixmap.drawPixel(x, height - y - 1);
-					
-					List<Entity> entitys = new LinkedList<>(t.entitys);
+				if (tile != null && tile.chunk != null && tile.chunk.world != null) {
+					MapTile t = tile.chunk.world.getMapTileFromGlobalPos(left + x + gx, down + y + gy);
+					if (t != null) {
+						Color color = mapping.get(t.block.material);
+						if(color==null){
+							color = EasyColor.PLAYSTATION_TRIANGLE;
+						}
+						_pixmap.setColor(color);
+						_pixmap.drawPixel(x, height - y - 1);
 
-					for (Entity entity : entitys) {
-						if (!(entity instanceof Block)) {
-							_pixmap.setColor(Color.RED);
-							_pixmap.drawPixel(x, height - y - 1);
+						List<Entity> entitys = new LinkedList<>(t.entitys);
+
+						for (Entity entity : entitys) {
+							if (!(entity instanceof Block)) {
+								_pixmap.setColor(Color.RED);
+								_pixmap.drawPixel(x, height - y - 1);
+							}
 						}
 					}
 				}
 			}
-		}		
+		}
 
 		return _pixmap;
 	}

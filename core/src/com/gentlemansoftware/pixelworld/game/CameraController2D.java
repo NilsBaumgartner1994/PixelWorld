@@ -242,6 +242,9 @@ public class CameraController2D implements CameraControllerInterface {
 
 		drawOrderNumber = 0;
 		for (Entity e : entitys) {
+			if(e.world==null){
+				e.setTransient(this.user.activGameWorld);
+			}
 			e.playSoundForUser(getCameraPosition(), this.user);
 			Sprite s = e.getSprite(this.cameraDirection);
 			drawTileSprite(s, e.getPosition(), tileWidthHalf, tileHeightHalf, 0);

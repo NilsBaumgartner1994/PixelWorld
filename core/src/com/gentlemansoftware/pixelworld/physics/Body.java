@@ -3,8 +3,8 @@ package com.gentlemansoftware.pixelworld.physics;
 public class Body {
 	
 	protected Position position;
-	Speed velocity;
-	Position acceleration;
+	private Speed velocity;
+	protected Position acceleration;
 	
 //	MapTile referrsTo;
 

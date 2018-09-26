@@ -34,7 +34,8 @@ public class Amortized2DNoise {
 	float[][] workspace; // /< Temporary workspace.
 	int size; // /< Size of workspace.
 
-	public static int CELLSIZE2D = Chunk.CHUNKSIZE*8;
+	public static int CELLSIZEMULT = 32;
+	public static int CELLSIZE2D = Chunk.CHUNKSIZE*CELLSIZEMULT;
 
 	Pixmap pixmap;
 
@@ -279,6 +280,11 @@ public class Amortized2DNoise {
 	}
 
 	private int chunkPosToRowCol(int chunkPos) {
+		chunkPos*=Chunk.CHUNKSIZE;
+		
+		if (chunkPos < 0 && chunkPos % CELLSIZE2D != 0) {
+			return chunkPos / CELLSIZE2D - 1;
+		}
 		return chunkPos / CELLSIZE2D;
 	}
 
@@ -296,14 +302,10 @@ public class Amortized2DNoise {
 		int nCol = chunkPosToRowCol(c.x);
 		int nRow = chunkPosToRowCol(c.y);
 
-		Main.log(getClass(), "Generate Cell[" + nCol + "][" + nRow + "]");
-
 		for (int i = 1; i < octave0; i++) {
 			nCol = nCol * 2;
 			nRow = nRow * 2;
 		}
-
-		Main.log(getClass(), "Create Cell Array " + c.x + " " + c.y);
 
 		float[][] cell = new float[CELLSIZE2D][CELLSIZE2D];
 		for (int i = 0; i < cell.length; i++) {
@@ -312,17 +314,12 @@ public class Amortized2DNoise {
 			}
 		}
 
-		Main.log(getClass(), "Generate Cell Array  for Chunk: " + c.x + " " + c.y);
-
 		generate(nCol, nRow, octave0, octave1, CELLSIZE2D, cell);
 		float seaLevel = NatureGenerator.seaLevel;
 		float sandAmount = NatureGenerator.sandAmount;
 
 		int cxStart = chunkPosInCellArray(c.x);
 		int cyStart = chunkPosInCellArray(c.y);
-
-		Main.log(getClass(),
-				"Chunk is in Cellarray: " + cxStart + " : " + cyStart + " --> Chunk is " + c.x + " " + c.y);
 
 		for (int cy = 0; cy < Chunk.CHUNKSIZE; cy++) {
 //			Main.log(getClass(), "Chunk Row: " + cy);
@@ -347,8 +344,6 @@ public class Amortized2DNoise {
 				b.spawn();
 			}
 		}
-
-		Main.log(getClass(), "Blocks all Spawned: Chunk; " + c.x + " " + c.y);
 
 		for (int i = 0; i < Chunk.CHUNKSIZE * Chunk.CHUNKSIZE / 400; i++) {
 			// Main.log(getClass(), "Start Spawning Random Trees");

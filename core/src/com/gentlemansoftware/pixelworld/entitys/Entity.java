@@ -23,14 +23,23 @@ public class Entity extends Body implements Serializable, EasyDrawableInterface 
 	private boolean solid;
 	private EntityHostileType type;
 	protected int speed;
-	transient protected TileWorld world;
+	public transient TileWorld world;
 
 	Navigation nav;
+	
+	public Entity(){
+		
+	}
+	
+	public void setTransient(TileWorld world){
+		this.world = world;
+	}
 
 	public Entity(TileWorld world, Position position, MotionState state, EntityHostileType type, boolean solid) {
 		super(position);
 		this.world = world;
-		this.nav = new Navigation(position);
+		this.nav = new Navigation();
+		this.nav.addDestiny(position);
 		this.state = state;
 		this.type = type;
 		this.setSolid(solid);
@@ -120,7 +129,7 @@ public class Entity extends Body implements Serializable, EasyDrawableInterface 
 	}
 
 	public MapTile getMapTile() {
-		return world.getMapTileFromGlobalPos(this.position.x, this.position.y);
+		return world.getMapTileFromGlobalPos(this.getPosition().x, this.getPosition().y);
 	}
 
 	private void registerOnMapTile() {

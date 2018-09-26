@@ -42,6 +42,26 @@ public class Chunk extends SaveAndLoadable{
 	
 	public transient TileWorld world;
 	
+	public Chunk(){
+		
+	}
+	
+	public void setTransients(TileWorld world){
+		this.world = world;
+		for(MapTile[] t1 : tiles){
+			for(MapTile t : t1){
+				t.setTransients(this);
+			}
+		}
+		for(Entity e : entitys){
+			e.setTransient(world);
+		}
+	}
+	
+	public String toString(){
+		return "["+this.x+"|"+this.y+"]";
+	}
+	
 	public Chunk(TileWorld world, int cx, int cy){
 		this.world = world;
 		this.x = cx;

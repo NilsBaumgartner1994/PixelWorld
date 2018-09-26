@@ -38,12 +38,12 @@ public class OptionMenu extends SimpleMenu {
 			}
 		};
 
-		SimpleMenuRunnableItem WorldToPNG = new SimpleMenuRunnableItem("World To PNG", SimpleMenuNameTypes.SUB,
+		SimpleMenuRunnableItem WorldToPNGItem = new SimpleMenuRunnableItem("World To PNG", SimpleMenuNameTypes.SUB,
 				quitRunnable);
 		
 		menuComponents.add(debugMenu);
 		menuComponents.add(audioMenu);
-		menuComponents.add(WorldToPNG);
+		menuComponents.add(WorldToPNGItem);
 
 		menuComponents.add(parent);
 

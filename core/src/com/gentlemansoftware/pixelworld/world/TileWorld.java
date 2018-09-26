@@ -9,9 +9,12 @@ import java.util.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
+import com.gentlemansoftware.pixelworld.entitys.Bat;
 import com.gentlemansoftware.pixelworld.entitys.Entity;
+import com.gentlemansoftware.pixelworld.entitys.Human;
 import com.gentlemansoftware.pixelworld.game.SaveAndLoadable;
 import com.gentlemansoftware.pixelworld.physics.WorldTime;
+import com.gentlemansoftware.pixelworld.profiles.User;
 import com.gentlemansoftware.pixelworld.worldgenerator.GeneratorInterface;
 import com.gentlemansoftware.pixelworld.worldgenerator.NatureGenerator;
 
@@ -29,9 +32,12 @@ public class TileWorld extends SaveAndLoadable {
 	public Map<String, Chunk> chunks;
 
 	public List<Chunk> activeChunks;
-	public Map<Integer, Entity> entitys = new HashMap<Integer, Entity>();
-
+	
 	public WorldTime time;
+	
+	public TileWorld(){
+		
+	}
 
 	public TileWorld(String name) {
 		this(name, null, new WorldTime(0), null, new NatureGenerator());
@@ -45,7 +51,6 @@ public class TileWorld extends SaveAndLoadable {
 
 		setGeneratedChunks(generatedChunks);
 		this.time = time;
-		setEntityMap(entitys);
 		setGenerator(generator);
 	}
 
@@ -55,13 +60,6 @@ public class TileWorld extends SaveAndLoadable {
 				setChunk(chunk);
 			}
 		}
-	}
-
-	public void setEntityMap(Map<Integer, Entity> entitys) {
-		if (entitys == null) {
-			entitys = new HashMap<Integer, Entity>();
-		}
-		this.entitys = entitys;
 	}
 
 	public static final String DATA = "data/";
@@ -77,7 +75,7 @@ public class TileWorld extends SaveAndLoadable {
 		}
 	}
 
-	public static TileWorld load(String name) {
+	public static TileWorld load(String name, User user) {
 		TileWorld world = new TileWorld(name, null, new WorldTime(0), null, null);
 
 		List<Chunk> chunks = new LinkedList<Chunk>();
@@ -86,16 +84,25 @@ public class TileWorld extends SaveAndLoadable {
 
 		dirHandle = Gdx.files.internal("./" + WORLDS + name + "/");
 
-		System.out.println("Show me All Files");
 		for (FileHandle entry : dirHandle.list()) {
 			if (entry.extension().equals(Chunk.ENDINGNAME)) {
-				chunks.add(Chunk.loadFromInternal(entry.path(), Chunk.class));
+				Chunk chunk = Chunk.loadFromInternal(entry.path(), Chunk.class);
+				chunk.setTransients(world);
+				for(Entity e : chunk.entitys){
+					if(e instanceof Human){
+						user.human = (Human) e;
+						user.cameraController.setTrack(e);
+					}
+				}
+				chunks.add(chunk);
 			}
 		}
 
 		world.setGeneratedChunks(chunks);
 
 		// return loadFromExternal(WORLDS + name + ENDING, TileWorld.class);
+		user.activGameWorld = world;
+		
 		return world;
 	}
 

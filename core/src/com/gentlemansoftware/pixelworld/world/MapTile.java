@@ -31,6 +31,15 @@ public class MapTile extends Position implements Serializable {
 	
 	public List<Entity> entitys;
 	private boolean solid;
+	
+	public MapTile(){
+		
+	}
+	
+	public void setTransients(Chunk chunk){
+		this.chunk = chunk;
+		block.setTransient(this.chunk.world);
+	}
 
 	public MapTile(Chunk c, int x, int y) {
 		super(x, y);
@@ -81,10 +90,12 @@ public class MapTile extends Position implements Serializable {
 	}
 
 	public int getGlobalX() {
+		if(this.getPosition()==null || chunk==null) return 0;
 		return (int) (chunk.x * Chunk.CHUNKSIZE + this.getPosition().x);
 	}
 
 	public int getGlobalY() {
+		if(this.getPosition()==null || chunk==null) return 0;
 		return (int) (chunk.y * Chunk.CHUNKSIZE + this.getPosition().y);
 	}
 	

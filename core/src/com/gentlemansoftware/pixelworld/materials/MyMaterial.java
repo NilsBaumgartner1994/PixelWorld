@@ -15,6 +15,10 @@ public class MyMaterial implements Serializable{
 	private static final long serialVersionUID = -6591862422992199495L;
 	private byte id;
 	
+	public MyMaterial(){
+		
+	}
+	
 	public MyMaterial(Byte id){
 		this.id = id;
 	}

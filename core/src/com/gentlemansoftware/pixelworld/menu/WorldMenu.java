@@ -37,7 +37,7 @@ public class WorldMenu extends SimpleMenu {
 		
 		Runnable loadRunnable = new Runnable() {
 			public void run() {
-				handler.user.activGameWorld = TileWorld.load("Default");
+				TileWorld.load("Default",handler.user);
 			}
 		};
 		

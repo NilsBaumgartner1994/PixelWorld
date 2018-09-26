@@ -16,6 +16,10 @@ public class Block extends Entity implements Serializable {
 	private static final long serialVersionUID = 4737139312313773562L;
 	
 	public MyMaterial material;
+	
+	public Block(){
+		super();
+	}
 
 	public Block(MapTile tile, MyMaterial m){
 		super(tile.chunk.world,tile.getGlobalPosition(), MotionState.STOP,EntityHostileType.FRIENDLY,MyMaterial.isSolidMaterial(m));
