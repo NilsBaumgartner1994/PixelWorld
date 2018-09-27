@@ -174,7 +174,7 @@ public class CameraController2D implements CameraControllerInterface {
 		int breite = this.width / scaleZoom(MapTile.tileWidth) + safetytiles;
 		int hoehe = this.height / scaleZoom(MapTile.tileHeight) + safetytiles;
 
-		for (int a = -hoehe + 1; a < hoehe; a++) {
+		for (int a = -hoehe + 1; a < hoehe; a++) { // get a diamond shape
 			for (int b = -breite + 1; b < breite; b++) {
 				if ((b & 1) != (a & 1))
 					continue;

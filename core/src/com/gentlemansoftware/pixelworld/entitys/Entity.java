@@ -26,12 +26,12 @@ public class Entity extends Body implements Serializable, EasyDrawableInterface 
 	public transient TileWorld world;
 
 	Navigation nav;
-	
-	public Entity(){
-		
+
+	public Entity() {
+
 	}
-	
-	public void setTransient(TileWorld world){
+
+	public void setTransient(TileWorld world) {
 		this.world = world;
 	}
 
@@ -46,11 +46,11 @@ public class Entity extends Body implements Serializable, EasyDrawableInterface 
 	}
 
 	public Entity(TileWorld world, Position position, EntityHostileType type, boolean solid) {
-		this(world, position, MotionState.STOP, type,solid);
+		this(world, position, MotionState.STOP, type, solid);
 	}
-	
+
 	public Entity(TileWorld world, Position position, EntityHostileType type) {
-		this(world, position, MotionState.STOP, type,true);
+		this(world, position, MotionState.STOP, type, true);
 	}
 
 	public Entity(TileWorld world, int x, int y, EntityHostileType type) {
@@ -68,7 +68,7 @@ public class Entity extends Body implements Serializable, EasyDrawableInterface 
 	public void setDestinyByOffset(Position pos) {
 		setDestiny(this.getPosition().addAndSet(pos));
 	}
-	
+
 	public void setSolid(boolean solid) {
 		this.solid = solid;
 	}
@@ -123,8 +123,8 @@ public class Entity extends Body implements Serializable, EasyDrawableInterface 
 		super.setPosition(newpos);
 		return this;
 	}
-	
-	public void playSoundForUser(Position playerPos, User user){
+
+	public void playSoundForUser(Position playerPos, User user) {
 
 	}
 
@@ -140,7 +140,7 @@ public class Entity extends Body implements Serializable, EasyDrawableInterface 
 		MapTile newReffer = world.getMapTileFromGlobalPos(newpos.x, newpos.y);
 		MapTile oldReffer = getMapTile();
 
-		if (!(newReffer.getGlobalX() == oldReffer.getGlobalX() && newReffer.getGlobalY() == oldReffer.getGlobalY())) {
+		if (newReffer != oldReffer) { //what if new Maptile is copied and placed?
 			oldReffer.unregisterEntity(this);
 			newReffer.registerEntity(this);
 		}
@@ -149,16 +149,16 @@ public class Entity extends Body implements Serializable, EasyDrawableInterface 
 	private void registerOnChunk() {
 		getMapTile().chunk.registerEntity(this);
 	}
-	
-	public Chunk getChunk(){
+
+	public Chunk getChunk() {
 		Position p = this.getPosition();
 		return world.getChunkGlobalPos(p.x, p.y);
 	}
-	
-	public Position getPositionInChunk(){
+
+	public Position getPositionInChunk() {
 		Chunk c = getChunk();
 		Position p = this.getPosition();
-		Position posInChunk = new Position(p.x-c.getGloabalPosX(),p.y-c.getGloabalPosY());
+		Position posInChunk = new Position(p.x - c.getGloabalPosX(), p.y - c.getGloabalPosY());
 		return posInChunk;
 	}
 
@@ -166,23 +166,23 @@ public class Entity extends Body implements Serializable, EasyDrawableInterface 
 		Chunk newChunkReffer = world.getChunkGlobalPos(newpos.x, newpos.y);
 		Chunk oldChunkReffer = getMapTile().chunk;
 
-		if (!(newChunkReffer.x == oldChunkReffer.x && newChunkReffer.y == oldChunkReffer.y)) {
+		if (newChunkReffer != oldChunkReffer) { //what if new chunk is placed
 			oldChunkReffer.unregisterEntity(this);
 			newChunkReffer.registerEntity(this);
 		}
 	}
-	
-	private void unregisterChunkReffer(){
+
+	private void unregisterChunkReffer() {
 		Chunk oldChunkReffer = getMapTile().chunk;
 		oldChunkReffer.unregisterEntity(this);
 	}
-	
-	private void unregisterMapTileReffer(){
+
+	private void unregisterMapTileReffer() {
 		MapTile oldReffer = getMapTile();
 		oldReffer.unregisterEntity(this);
 	}
-	
-	public void destroy(){
+
+	public void destroy() {
 		unregisterChunkReffer();
 		unregisterMapTileReffer();
 	}

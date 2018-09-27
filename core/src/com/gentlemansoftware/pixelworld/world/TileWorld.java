@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.gentlemansoftware.pixelworld.entitys.Bat;
 import com.gentlemansoftware.pixelworld.entitys.Entity;
 import com.gentlemansoftware.pixelworld.entitys.Human;
+import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.game.SaveAndLoadable;
 import com.gentlemansoftware.pixelworld.physics.WorldTime;
 import com.gentlemansoftware.pixelworld.profiles.User;
@@ -83,13 +84,15 @@ public class TileWorld extends SaveAndLoadable {
 		FileHandle dirHandle;
 
 		dirHandle = Gdx.files.internal("./" + WORLDS + name + "/");
-
+		
+		int humansFound = 0;
 		for (FileHandle entry : dirHandle.list()) {
 			if (entry.extension().equals(Chunk.ENDINGNAME)) {
 				Chunk chunk = Chunk.loadFromInternal(entry.path(), Chunk.class);
 				chunk.setTransients(world);
 				for(Entity e : chunk.entitys){
 					if(e instanceof Human){
+						humansFound++;
 						user.human = (Human) e;
 						user.cameraController.setTrack(e);
 					}
@@ -97,6 +100,8 @@ public class TileWorld extends SaveAndLoadable {
 				chunks.add(chunk);
 			}
 		}
+		
+		Main.log(TileWorld.class, "Humans: "+humansFound);
 
 		world.setGeneratedChunks(chunks);
 

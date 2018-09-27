@@ -42,8 +42,8 @@ public class User {
 		
 
 		// for (int i = 0; i < 1000; i++) {
-		Bat bat = new Bat(this.activGameWorld, startPos.cpy().addAndSet(2, 0, 0, 0, 1, 0));
-		bat.spawn();
+		new Bat(this.activGameWorld, startPos.cpy().addAndSet(2, 0, 0, 0, 1, 0)).spawn();
+//		bat.spawn();
 		// }
 	}
 

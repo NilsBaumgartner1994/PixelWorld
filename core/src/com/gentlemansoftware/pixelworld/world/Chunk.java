@@ -48,9 +48,11 @@ public class Chunk extends SaveAndLoadable{
 	
 	public void setTransients(TileWorld world){
 		this.world = world;
+		entitys = new ArrayList<Entity>(); // while Loading old References where hold
 		for(MapTile[] t1 : tiles){
 			for(MapTile t : t1){
 				t.setTransients(this);
+				entitys.addAll(t.entitys); //need to update these References now
 			}
 		}
 		for(Entity e : entitys){
