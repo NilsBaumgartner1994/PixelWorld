@@ -31,6 +31,7 @@ import com.gentlemansoftware.pixelworld.profiles.User;
 import com.gentlemansoftware.pixelworld.shaders.ShaddowShader;
 import com.gentlemansoftware.pixelworld.sound.EasySounds;
 import com.gentlemansoftware.pixelworld.sound.SoundManager;
+import com.gentlemansoftware.pixelworld.world.Chunk;
 import com.gentlemansoftware.pixelworld.world.MapTile;
 import com.gentlemansoftware.pixelworld.world.TileWorld;
 
@@ -141,7 +142,9 @@ public class CameraController2D implements CameraControllerInterface {
 		TileWorld world = user.activGameWorld;
 		if (world != null) {
 			world.deactivateAllChunks();
-			world.activateChunk(world.getChunkGlobalPos(camera.getPosition().x, camera.getPosition().y));
+			Chunk playerChunk = world.getChunkGlobalPos(camera.getPosition().x, camera.getPosition().y);
+			world.activateChunk(playerChunk);
+			world.activateChunk(playerChunk.getMoore());
 			List<Entity> area = getAreaToDraw(world);
 			Collections.sort(area, new EntityComperator(this.cameraDirection));
 			// drawNatureShaddow(area, world);

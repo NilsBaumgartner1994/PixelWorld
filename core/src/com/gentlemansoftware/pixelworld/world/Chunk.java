@@ -25,7 +25,7 @@ import com.gentlemansoftware.pixelworld.physics.Direction;
 import com.gentlemansoftware.pixelworld.worldgenerator.Amortized2DNoise;
 import com.gentlemansoftware.pixelworld.worldgenerator.NatureGenerator;
 
-public class Chunk extends SaveAndLoadable{
+public class Chunk extends SaveAndLoadable {
 
 	/**
 	 * 
@@ -34,56 +34,58 @@ public class Chunk extends SaveAndLoadable{
 	public int x;
 	public int y;
 
-//	public static final int CHUNKSIZE = 1024;
+	// public static final int CHUNKSIZE = 1024;
 	public static final int CHUNKSIZE = 32;
 
 	MapTile[][] tiles;
 	List<Entity> entitys;
-	
+
 	public transient TileWorld world;
-	
-	public Chunk(){
-		
+
+	public Chunk() {
+
 	}
-	
-	public void setTransients(TileWorld world){
+
+	public void setTransients(TileWorld world) {
 		this.world = world;
-		entitys = new ArrayList<Entity>(); // while Loading old References where hold
-		for(MapTile[] t1 : tiles){
-			for(MapTile t : t1){
+		entitys = new ArrayList<Entity>(); // while Loading old References where
+											// hold
+		for (MapTile[] t1 : tiles) {
+			for (MapTile t : t1) {
 				t.setTransients(this);
-				entitys.addAll(t.entitys); //need to update these References now
+				entitys.addAll(t.entitys); // need to update these References
+											// now
 			}
 		}
-		for(Entity e : entitys){
+		for (Entity e : entitys) {
 			e.setTransient(world);
 		}
 	}
-	
-	public String toString(){
-		return "["+this.x+"|"+this.y+"]";
+
+	public String toString() {
+		return "[" + this.x + "|" + this.y + "]";
 	}
-	
-	public Chunk(TileWorld world, int cx, int cy){
+
+	public Chunk(TileWorld world, int cx, int cy) {
 		this.world = world;
 		this.x = cx;
 		this.y = cy;
 		tiles = new MapTile[CHUNKSIZE][CHUNKSIZE];
-		for(int x = 0; x<CHUNKSIZE; x++){
-			for(int y = 0; y<CHUNKSIZE; y++){
-				tiles[x][y]= new MapTile(this,x,y);
+		for (int x = 0; x < CHUNKSIZE; x++) {
+			for (int y = 0; y < CHUNKSIZE; y++) {
+				tiles[x][y] = new MapTile(this, x, y);
 			}
 		}
 		entitys = new ArrayList<Entity>();
 	}
-	
+
 	public final static String ENDINGNAME = "chunk";
-	public final static String ENDING = "."+ENDINGNAME;
-	
-	public void save(TileWorld world){
-		System.out.println("Saving: "+x+"-"+y+ENDING);
-		saveToInternal(TileWorld.WORLDS+world.name+"/"+x+"-"+y+ENDING);
-		System.out.println("Saved to: "+TileWorld.WORLDS+world.name+"/"+x+"-"+y+ENDING);
+	public final static String ENDING = "." + ENDINGNAME;
+
+	public void save(TileWorld world) {
+		System.out.println("Saving: " + x + "-" + y + ENDING);
+		saveToInternal(TileWorld.WORLDS + world.name + "/" + x + "-" + y + ENDING);
+		System.out.println("Saved to: " + TileWorld.WORLDS + world.name + "/" + x + "-" + y + ENDING);
 	}
 
 	public void registerEntity(Entity body) {
@@ -147,6 +149,28 @@ public class Chunk extends SaveAndLoadable{
 		}
 
 		return getMapTilesFromLocalPosRightCoord(xLeft, yTop, xRight, yBottom);
+	}
+
+	public Chunk getChunkByOffset(int offX, int offY) {
+		return this.world.getChunk(this.x + offX, this.y + offY);
+	}
+	
+	public List<Chunk> getNeumann() {
+		List<Chunk> back = new ArrayList<Chunk>();
+		back.add(getChunkByOffset(1, 0));
+		back.add(getChunkByOffset(-1, 0));
+		back.add(getChunkByOffset(0, 1));
+		back.add(getChunkByOffset(0, -1));
+		return back;
+	}
+
+	public List<Chunk> getMoore() {
+		List<Chunk> back = getNeumann();
+		back.add(getChunkByOffset(-1, -1));
+		back.add(getChunkByOffset(-1, 1));
+		back.add(getChunkByOffset(1, -1));
+		back.add(getChunkByOffset(1, 1));
+		return back;
 	}
 
 	private List<MapTile> getMapTilesFromLocalPosRightCoord(int xLeft, int yTop, int xRight, int yBottom) {

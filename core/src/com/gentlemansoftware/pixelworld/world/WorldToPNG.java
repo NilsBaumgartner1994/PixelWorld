@@ -41,17 +41,17 @@ public class WorldToPNG {
 	private int down;
 	private MapTile tile;
 
-	private static Map<MyMaterial, Color> mapping = new HashMap<MyMaterial, Color>();
+	private static Map<Byte, Color> mapping = new HashMap<Byte, Color>();
 
 	static {
-		mapping.put(MyMaterial.DEBUG, Color.PINK);
-		mapping.put(MyMaterial.DIRT, Color.BROWN);
-		mapping.put(MyMaterial.ERROR, Color.RED);
+		mapping.put(MyMaterial.DEBUG.getID(), Color.PINK);
+		mapping.put(MyMaterial.DIRT.getID(), Color.BROWN);
+		mapping.put(MyMaterial.ERROR.getID(), Color.RED);
 		mapping.put(null, EasyColor.TRANSPARENT);
-		mapping.put(MyMaterial.GRASS, Color.GREEN);
-		mapping.put(MyMaterial.SAND, Color.YELLOW);
-		mapping.put(MyMaterial.STONE, Color.GRAY);
-		mapping.put(MyMaterial.WATER, Color.BLUE);
+		mapping.put(MyMaterial.GRASS.getID(), Color.GREEN);
+		mapping.put(MyMaterial.SAND.getID(), Color.YELLOW);
+		mapping.put(MyMaterial.STONE.getID(), Color.GRAY);
+		mapping.put(MyMaterial.WATER.getID(), Color.BLUE);
 	}
 
 	public WorldToPNG(final Chunk c) {
@@ -221,8 +221,9 @@ public class WorldToPNG {
 				if (tile != null && tile.chunk != null && tile.chunk.world != null) {
 					MapTile t = tile.chunk.world.getMapTileFromGlobalPos(left + x + gx, down + y + gy);
 					if (t != null) {
-						Color color = mapping.get(t.block.material);
-						if(color==null){
+						// System.out.println(mapping.size());
+						Color color = mapping.get(t.block.material.getID());
+						if (color == null) {
 							color = EasyColor.PLAYSTATION_TRIANGLE;
 						}
 						_pixmap.setColor(color);

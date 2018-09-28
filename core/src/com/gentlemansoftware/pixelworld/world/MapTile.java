@@ -122,24 +122,6 @@ public class MapTile extends Position implements Serializable {
 	public void unselect(){
 		setShaddow(false);
 	}
-
-	public List<MapTile> getNeumann() {
-		List<MapTile> back = new ArrayList<MapTile>();
-		back.add(getOffset(1, 0));
-		back.add(getOffset(-1, 0));
-		back.add(getOffset(0, 1));
-		back.add(getOffset(0, -1));
-		return back;
-	}
-
-	public List<MapTile> getMoore() {
-		List<MapTile> back = getNeumann();
-		back.add(getOffset(-1, -1));
-		back.add(getOffset(-1, 1));
-		back.add(getOffset(1, -1));
-		back.add(getOffset(1, 1));
-		return back;
-	}
 	
 	public String toString(){
 		return "Chunk: "+this.chunk.x+":"+this.chunk.y+" LocalPos: "+this.x+":"+this.y+" GlobalPos: "+this.getGlobalX()+":"+this.getGlobalY();
