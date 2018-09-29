@@ -16,26 +16,25 @@ public class EasyServerCommunicationReceive {
 
 	public EasyServerCommunicationReceive() {
 		LOGGER.log(Level.INFO, "Create Functions List");
-		functions = new ArrayList<EasyRunnableParameters<TYPE>>();
+		functions = new ArrayList<EasyRunnableParametersInterface<TYPE>>();
 		for(TYPE typ : TYPE.values()) {
 			functions.add(null);
 		}
 		LOGGER.log(Level.INFO, "Createted Functions List", new Object[]{functions});
 	}
 
-	List<EasyRunnableParameters<TYPE>> functions;
+	List<EasyRunnableParametersInterface<TYPE>> functions;
 
-	public void setCallbackRunnable(TYPE function, EasyRunnableParameters<TYPE> runnable) {
+	public void setCallbackRunnable(TYPE function, EasyRunnableParametersInterface<TYPE> runnable) {
 		LOGGER.log(Level.INFO, "setCallbackRunnable", new Object[]{function,runnable});
 		functions.set(function.ordinal(), runnable);
 	}
 
 	public void callback(TYPE function, Object param) {
 		LOGGER.log(Level.INFO, "executing callback", new Object[]{function,param});
-		EasyRunnableParameters<TYPE> runnable = functions.get(function.ordinal());
+		EasyRunnableParametersInterface<TYPE> runnable = functions.get(function.ordinal());
 		if (runnable != null) {
 			runnable.setParam(param);
-			runnable.setType(function);
 			runnable.run();
 		}
 	}

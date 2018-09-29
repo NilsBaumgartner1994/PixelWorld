@@ -2,6 +2,7 @@ package com.gentlemansoftware.pixelworld.profiles;
 
 import com.badlogic.gdx.Gdx;
 import com.gentlemansoftware.pixelworld.inputs.GamePad;
+import com.gentlemansoftware.easyServer.MyEasyNetwork;
 import com.gentlemansoftware.pixelworld.entitys.Bat;
 import com.gentlemansoftware.pixelworld.entitys.Human;
 import com.gentlemansoftware.pixelworld.game.CameraController2D;
@@ -24,6 +25,7 @@ public class User {
 	public TileWorld activGameWorld;
 	public Human human;
 	public MenuHandler menuHandler;
+	public MyEasyNetwork network;
 
 	public User() {
 		new UserProfile().save();
@@ -45,6 +47,8 @@ public class User {
 		new Bat(this.activGameWorld, startPos.cpy().addAndSet(2, 0, 0, 0, 1, 0)).spawn();
 //		bat.spawn();
 		// }
+		
+		network = new MyEasyNetwork();
 	}
 
 	private void initHandlers() {

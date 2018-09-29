@@ -8,9 +8,13 @@ public class DesktopLauncher {
 
 	public static String title = "God of Forest";
 
-	static Resolutions resolution = Resolutions.XGA;
+	static Resolutions resolution = Resolutions.SVGA;
 	static boolean borderless = false;
 
+	/**
+	 * Main for a Desktop game
+	 * @param arg
+	 */
 	public static void main(String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
@@ -47,6 +51,10 @@ public class DesktopLauncher {
 		new LwjglApplication(new Main(), config);
 	}
 
+	/**
+	 * Sets the System Property for the game on Fullscreen
+	 * @param borderless
+	 */
 	private static void setBorderless(boolean borderless) {
 		if (borderless) {
 			System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");

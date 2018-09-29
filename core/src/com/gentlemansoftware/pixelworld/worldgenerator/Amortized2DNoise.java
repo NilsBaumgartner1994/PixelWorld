@@ -35,7 +35,7 @@ public class Amortized2DNoise {
 	int size; // /< Size of workspace.
 
 	public static int CELLSIZEMULT = 32;
-	public static int CELLSIZE2D = Chunk.CHUNKSIZE*CELLSIZEMULT;
+	public static int CELLSIZE2D = Chunk.CHUNKSIZE * CELLSIZEMULT;
 
 	Pixmap pixmap;
 
@@ -280,8 +280,8 @@ public class Amortized2DNoise {
 	}
 
 	private int chunkPosToRowCol(int chunkPos) {
-		chunkPos*=Chunk.CHUNKSIZE;
-		
+		chunkPos *= Chunk.CHUNKSIZE;
+
 		if (chunkPos < 0 && chunkPos % CELLSIZE2D != 0) {
 			return chunkPos / CELLSIZE2D - 1;
 		}
@@ -289,7 +289,7 @@ public class Amortized2DNoise {
 	}
 
 	private int chunkPosInCellArray(int chunkPos) {
-		chunkPos = chunkPos*Chunk.CHUNKSIZE % CELLSIZE2D;
+		chunkPos = chunkPos * Chunk.CHUNKSIZE % CELLSIZE2D;
 		if (chunkPos < 0) {
 			chunkPos += CELLSIZE2D;
 		}
@@ -322,7 +322,7 @@ public class Amortized2DNoise {
 		int cyStart = chunkPosInCellArray(c.y);
 
 		for (int cy = 0; cy < Chunk.CHUNKSIZE; cy++) {
-//			Main.log(getClass(), "Chunk Row: " + cy);
+			// Main.log(getClass(), "Chunk Row: " + cy);
 			for (int cx = 0; cx < Chunk.CHUNKSIZE; cx++) {
 				MapTile t = c.getMapTileFromLocalPos(cx, cy);
 				float cellValue = cell[cxStart + cx][cyStart + cy];

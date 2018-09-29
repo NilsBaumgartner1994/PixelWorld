@@ -14,11 +14,13 @@ public class PauseMenu extends SimpleMenu {
 	Menu optionMenu;
 	Menu mapMenu;
 	Menu worldMenu;
+	Menu multiplayerMenu;
 	
 	public PauseMenu(MenuHandler menuHandler, Menu parent) {
 		super(menuHandler, parent, "Pause", null);
 		
 		optionMenu = new OptionMenu(handler, this);
+		multiplayerMenu = new MultiplayerMenu(handler,this);
 		mapMenu = new MapMenu(handler,this);
 		worldMenu = new WorldMenu(handler,this);
 		
@@ -29,6 +31,7 @@ public class PauseMenu extends SimpleMenu {
 		List<SimpleMenuComponent> menuComponents = new LinkedList<SimpleMenuComponent>();
 		menuComponents.add(this.handler.ingameMenu);
 		menuComponents.add(mapMenu);
+		menuComponents.add(multiplayerMenu);
 		menuComponents.add(worldMenu);
 		menuComponents.add(optionMenu);
 		

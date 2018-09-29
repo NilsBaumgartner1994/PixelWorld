@@ -1,8 +1,25 @@
 package com.gentlemansoftware.easyServer;
 
-public interface EasyRunnableParameters<E extends Enum<E>> extends Runnable{
+public class EasyRunnableParameters<E extends Enum<E>> implements EasyRunnableParametersInterface<E>{
 
-	public void setType(final E type);
-	public void setParam(final Object param);
+	private Object param;
+	
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setParam(Object param) {
+		// TODO Auto-generated method stub
+		this.param = param;
+	}
+
+	@Override
+	public Object getParam() {
+		return param;
+	}
+
 
 }

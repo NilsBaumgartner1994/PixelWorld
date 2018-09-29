@@ -39,6 +39,10 @@ public class Block extends Entity implements Serializable {
 	public void setHeight(int height){
 		this.position.zFraction = height;
 	}
+	
+	public int getHeight(){
+		return this.position.zFraction;
+	}
 
 	@Override
 	public Sprite getSprite(Direction cameraDirection){

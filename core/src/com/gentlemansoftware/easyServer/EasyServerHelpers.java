@@ -17,7 +17,7 @@ public class EasyServerHelpers {
 	}
 	
 
-	private static final String defaultPort = "3451";
+	private static final String defaultPort = "3452";
 	
 	public static String getPort(){
 		return defaultPort;
