@@ -24,6 +24,7 @@ public class Ingame extends SimpleMenu {
 	
 	public Ingame(MenuHandler handler, Menu parent) {
 		super(handler, parent, "Back", null);
+		this.drawConnectors = false;
 		initMenuComponents();
 	}
 	

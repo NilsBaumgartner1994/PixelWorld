@@ -35,6 +35,8 @@ public class User {
 		initHandlers();
 
 		this.activGameWorld = Main.getInstance().titleScreenWorld;
+		
+		network = new MyEasyNetwork(this);
 
 		Position startPos = new Position(0, 0, 0, 0, 1, 0);
 
@@ -48,7 +50,7 @@ public class User {
 //		bat.spawn();
 		// }
 		
-		network = new MyEasyNetwork();
+		
 	}
 
 	private void initHandlers() {

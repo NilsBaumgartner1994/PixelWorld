@@ -30,7 +30,7 @@ public class PauseMenu extends SimpleMenu {
 	public List<SimpleMenuComponent> initMenuComponents() {
 		List<SimpleMenuComponent> menuComponents = new LinkedList<SimpleMenuComponent>();
 		menuComponents.add(this.handler.ingameMenu);
-		menuComponents.add(mapMenu);
+//		menuComponents.add(mapMenu);
 		menuComponents.add(multiplayerMenu);
 		menuComponents.add(worldMenu);
 		menuComponents.add(optionMenu);

@@ -1,19 +1,33 @@
 package com.gentlemansoftware.pixelworld.helper;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.TextInputListener;
-import com.gentlemansoftware.easyServer.EasyServerCommunicationSend;
+import com.gentlemansoftware.easyServer.EasyRunnableParametersInterface;
 
 public class MyTextInputListener implements TextInputListener {
-	EasyServerCommunicationSend connection;
-	
-	public MyTextInputListener(EasyServerCommunicationSend connection) {
-		// TODO Auto-generated constructor stub
-		this.connection = connection;
+	public EasyRunnableParametersInterface<?> runnable;
+	public String dialogTitle;
+	public String initialValue;
+	public String hintValue;
+
+	public MyTextInputListener(EasyRunnableParametersInterface<?> runnable, String dialogTitle, String initialValue,
+			String hintValue) {
+		this.runnable = runnable;
+		this.dialogTitle = dialogTitle;
+		this.initialValue = initialValue;
+		this.hintValue = hintValue;
 	}
 
 	@Override
 	public void input(String text) {
-		connection.sendMessage(text);
+		if (runnable != null) {
+			runnable.setParam(text);
+			runnable.run();
+		}
+	}
+
+	public void getInput() {
+		Gdx.input.getTextInput(this, dialogTitle, initialValue, hintValue);
 	}
 
 	@Override

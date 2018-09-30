@@ -17,10 +17,12 @@ public class SimpleMenu extends SimpleMenuNameItem implements Menu {
 	protected SimpleMenuComponent active = null;
 	protected MenuHandler handler;
 	protected Menu parent;
+	protected boolean drawConnectors;
 
 	public SimpleMenu(MenuHandler handler, Menu parent, String title, List<SimpleMenuComponent> content) {
 		super(title, SimpleMenuNameTypes.MAIN);
 		this.handler = handler;
+		this.drawConnectors = true;
 		setParent(parent);
 		setContent(content);
 	}
@@ -42,8 +44,8 @@ public class SimpleMenu extends SimpleMenuNameItem implements Menu {
 		}
 		this.contents = content;
 	}
-	
-	public void addContent(SimpleMenuComponent content){
+
+	public void addContent(SimpleMenuComponent content) {
 		contents.add(content);
 	}
 
@@ -112,23 +114,25 @@ public class SimpleMenu extends SimpleMenuNameItem implements Menu {
 		int xpos = display.getWidth() / 2 - chain.getRegionWidth() / 2;
 
 		int ypos = (int) (display.getHeigth() - chain.getHeight());
-		
+
 		int size = contents.size();
-		for (int i=0; i<size ; i++) {
+		for (int i = 0; i < size; i++) {
 			SimpleMenuComponent item = contents.get(i);
 			String helper = "ERROR";
 			boolean isParent = (item == parent);
-			if(isParent){
+			if (isParent) {
 				SimpleMenu menu = (SimpleMenu) item;
 				helper = menu.getTitle();
 				menu.setTitle("Back");
 			}
 			ypos = item.render(display, ypos);
-			if(i<size-1){
-				ypos = display.drawSpriteAndSubtractYpos(chain, xpos, ypos);
+			if (i < size - 1) {
+				if (this.drawConnectors) {
+					ypos = display.drawSpriteAndSubtractYpos(chain, xpos, ypos);
+				}
 			}
-			
-			if(isParent){
+
+			if (isParent) {
 				SimpleMenu menu = (SimpleMenu) item;
 				menu.setTitle(helper);
 			}
@@ -148,7 +152,7 @@ public class SimpleMenu extends SimpleMenuNameItem implements Menu {
 	@Override
 	public void prepareForActivation() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
