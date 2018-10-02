@@ -3,7 +3,6 @@ package com.gentlemansoftware.pixelworld.items;
 import com.badlogic.gdx.graphics.Texture;
 import com.gentlemansoftware.pixelworld.game.ResourceLoader;
 import com.gentlemansoftware.pixelworld.materials.MyMaterial;
-import com.gentlemansoftware.pixelworld.nature.Nature;
 
 public class AbstractItem {
 	

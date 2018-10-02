@@ -1,5 +1,7 @@
 package com.gentlemansoftware.pixelworld.game;
 
+import java.util.List;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -11,6 +13,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
+import com.gentlemansoftware.pixelworld.helper.SplitScreenDimension;
+import com.gentlemansoftware.pixelworld.helper.SplitscreenHelper;
 import com.gentlemansoftware.pixelworld.inputs.InputHandler;
 import com.gentlemansoftware.pixelworld.profiles.User;
 import com.gentlemansoftware.pixelworld.profiles.UserHandler;
@@ -65,13 +69,10 @@ public class Main extends ApplicationAdapter {
 		inputHandler = new InputHandler();
 	}
 
-	// bodyDef.position.set(51721, 50811);
-
 	@Override
 	public void create() {
 		instance = this;
 		initAssetAndResourceLoader();
-		initTileWorld();
 		initPlayerHandler();
 		initInputHandler();
 
@@ -88,7 +89,7 @@ public class Main extends ApplicationAdapter {
 
 	@Override
 	public void resize(int width, int height) {
-		// viewport.update(width, height);
+		userHandler.adaptScreenSizeForAllPlayers();
 	}	
 
 	public void updateWorlds() {
@@ -96,7 +97,7 @@ public class Main extends ApplicationAdapter {
 		
 //		this.titleScreenWorld.timePassed(deltaTime);
 		for(User user : userHandler.getUsers()){
-			user.activGameWorld.timePassed(deltaTime);
+//			user.activGameWorld.timePassed(deltaTime);
 		}
 	}
 

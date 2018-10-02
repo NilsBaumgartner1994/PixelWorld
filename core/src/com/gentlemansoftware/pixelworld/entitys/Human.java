@@ -89,11 +89,6 @@ public class Human extends Entity {
 			AbstractItem activItem = this.inventory.getActivItem();
 			if (activItem instanceof Item) {
 				Item item = (Item) activItem;
-				if (item.isNature()) {
-					// this.getMapTile().setNature(item.getNature());
-				} else {
-					// this.getMapTile().setMaterial(item.getMaterial());
-				}
 			}
 			if (activItem instanceof Tool) {
 				Tool tool = (Tool) activItem;

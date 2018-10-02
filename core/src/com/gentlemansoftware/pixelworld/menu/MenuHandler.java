@@ -7,17 +7,18 @@ import com.gentlemansoftware.pixelworld.profiles.User;
 public class MenuHandler {
 
 	public Menu activMenu;
-	public Menu ingameMenu, pauseMenu;
+	public Menu ingameMenu, pauseMenu, mainMenu;
 	
 	public User user;
 	
 	public MenuHandler(User user) {
 		this.user = user;
 		initMenus();
-		this.setActivMenu(ingameMenu);
+		this.setActivMenu(mainMenu);
 	}
 	
 	public void initMenus(){
+		mainMenu = new MainMenu(this,null);
 		ingameMenu = new Ingame(this,pauseMenu);
 		pauseMenu = new PauseMenu(this,ingameMenu);
 	}

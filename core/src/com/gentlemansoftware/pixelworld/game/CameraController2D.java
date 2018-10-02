@@ -22,6 +22,7 @@ import com.gentlemansoftware.pixelworld.inputs.Mouse;
 import com.gentlemansoftware.pixelworld.entitys.Entity;
 import com.gentlemansoftware.pixelworld.entitys.EntityHostileType;
 import com.gentlemansoftware.pixelworld.entitys.Human;
+import com.gentlemansoftware.pixelworld.helper.SplitScreenDimension;
 import com.gentlemansoftware.pixelworld.physics.Body;
 import com.gentlemansoftware.pixelworld.physics.Direction;
 import com.gentlemansoftware.pixelworld.physics.EntityComperator;
@@ -47,9 +48,8 @@ public class CameraController2D implements CameraControllerInterface {
 
 	public SpriteBatch fboBatch;
 	public BitmapFont font;
-
-	public int width;
-	public int height;
+	
+	public SplitScreenDimension dimension;
 
 	public static int zoomLevel = 0;
 	public static int zoomLevelmin = -2;
@@ -63,8 +63,8 @@ public class CameraController2D implements CameraControllerInterface {
 
 	private User user;
 
-	public CameraController2D(User localUser, int width, int height) {
-		resize(width, height);
+	public CameraController2D(User localUser, SplitScreenDimension dimension) {
+		resize(dimension);
 		this.user = localUser;
 		camera.setPositionForce(0, 0);
 		initFont();
@@ -95,15 +95,14 @@ public class CameraController2D implements CameraControllerInterface {
 		return this.camera.getPosition().cpy();
 	}
 
-	public void resize(int width, int height) {
-		setScreenSize(width, height);
+	public void resize(SplitScreenDimension dimension) {
+		setScreenSize(dimension);
 		initCamera();
 		initFrameBuffer();
 	}
 
-	private void setScreenSize(int width, int height) {
-		this.width = width;
-		this.height = height;
+	private void setScreenSize(SplitScreenDimension dimension) {
+		this.dimension = dimension;
 	}
 
 	private void initCamera() {
@@ -111,10 +110,16 @@ public class CameraController2D implements CameraControllerInterface {
 	}
 
 	private void initFrameBuffer() {
-		fbo = new FrameBuffer(Format.RGBA8888, width, height, true);
+		if(fbo!=null){
+			fbo.dispose();
+		}
+		fbo = new FrameBuffer(Format.RGBA8888, getWidth(), getHeight(), true);
 		fbo.getColorBufferTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 
-		fbUI = new FrameBuffer(Format.RGBA8888, width, height, true);
+		if(fbUI!=null){
+			fbUI.dispose();
+		}
+		fbUI = new FrameBuffer(Format.RGBA8888, getWidth(), getHeight(), true);
 		fbUI.getColorBufferTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 
 		if (fboBatch != null)
@@ -174,8 +179,8 @@ public class CameraController2D implements CameraControllerInterface {
 		// int safetytiles = 7;
 		int safetytiles = 7;
 
-		int breite = this.width / scaleZoom(MapTile.tileWidth) + safetytiles;
-		int hoehe = this.height / scaleZoom(MapTile.tileHeight) + safetytiles;
+		int breite = this.getWidth() / scaleZoom(MapTile.tileWidth) + safetytiles;
+		int hoehe = this.getHeight() / scaleZoom(MapTile.tileHeight) + safetytiles;
 
 		for (int a = -hoehe + 1; a < hoehe; a++) { // get a diamond shape
 			for (int b = -breite + 1; b < breite; b++) {
@@ -335,9 +340,9 @@ public class CameraController2D implements CameraControllerInterface {
 		int oldXF = scaleZoom(globalXFrac - camera.getPosition().xFraction);
 
 		int spriteCorrection = scaleZoom(-sprite.getRegionWidth() / 2);
-		int widthCorrection = this.width / 2;
+		int widthCorrection = this.getWidth() / 2;
 		int tileCorrection = scaleZoom(-MapTile.tileHeight);
-		int heightCorrection = this.height / 2;
+		int heightCorrection = this.getHeight() / 2;
 
 		int xPosMultXPart = 1;
 		int xPosMultYPart = -1;
@@ -396,8 +401,8 @@ public class CameraController2D implements CameraControllerInterface {
 		screenX -= fractionCorrectionX;
 		screenY -= fractionCorrectionY;
 
-		screenX -= this.width / 2;
-		screenY -= this.height / 2;
+		screenX -= this.getWidth() / 2;
+		screenY -= this.getHeight() / 2;
 
 		boolean xNegative = screenX < 0 ? true : false;
 		boolean yNegative = screenY < 0 ? true : false;
@@ -578,7 +583,7 @@ public class CameraController2D implements CameraControllerInterface {
 		Mouse m = Main.getInstance().inputHandler.keyboardHandler.mouse;
 
 		if (m != null) {
-			drawInformationLine("Mouse: " + getGlobalPosFromScreenPos(m.getX(), this.height - m.getY()).toString());
+			drawInformationLine("Mouse: " + getGlobalPosFromScreenPos(m.getX(), this.getHeight() - m.getY()).toString());
 		}
 		font.setColor(Color.BLACK);
 
@@ -607,7 +612,7 @@ public class CameraController2D implements CameraControllerInterface {
 
 	private void drawInformationLine(String s) {
 		float z = font.getLineHeight();
-		drawInformationLeftAlignedAtPos(10, height - line * z, s);
+		drawInformationLeftAlignedAtPos(10, getHeight() - line * z, s);
 		line++;
 	}
 
@@ -669,7 +674,7 @@ public class CameraController2D implements CameraControllerInterface {
 		Sprite hand = new Sprite(ResourceLoader.getInstance().getGUI("cursor/hand_select"));
 
 		if (m != null) {
-			hand.setPosition(m.getX() - hand.getRegionWidth() / 2, this.height - m.getY() - hand.getRegionHeight() / 2);
+			hand.setPosition(m.getX() - hand.getRegionWidth() / 2, this.getHeight() - m.getY() - hand.getRegionHeight() / 2);
 			fboBatch.draw(hand, hand.getX(), hand.getY(), hand.getOriginX(), hand.getOriginY(), hand.getWidth(),
 					hand.getHeight(), hand.getScaleX(), hand.getScaleY(), hand.getRotation());
 		}
@@ -677,8 +682,8 @@ public class CameraController2D implements CameraControllerInterface {
 
 	public void renderToScreen() {
 		fboBatch.begin();
-		fboBatch.draw(fbo.getColorBufferTexture(), 0, 0, width, height, 0, 0, 1, 1);
-		fboBatch.draw(fbUI.getColorBufferTexture(), 0, 0, width, height, 0, 0, 1, 1);
+		fboBatch.draw(fbo.getColorBufferTexture(), dimension.x, dimension.y, getWidth(), getHeight(), 0, 0, 1, 1);
+		fboBatch.draw(fbUI.getColorBufferTexture(), dimension.x, dimension.y, getWidth(), getHeight(), 0, 0, 1, 1);
 		fboBatch.end();
 	}
 
@@ -729,13 +734,13 @@ public class CameraController2D implements CameraControllerInterface {
 	@Override
 	public int getWidth() {
 		// TODO Auto-generated method stub
-		return this.width;
+		return this.dimension.width;
 	}
 
 	@Override
-	public int getHeigth() {
+	public int getHeight() {
 		// TODO Auto-generated method stub
-		return this.height;
+		return this.dimension.height;
 	}
 
 	@Override
@@ -755,4 +760,5 @@ public class CameraController2D implements CameraControllerInterface {
 		// TODO Auto-generated method stub
 		return this.fboBatch;
 	}
+
 }

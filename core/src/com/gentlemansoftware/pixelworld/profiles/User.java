@@ -8,6 +8,7 @@ import com.gentlemansoftware.pixelworld.entitys.Human;
 import com.gentlemansoftware.pixelworld.game.CameraController2D;
 import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
 import com.gentlemansoftware.pixelworld.game.Main;
+import com.gentlemansoftware.pixelworld.helper.SplitScreenDimension;
 import com.gentlemansoftware.pixelworld.menu.MenuHandler;
 import com.gentlemansoftware.pixelworld.physics.Position;
 import com.gentlemansoftware.pixelworld.sound.SoundManager;
@@ -34,21 +35,21 @@ public class User {
 
 		initHandlers();
 
-		this.activGameWorld = Main.getInstance().titleScreenWorld;
+//		this.activGameWorld = Main.getInstance().titleScreenWorld;
 		
 		network = new MyEasyNetwork(this);
 
-		Position startPos = new Position(0, 0, 0, 0, 1, 0);
+//		Position startPos = new Position(0, 0, 0, 0, 1, 0);
 
-		this.human = new Human(this.activGameWorld, startPos, "Bob");
-		this.human.spawn();
-		cameraController.setTrack(human);
-		
-
-		// for (int i = 0; i < 1000; i++) {
-		new Bat(this.activGameWorld, startPos.cpy().addAndSet(2, 0, 0, 0, 1, 0)).spawn();
-//		bat.spawn();
-		// }
+//		this.human = new Human(this.activGameWorld, startPos, "Bob");
+//		this.human.spawn();
+//		cameraController.setTrack(human);
+//		
+//
+//		// for (int i = 0; i < 1000; i++) {
+//		new Bat(this.activGameWorld, startPos.cpy().addAndSet(2, 0, 0, 0, 1, 0)).spawn();
+////		bat.spawn();
+//		// }
 		
 		
 	}
@@ -57,7 +58,8 @@ public class User {
 		this.gamepad = new GamePad();
 		this.menuHandler = new MenuHandler(this);
 		this.soundManager = new UserSoundManager(this.profile.soundProfile);
-		this.cameraController = new CameraController2D(this, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		SplitScreenDimension dim = new SplitScreenDimension(0,0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		this.cameraController = new CameraController2D(this, dim);
 	}
 
 	public void updateControlledEntitys() {

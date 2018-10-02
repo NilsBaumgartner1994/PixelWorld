@@ -21,7 +21,7 @@ public class ChatOverlay implements SimpleMenuComponent {
 		MyEasyNetwork network = handler.user.network;
 		if(network != null && network.isConnectedToServer()){
 			List<Object[]> logMessages = network.getLogMessages();
-			ypos = display.getHeigth()-128;
+			ypos = display.getHeight()-128;
 			
 			for(Object[] objAr : logMessages){
 				String message = (String) objAr[1];

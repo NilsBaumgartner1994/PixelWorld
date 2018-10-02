@@ -49,7 +49,7 @@ public class MiniMapOverlay implements SimpleMenuComponent {
 		updateMap();
 		if (this.map != null) {
 			int x = display.getWidth()-WIDTH;
-			int y = display.getHeigth();
+			int y = display.getHeight();
 			
 			MapTile tile = getMapTileCameraIsLookingAt();
 			int xPixel = WIDTH*tile.x/Chunk.CHUNKSIZE;

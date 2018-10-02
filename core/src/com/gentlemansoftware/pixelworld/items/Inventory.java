@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.List;
 
 import com.gentlemansoftware.pixelworld.game.Main;
-import com.gentlemansoftware.pixelworld.materials.MaterialError;
 
 public class Inventory {
 

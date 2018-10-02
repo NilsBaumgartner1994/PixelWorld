@@ -113,7 +113,7 @@ public class SimpleMenu extends SimpleMenuNameItem implements Menu {
 		Sprite chain = new Sprite(ResourceLoader.getInstance().getGUI("menus/menu_chain"));
 		int xpos = display.getWidth() / 2 - chain.getRegionWidth() / 2;
 
-		int ypos = (int) (display.getHeigth() - chain.getHeight());
+		int ypos = (int) (display.getHeight() - chain.getHeight());
 
 		int size = contents.size();
 		for (int i = 0; i < size; i++) {
@@ -145,7 +145,9 @@ public class SimpleMenu extends SimpleMenuNameItem implements Menu {
 			this.dispose();
 			this.handler.setActivMenu((Menu) active);
 		} else {
-			active.select();
+			if (active != null) {
+				active.select();
+			}
 		}
 	}
 
