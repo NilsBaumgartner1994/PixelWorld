@@ -607,21 +607,26 @@ public class CameraController2D implements CameraControllerInterface {
 
 	private void drawInformationLine(String s) {
 		float z = font.getLineHeight();
-		drawInformationAtPos(10, height - line * z, s);
+		drawInformationLeftAlignedAtPos(10, height - line * z, s);
 		line++;
 	}
 
-	private void drawInformationAtPos(float x, float y, String s) {
+	public void drawInformationLeftAlignedAtPos(float x, float y, String s) {
 		float z = font.getLineHeight();
 		font.draw(fboBatch, s, x, y - 0.5f * z);
 	}
 
-	private void drawInformationCenteredAtPos(float x, float y, String s) {
-		float z = font.getLineHeight();
+	public void drawInformationCenteredAtPos(float x, float y, String s) {
 		getLayout().setText(getFont(), s);
 		int stringWidth = (int) getLayout().width;
 		int stringHeight = (int) getLayout().height;
 		font.draw(fboBatch, s, x - stringWidth / 2, y - stringHeight / 2);
+	}
+	
+	public void drawInformationRightAlignedAtPos(float x, float y, String s){
+		getLayout().setText(getFont(), s);
+		int stringWidth = (int) getLayout().width;
+		drawInformationLeftAlignedAtPos(x-stringWidth,y,s);
 	}
 
 	public void renderGUI() {

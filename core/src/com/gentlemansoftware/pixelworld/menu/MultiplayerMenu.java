@@ -53,11 +53,23 @@ public class MultiplayerMenu extends SimpleMenu {
 
 		SimpleMenuRunnableItem messageItem = new SimpleMenuRunnableItem("Message", SimpleMenuNameTypes.SUB,
 				messageRunnable);
+
+		
+		
+		Runnable disconnectRunnable = new Runnable() {
+			public void run() {
+				handler.user.network.disconnect();
+			}
+		};
+
+		SimpleMenuRunnableItem disconnectItem = new SimpleMenuRunnableItem("Disconnect", SimpleMenuNameTypes.SUB,
+				disconnectRunnable);
 		
 
 		menuComponents.add(hostLocal);
 		menuComponents.add(connectToLocal);
 		menuComponents.add(messageItem);
+		menuComponents.add(disconnectItem);
 
 		menuComponents.add(parent);
 

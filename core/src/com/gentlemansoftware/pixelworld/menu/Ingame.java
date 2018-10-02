@@ -13,6 +13,7 @@ import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenu;
 import com.gentlemansoftware.pixelworld.sound.EasySounds;
 import com.gentlemansoftware.pixelworld.sound.SoundManager;
 import com.gentlemansoftware.pixelworld.items.AbstractItem;
+import com.gentlemansoftware.pixelworld.menuComponents.ChatOverlay;
 import com.gentlemansoftware.pixelworld.menuComponents.ControllerOverlay;
 import com.gentlemansoftware.pixelworld.menuComponents.MiniMapOverlay;
 import com.gentlemansoftware.pixelworld.physics.Direction;
@@ -21,6 +22,7 @@ public class Ingame extends SimpleMenu {
 
 	private ControllerOverlay controlleroverlay;
 	private MiniMapOverlay minimap;
+	private ChatOverlay chatoverlay;
 	
 	public Ingame(MenuHandler handler, Menu parent) {
 		super(handler, parent, "Back", null);
@@ -34,6 +36,9 @@ public class Ingame extends SimpleMenu {
 		
 		minimap = new MiniMapOverlay(this.handler);
 		this.addContent(minimap);
+		
+		chatoverlay = new ChatOverlay(this.handler);
+		this.addContent(chatoverlay);
 	}
 
 	@Override
@@ -53,6 +58,11 @@ public class Ingame extends SimpleMenu {
 		}
 		if (gamepad.isButtonTyped(GamePadButtons.UP)) {
 			user.cameraController.changeDistance(-1);
+		}
+		if(gamepad.isButtonTyped(GamePadButtons.START)){
+			if(user.network != null && user.network.isConnectedToServer()){
+				user.network.sendMessage();
+			}
 		}
 		
 		user.updateControlledEntitys();

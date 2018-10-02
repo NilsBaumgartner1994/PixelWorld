@@ -1,5 +1,8 @@
 package com.gentlemansoftware.easyServer;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.gentlemansoftware.easyServer.EasyServerCommunicationReceive.TYPE;
 import com.gentlemansoftware.pixelworld.helper.MyTextInputListener;
@@ -20,9 +23,24 @@ public class MyEasyNetwork {
 		receive.setCallbackRunnable(TYPE.ESTABLISHED, createRunnableEstblished());
 		sendListener = new MyTextInputListener(createRunnableSendMessage(),"Dialog Title","Initial Value","Hint Value");
 	}
+	
+	public List<Object[]> getLogMessages(){
+		if(receive == null){
+			return new LinkedList<Object[]>();
+		}
+		return receive.getLogMessages();
+	}
+	
+	public boolean isConnectedToServer(){
+		return connection != null && connection.isConnectedToAServer();
+	}
 
 	public void sendMessage() {
 		sendListener.getInput();
+	}
+	
+	public void disconnect(){
+		connection.closeConnection();
 	}
 
 	private EasyRunnableParametersInterface createRunnableSendMessage() {

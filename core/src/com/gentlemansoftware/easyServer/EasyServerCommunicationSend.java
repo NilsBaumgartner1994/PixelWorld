@@ -13,16 +13,12 @@ import java.net.UnknownHostException;
 
 public class EasyServerCommunicationSend {
 
-	private EasyServerInformationInterface server;
-	private EasyServerCommunicationTyp typ;
-	private EasyServerCommunicationReceive callback;
 	private EasyServerCommunicationSendThread send;
 	private Thread thread;
 
 	public EasyServerCommunicationSend(EasyServerInformationInterface server, EasyServerCommunicationTyp typ,
 			EasyServerCommunicationReceive callback) {
 		send = new EasyServerCommunicationSendThread(server, typ, callback);
-
 		if (isValidSetup()) {
 			thread = new Thread(send);
 			thread.start();
@@ -31,6 +27,14 @@ public class EasyServerCommunicationSend {
 
 	public boolean sendMessage(String message) {
 		return send.sendMessage(message);
+	}
+	
+	public void closeConnection(){
+		send.closeConnection();
+	}
+	
+	public boolean isConnectedToAServer(){
+		return send.getHoldConnection();
 	}
 
 	public boolean isValidSetup() {

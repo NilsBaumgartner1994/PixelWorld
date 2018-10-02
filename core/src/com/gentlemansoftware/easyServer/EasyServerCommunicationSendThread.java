@@ -39,7 +39,7 @@ public class EasyServerCommunicationSendThread implements Runnable {
 
 	public void closeConnection() {
 		connectionClosed();
-		holdConnection = false;
+		setHoldConnection(false);
 	}
 
 	private void openConnection() {
@@ -56,7 +56,7 @@ public class EasyServerCommunicationSendThread implements Runnable {
 	public void run() {
 		if (connectionClosed) {
 			connectionClosed = false;
-			holdConnection = true;
+			setHoldConnection(true);
 			openConnection();
 		}
 	}
@@ -152,7 +152,7 @@ public class EasyServerCommunicationSendThread implements Runnable {
 				String anfrage;
 				String antwort;
 
-				while (holdConnection) {
+				while (getHoldConnection()) {
 					anfrage = br.readLine();
 					recieveMessage(anfrage);
 				}
@@ -176,6 +176,8 @@ public class EasyServerCommunicationSendThread implements Runnable {
 		} catch (IOException ioe) {
 			System.out.println(ioe);
 		}
+		
+		callback.connectionClosed("Closed Connection");
 	}
 
 	private void startAsClient() {
@@ -188,7 +190,7 @@ public class EasyServerCommunicationSendThread implements Runnable {
 			if (created) {
 				String antwort;
 
-				while (holdConnection) {
+				while (getHoldConnection()) {
 					antwort = br.readLine();
 					recieveMessage(antwort);
 				}
@@ -238,6 +240,14 @@ public class EasyServerCommunicationSendThread implements Runnable {
 	private BufferedWriter getWriter(OutputStream socketoutstr) {
 		OutputStreamWriter osr = new OutputStreamWriter(socketoutstr);
 		return new BufferedWriter(osr);
+	}
+
+	public boolean getHoldConnection() {
+		return holdConnection;
+	}
+
+	public void setHoldConnection(boolean holdConnection) {
+		this.holdConnection = holdConnection;
 	}
 
 }
