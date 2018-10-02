@@ -1,21 +1,21 @@
 package com.gentlemansoftware.pixelworld.physics;
 
 public class Body {
-	
+
 	protected Position position;
 	private Speed velocity;
 	protected Position acceleration;
-	
-//	MapTile referrsTo;
+
+	// MapTile referrsTo;
 
 	public Body(Position position, Speed velocity, Position acceleration) {
 		this.position = position.cpy();
 		setVelocity(velocity);
 		setAcceleration(acceleration);
 	}
-	
-	public Body(){
-		this(new Position(),new Speed(),new Position());
+
+	public Body() {
+		this(new Position(), new Speed(), new Position());
 	}
 
 	public Body(Position position) {
@@ -30,24 +30,23 @@ public class Body {
 		return position.cpy();
 	}
 	
-	public Body setPosition(int x, int y){
-		return setPosition(new Position(x,y));
+	public Body setPositionForce(Body body) {
+		return setPosition(body.getPosition());
 	}
-	
-	public Body setPosition(Body b){
-		return setPosition(b.position);
+
+	public Body setPositionForce(int x, int y) {
+		return setPosition(new Position(x, y));
 	}
 
 	protected Body setPosition(Position newpos) {
 		this.position = newpos.cpy();
-		
+
 		return this;
 	}
-	
-	
-	
+
 	/**
 	 * One Second are 60 steps
+	 * 
 	 * @param deltaTime
 	 */
 	public void calcPhysicStep(int steps) {

@@ -147,9 +147,9 @@ public class Position {
 		return set(this.x + x, this.xFraction + xFraction, this.y + y, this.yFraction + yFraction, this.z + z,
 				this.zFraction + zFraction);
 	}
-	
+
 	public Position addAndSet(int x, int xFraction, int y, int yFraction) {
-		return addAndSet(x,xFraction,y,yFraction,0,0);
+		return addAndSet(x, xFraction, y, yFraction, 0, 0);
 	}
 
 	public Position addAndSet(Position p) {
@@ -164,9 +164,9 @@ public class Position {
 		return set((this.x * scale_x), (this.xFraction * scale_x), (this.y * scale_y), (this.yFraction * scale_y),
 				(this.z * scale_z), (this.zFraction * scale_z));
 	}
-	
+
 	public Position scaleAndSet(int scale_x, int scale_y) {
-		return scaleAndSet(scale_x,scale_y,1);
+		return scaleAndSet(scale_x, scale_y, 1);
 	}
 
 	public Position scaleAndSet(int scale) {
@@ -195,7 +195,7 @@ public class Position {
 	public float lengthAbsoluteX() {
 		return Math.abs(lengthX());
 	}
-	
+
 	public float lengthX() {
 		return this.x + fractionLengthX();
 	}
@@ -203,7 +203,7 @@ public class Position {
 	public float lengthAbsoluteY() {
 		return Math.abs(lengthY());
 	}
-	
+
 	public float lengthY() {
 		return this.y + fractionLengthY();
 	}
@@ -266,7 +266,19 @@ public class Position {
 	}
 
 	public String toString() {
-		return "X: " + this.x + "," + this.xFraction + " | Y: " + this.y + "," + this.yFraction+ " | Z: "+this.z+","+this.zFraction;
+		return this.x + "|" + this.xFraction + "|" + this.y + "|" + this.yFraction + "|" + this.z + "|"
+				+ this.zFraction;
+	}
+
+	public static Position positionFromString(String s) {
+		String[] splits = s.split("|");
+		int x = Integer.parseInt(splits[0]);
+		int xf = Integer.parseInt(splits[1]);
+		int y = Integer.parseInt(splits[2]);
+		int yf = Integer.parseInt(splits[3]);
+		int z = Integer.parseInt(splits[4]);
+		int zf = Integer.parseInt(splits[5]);
+		return new Position(x, xf, y, yf, z, zf);
 	}
 
 }

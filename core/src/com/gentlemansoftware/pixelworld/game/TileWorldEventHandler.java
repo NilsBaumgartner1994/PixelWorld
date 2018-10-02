@@ -1,21 +1,24 @@
 package com.gentlemansoftware.pixelworld.game;
 
-import com.gentlemansoftware.pixelworld.entitys.Entity;
-import com.gentlemansoftware.pixelworld.physics.Position;
+import java.util.LinkedList;
+import java.util.List;
+
+import com.gentlemansoftware.pixelworld.world.TileWorld;
 
 public class TileWorldEventHandler {
-	
-	public TileWorldEventHandler(){
-		
+
+	private List<String> loggedMessages;
+	private TileWorld world;
+
+	public TileWorldEventHandler(TileWorld world) {
+		this.loggedMessages = new LinkedList<String>();
+		this.world = world;
 	}
-	
-	public boolean setEntityAtPosition(Entity e, Position p){
-		
-		return true;
+
+	private void log(String message) {
+		loggedMessages.add(message);
 	}
-	
-	private boolean entitySetAtPosition(){
-		
-	}
+
+
 
 }

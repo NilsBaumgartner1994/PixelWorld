@@ -1,7 +1,10 @@
 package com.gentlemansoftware.pixelworld.entitys;
 
 import java.io.Serializable;
+import java.util.UUID;
+
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.physics.Body;
 import com.gentlemansoftware.pixelworld.physics.Direction;
 import com.gentlemansoftware.pixelworld.physics.Navigation;
@@ -24,6 +27,7 @@ public class Entity extends Body implements Serializable, EasyDrawableInterface 
 	private EntityHostileType type;
 	protected int speed;
 	public transient TileWorld world;
+	private UUID uuid;
 
 	Navigation nav;
 
@@ -59,6 +63,14 @@ public class Entity extends Body implements Serializable, EasyDrawableInterface 
 
 	public Entity(TileWorld world, int x, int xFraction, int y, int yFraction, EntityHostileType type) {
 		this(world, new Position(x, xFraction, y, yFraction), type);
+	}
+
+	public void setUUID(UUID uuid) {
+		this.uuid = uuid;
+	}
+
+	public UUID getUUID() {
+		return this.uuid;
 	}
 
 	public void setDestiny(Position pos) {
@@ -116,6 +128,10 @@ public class Entity extends Body implements Serializable, EasyDrawableInterface 
 		registerOnChunk();
 	}
 
+	// public void setPosition(Position newpos) {
+	//
+	// }
+
 	@Override
 	public Entity setPosition(Position newpos) {
 		registerEntityOnMapTile(newpos);
@@ -140,7 +156,8 @@ public class Entity extends Body implements Serializable, EasyDrawableInterface 
 		MapTile newReffer = world.getMapTileFromGlobalPos(newpos.x, newpos.y);
 		MapTile oldReffer = getMapTile();
 
-		if (newReffer != oldReffer) { //what if new Maptile is copied and placed?
+		if (newReffer != oldReffer) { // what if new Maptile is copied and
+										// placed?
 			oldReffer.unregisterEntity(this);
 			newReffer.registerEntity(this);
 		}
@@ -166,7 +183,7 @@ public class Entity extends Body implements Serializable, EasyDrawableInterface 
 		Chunk newChunkReffer = world.getChunkGlobalPos(newpos.x, newpos.y);
 		Chunk oldChunkReffer = getMapTile().chunk;
 
-		if (newChunkReffer != oldChunkReffer) { //what if new chunk is placed
+		if (newChunkReffer != oldChunkReffer) { // what if new chunk is placed
 			oldChunkReffer.unregisterEntity(this);
 			newChunkReffer.registerEntity(this);
 		}

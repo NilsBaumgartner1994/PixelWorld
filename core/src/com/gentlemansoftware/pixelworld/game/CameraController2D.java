@@ -66,7 +66,7 @@ public class CameraController2D implements CameraControllerInterface {
 	public CameraController2D(User localUser, int width, int height) {
 		resize(width, height);
 		this.user = localUser;
-		camera.setPosition(0, 0);
+		camera.setPositionForce(0, 0);
 		initFont();
 
 		layout = new GlyphLayout();
@@ -163,7 +163,7 @@ public class CameraController2D implements CameraControllerInterface {
 
 	public List<Entity> getAreaToDraw(TileWorld world) {
 		if (track != null) {
-			camera.setPosition(track);
+			camera.setPositionForce(track);
 		}
 
 		List<Entity> entitys = new ArrayList<Entity>();
@@ -245,7 +245,7 @@ public class CameraController2D implements CameraControllerInterface {
 
 		drawOrderNumber = 0;
 		for (Entity e : entitys) {
-			if(e.world==null){
+			if (e.world == null) {
 				e.setTransient(this.user.activGameWorld);
 			}
 			e.playSoundForUser(getCameraPosition(), this.user);
@@ -622,11 +622,11 @@ public class CameraController2D implements CameraControllerInterface {
 		int stringHeight = (int) getLayout().height;
 		font.draw(fboBatch, s, x - stringWidth / 2, y - stringHeight / 2);
 	}
-	
-	public void drawInformationRightAlignedAtPos(float x, float y, String s){
+
+	public void drawInformationRightAlignedAtPos(float x, float y, String s) {
 		getLayout().setText(getFont(), s);
 		int stringWidth = (int) getLayout().width;
-		drawInformationLeftAlignedAtPos(x-stringWidth,y,s);
+		drawInformationLeftAlignedAtPos(x - stringWidth, y, s);
 	}
 
 	public void renderGUI() {

@@ -2,10 +2,13 @@ package com.gentlemansoftware.easyServer;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import com.badlogic.gdx.Gdx;
 import com.gentlemansoftware.easyServer.EasyServerCommunicationReceive.TYPE;
+import com.gentlemansoftware.pixelworld.entitys.Entity;
 import com.gentlemansoftware.pixelworld.helper.MyTextInputListener;
+import com.gentlemansoftware.pixelworld.physics.Position;
 import com.gentlemansoftware.pixelworld.profiles.User;
 
 public class MyEasyNetwork {
@@ -21,25 +24,32 @@ public class MyEasyNetwork {
 		EasyRunnableParametersInterface<TYPE> erp = createRunnableReceiveMessage();
 		receive.setCallbackRunnable(TYPE.MESSAGE, erp);
 		receive.setCallbackRunnable(TYPE.ESTABLISHED, createRunnableEstblished());
-		sendListener = new MyTextInputListener(createRunnableSendMessage(),"Dialog Title","Initial Value","Hint Value");
+		sendListener = new MyTextInputListener(createRunnableSendMessage(), "Dialog Title", "Initial Value",
+				"Hint Value");
 	}
-	
-	public List<Object[]> getLogMessages(){
-		if(receive == null){
+
+	public List<Object[]> getLogMessages() {
+		if (receive == null) {
 			return new LinkedList<Object[]>();
 		}
 		return receive.getLogMessages();
 	}
-	
-	public boolean isConnectedToServer(){
+
+	public boolean isConnectedToServer() {
 		return connection != null && connection.isConnectedToAServer();
 	}
 
 	public void sendMessage() {
 		sendListener.getInput();
 	}
-	
-	public void disconnect(){
+
+	public void sendGameLogicUpdate(String message) {
+		if (connection != null && connection.isValidSetup()) {
+			connection.sendMessage(message);
+		}
+	}
+
+	public void disconnect() {
 		connection.closeConnection();
 	}
 
@@ -54,11 +64,12 @@ public class MyEasyNetwork {
 
 		return aRunnable;
 	}
-	
+
 	private EasyRunnableParametersInterface<TYPE> createRunnableReceiveMessage() {
 		EasyRunnableParametersInterface<EasyServerCommunicationReceive.TYPE> aRunnable = new EasyRunnableParameters<EasyServerCommunicationReceive.TYPE>() {
 			public void run() {
-				System.out.println(""+this.getParam().toString());
+				String totalMessage = this.getParam().toString();
+				System.out.println("" + totalMessage);
 			}
 		};
 

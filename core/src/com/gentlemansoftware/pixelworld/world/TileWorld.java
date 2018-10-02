@@ -14,6 +14,7 @@ import com.gentlemansoftware.pixelworld.entitys.Entity;
 import com.gentlemansoftware.pixelworld.entitys.Human;
 import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.game.SaveAndLoadable;
+import com.gentlemansoftware.pixelworld.game.TileWorldEventHandler;
 import com.gentlemansoftware.pixelworld.physics.WorldTime;
 import com.gentlemansoftware.pixelworld.profiles.User;
 import com.gentlemansoftware.pixelworld.worldgenerator.GeneratorInterface;
@@ -32,6 +33,9 @@ public class TileWorld extends SaveAndLoadable {
 
 	public Map<String, Chunk> chunks;
 
+	public EntityHandler entityhandler;
+	public TileWorldEventHandler eventhandler;
+
 	public List<Chunk> activeChunks;
 
 	public WorldTime time;
@@ -47,7 +51,9 @@ public class TileWorld extends SaveAndLoadable {
 	public TileWorld(String name, List<Chunk> generatedChunks, WorldTime time, Map<Integer, Entity> entitys,
 			NatureGenerator generator) {
 		this.name = name;
+		eventhandler = new TileWorldEventHandler(this);
 		activeChunks = new ArrayList<Chunk>();
+		entityhandler = new EntityHandler();
 		chunks = new HashMap<String, Chunk>();
 
 		setGeneratedChunks(generatedChunks);
