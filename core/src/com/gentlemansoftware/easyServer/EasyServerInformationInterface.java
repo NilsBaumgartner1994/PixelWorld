@@ -13,8 +13,4 @@ public interface EasyServerInformationInterface {
 	public void setOwner(String owner);
 	public void setUniqueID(String uniqueID);
 	public void setPort(String port);
-	
-	public EasyServerCommunicationSend connectToServerAsClient(EasyServerCommunicationReceive receive);
-	public EasyServerCommunicationSend setupServer(EasyServerCommunicationReceive receive);
-
 }

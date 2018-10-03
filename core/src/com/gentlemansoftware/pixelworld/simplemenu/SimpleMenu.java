@@ -14,6 +14,8 @@ import com.gentlemansoftware.pixelworld.menu.MenuHandler;
 public class SimpleMenu extends SimpleMenuNameItem implements Menu {
 
 	protected List<SimpleMenuComponent> contents;
+	protected List<SimpleMenuComponent> noCahincontents;
+
 	protected SimpleMenuComponent active = null;
 	protected MenuHandler handler;
 	protected Menu parent;
@@ -23,6 +25,7 @@ public class SimpleMenu extends SimpleMenuNameItem implements Menu {
 		super(title, SimpleMenuNameTypes.MAIN);
 		this.handler = handler;
 		this.drawConnectors = true;
+		noCahincontents = new LinkedList<SimpleMenuComponent>();
 		setParent(parent);
 		setContent(content);
 	}
@@ -47,6 +50,18 @@ public class SimpleMenu extends SimpleMenuNameItem implements Menu {
 
 	public void addContent(SimpleMenuComponent content) {
 		contents.add(content);
+	}
+
+	public void removeContent(SimpleMenuComponent content) {
+		contents.remove(content);
+	}
+
+	public void addNoChainContent(SimpleMenuComponent content) {
+		noCahincontents.add(content);
+	}
+
+	public void removeNoChainContent(SimpleMenuComponent content) {
+		noCahincontents.remove(content);
 	}
 
 	public void setActive(SimpleMenuComponent simpleMenuComponent) {
@@ -136,6 +151,10 @@ public class SimpleMenu extends SimpleMenuNameItem implements Menu {
 				SimpleMenu menu = (SimpleMenu) item;
 				menu.setTitle(helper);
 			}
+		}
+
+		for (SimpleMenuComponent conent : this.noCahincontents) {
+			ypos = conent.render(display, ypos);
 		}
 	}
 

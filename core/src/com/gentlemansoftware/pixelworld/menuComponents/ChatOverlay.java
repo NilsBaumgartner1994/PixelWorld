@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.gentlemansoftware.easyServer.MyEasyNetwork;
 import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
+import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.inputs.GamePad;
 import com.gentlemansoftware.pixelworld.menu.MenuHandler;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuComponent;
@@ -19,7 +20,7 @@ public class ChatOverlay implements SimpleMenuComponent {
 	@Override
 	public int render(CameraControllerInterface display, int ypos) {
 		MyEasyNetwork network = handler.user.network;
-		if(network != null && network.isConnectedToServer()){
+		if(network != null){
 			List<Object[]> logMessages = network.getLogMessages();
 			ypos = display.getHeight()-128;
 			

@@ -27,8 +27,9 @@ import com.gentlemansoftware.pixelworld.physics.Direction;
 
 public class MainMenu extends SimpleMenu {
 
-	Menu multiplayerMenu;
-	Menu worldMenu;
+	public MultiplayerMenu multiplayerMenu;
+	public Menu worldMenu;
+	public ChatOverlay chatoverlay;
 
 	public MainMenu(MenuHandler handler, Menu parent) {
 		super(handler, parent, "Back", null);
@@ -39,8 +40,8 @@ public class MainMenu extends SimpleMenu {
 		List<SimpleMenuComponent> menuComponents = new LinkedList<SimpleMenuComponent>();
 		multiplayerMenu = new MultiplayerMenu(handler, this);
 		menuComponents.add(multiplayerMenu);
-		
-		worldMenu = new WorldMenu(handler,this);
+
+		worldMenu = new WorldMenu(handler, this);
 		menuComponents.add(worldMenu);
 
 		Runnable quitRunnable = new Runnable() {
@@ -52,6 +53,9 @@ public class MainMenu extends SimpleMenu {
 		SimpleMenuRunnableItem quitMenuComponent = new SimpleMenuRunnableItem("Quit", SimpleMenuNameTypes.MAIN,
 				quitRunnable);
 		menuComponents.add(quitMenuComponent);
+		
+		chatoverlay = new ChatOverlay(this.handler);
+		this.addNoChainContent(chatoverlay);
 
 		return menuComponents;
 	}
@@ -60,7 +64,5 @@ public class MainMenu extends SimpleMenu {
 	public void render(CameraControllerInterface display) {
 		super.render(display);
 	}
-
-	
 
 }

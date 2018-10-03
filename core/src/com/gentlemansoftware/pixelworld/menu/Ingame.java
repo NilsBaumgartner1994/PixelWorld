@@ -60,7 +60,7 @@ public class Ingame extends SimpleMenu {
 			user.cameraController.changeDistance(-1);
 		}
 		if(gamepad.isButtonTyped(GamePadButtons.START)){
-			if(user.network != null && user.network.isConnectedToServer()){
+			if(user.network != null){
 				user.network.sendMessage();
 			}
 		}

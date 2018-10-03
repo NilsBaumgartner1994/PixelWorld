@@ -1,9 +1,28 @@
 package com.gentlemansoftware.easyServer;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
 
 public class EasyServerHelpers {
+
+	public static EasyServerInformation getLocalHost() {
+		return getDefaultServerInformationForIP(getOwnIP());
+	}
+
+	public static EasyServerInformation getDefaultServerInformationForIP(String ip) {
+		String displayName = EasyServerHelpers.getHostname();
+		String port = EasyServerHelpers.getPort();
+		String owner = EasyServerHelpers.getUsername();
+		String uniqueID = EasyServerHelpers.getOwnIP();
+		String time = EasyServerHelpers.getTimeNow();
+
+		EasyServerInformation serverInformation = new EasyServerInformation(uniqueID, displayName, ip, port, time,
+				owner);
+
+		return serverInformation;
+	}
+
 	public static String getOwnIP() {
 		InetAddress add;
 		try {
@@ -15,11 +34,10 @@ public class EasyServerHelpers {
 		}
 		return add.getHostAddress();
 	}
-	
 
 	private static final String defaultPort = "3452";
-	
-	public static String getPort(){
+
+	public static String getPort() {
 		return defaultPort;
 	}
 

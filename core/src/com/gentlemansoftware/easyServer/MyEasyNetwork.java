@@ -13,51 +13,47 @@ import com.gentlemansoftware.pixelworld.profiles.User;
 
 public class MyEasyNetwork {
 
-	private EasyServerCommunicationReceive receive;
-	private EasyServerCommunicationSend connection;
+	private EasyCommunicationServer server;
+	private EasyCommunicationConnectionToServer client;
+
+	EasyServerCommunicationReceive callback;
+
 	private MyTextInputListener sendListener;
 	private User user;
 
 	public MyEasyNetwork(User user) {
 		this.user = user;
-		receive = new EasyServerCommunicationReceive();
-		EasyRunnableParametersInterface<TYPE> erp = createRunnableReceiveMessage();
-		receive.setCallbackRunnable(TYPE.MESSAGE, erp);
-		receive.setCallbackRunnable(TYPE.ESTABLISHED, createRunnableEstblished());
+		callback = new EasyServerCommunicationReceive();
+		callback.setCallbackRunnable(TYPE.ESTABLISHED, createRunnableEstblished());
 		sendListener = new MyTextInputListener(createRunnableSendMessage(), "Dialog Title", "Initial Value",
 				"Hint Value");
 	}
 
 	public List<Object[]> getLogMessages() {
-		if (receive == null) {
+		if (callback == null) {
 			return new LinkedList<Object[]>();
 		}
-		return receive.getLogMessages();
-	}
-
-	public boolean isConnectedToServer() {
-		return connection != null && connection.isConnectedToAServer();
+		return callback.getLogMessages();
 	}
 
 	public void sendMessage() {
 		sendListener.getInput();
 	}
 
-	public void sendGameLogicUpdate(String message) {
-		if (connection != null && connection.isValidSetup()) {
-			connection.sendMessage(message);
-		}
-	}
-
 	public void disconnect() {
-		connection.closeConnection();
+		if (client != null)
+			client.holdConnection = false;
+		if(server!=null)
+			server.close();
+		
+		user.menuHandler.mainMenu.multiplayerMenu.userIsNotConnected();
 	}
 
 	private EasyRunnableParametersInterface createRunnableSendMessage() {
 		EasyRunnableParametersInterface aRunnable = new EasyRunnableParameters() {
 			public void run() {
-				if (connection != null && connection.isValidSetup()) {
-					connection.sendMessage((String) this.getParam());
+				if (client != null && client.connected) {
+					client.sendMessage((String) this.getParam());
 				}
 			}
 		};
@@ -70,6 +66,18 @@ public class MyEasyNetwork {
 			public void run() {
 				String totalMessage = this.getParam().toString();
 				System.out.println("" + totalMessage);
+			}
+		};
+
+		return aRunnable;
+	}
+	
+	private EasyRunnableParametersInterface<TYPE> createRunnableServerReceiveMessage() {
+		EasyRunnableParametersInterface<EasyServerCommunicationReceive.TYPE> aRunnable = new EasyRunnableParameters<EasyServerCommunicationReceive.TYPE>() {
+			public void run() {
+				if(server!=null){
+					server.sendMessageToAll(this.getParam().toString());
+				}
 			}
 		};
 
@@ -91,28 +99,23 @@ public class MyEasyNetwork {
 	}
 
 	public void connectTo(String ip) {
-		String displayName = EasyServerHelpers.getHostname();
-		String port = EasyServerHelpers.getPort();
-		String owner = EasyServerHelpers.getUsername();
-		String uniqueID = EasyServerHelpers.getOwnIP();
-		String time = EasyServerHelpers.getTimeNow();
-
-		EasyServerInformation serverInformation = new EasyServerInformation(uniqueID, displayName, ip, port, time,
-				owner);
-		connection = serverInformation.connectToServerAsClient(receive);
+		EasyRunnableParametersInterface<TYPE> erp = createRunnableReceiveMessage();
+		callback.setCallbackRunnable(TYPE.MESSAGE, erp);
+		
+		client = new EasyCommunicationConnectionToServer(EasyServerHelpers.getDefaultServerInformationForIP(ip),
+				callback);
+		
+		user.menuHandler.mainMenu.multiplayerMenu.userIsConnected();
 	}
 
 	public void hostServer() {
-		String displayName = EasyServerHelpers.getHostname();
-		String port = EasyServerHelpers.getPort();
-		String owner = EasyServerHelpers.getUsername();
-		String ip = EasyServerHelpers.getOwnIP();
-		String uniqueID = EasyServerHelpers.getOwnIP();
-		String time = EasyServerHelpers.getTimeNow();
-
-		EasyServerInformation serverInformation = new EasyServerInformation(uniqueID, displayName, ip, port, time,
-				owner);
-		connection = serverInformation.setupServer(receive);
+		EasyRunnableParametersInterface<TYPE> erp = createRunnableServerReceiveMessage();
+		callback.setCallbackRunnable(TYPE.MESSAGE, erp);
+		
+		server = new EasyCommunicationServer(EasyServerHelpers.getLocalHost(), callback);
+		
+		
+		user.menuHandler.mainMenu.multiplayerMenu.userIsConnected();
 	}
 
 }

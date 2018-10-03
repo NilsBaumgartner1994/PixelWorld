@@ -82,16 +82,6 @@ public class EasyServerInformation implements EasyServerInformationInterface, Co
 	public int compareTo(EasyServerInformation o) {
 		return this.getUniqueID().compareTo(o.getUniqueID());
 	}
-
-	@Override
-	public EasyServerCommunicationSend connectToServerAsClient(EasyServerCommunicationReceive receive) {
-		return new EasyServerCommunicationSend(this,EasyServerCommunicationTyp.CLIENT, receive);
-	}
-
-	@Override
-	public EasyServerCommunicationSend setupServer(EasyServerCommunicationReceive receive) {
-		return new EasyServerCommunicationSend(this,EasyServerCommunicationTyp.HOST, receive);
-	}
 	
 
 }
