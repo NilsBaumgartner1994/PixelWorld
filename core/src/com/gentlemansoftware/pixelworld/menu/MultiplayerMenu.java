@@ -2,7 +2,12 @@ package com.gentlemansoftware.pixelworld.menu;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import com.gentlemansoftware.easyGameNetwork.EasyGameCommunicationProtocol;
+import com.gentlemansoftware.easyServer.EasyRunnableParameters;
+import com.gentlemansoftware.easyServer.EasyRunnableParametersInterface;
 import com.gentlemansoftware.pixelworld.game.Main;
+import com.gentlemansoftware.pixelworld.helper.MyTextInputListener;
 import com.gentlemansoftware.pixelworld.menuComponents.ChatOverlay;
 import com.gentlemansoftware.pixelworld.profiles.User;
 import com.gentlemansoftware.pixelworld.profiles.UserProfile;
@@ -21,11 +26,25 @@ public class MultiplayerMenu extends SimpleMenu {
 
 	ChatOverlay chatoverlay;
 	SimpleMenuRunnableItem connectToLocal, hostLocal, messageItem, disconnectItem;
-
+	private MyTextInputListener inputListener;
+	
 	public MultiplayerMenu(MenuHandler handler, Menu parent) {
 		super(handler, parent, "Multiplayer", null);
+		inputListener = new MyTextInputListener(createRunnableSendMessage(), "Connect to IP", "localhost",
+				"Ip Adress");
 		this.setContent(initMenuComponents());
 		userIsNotConnected();
+	}
+	
+	private EasyRunnableParametersInterface<String> createRunnableSendMessage() {
+		EasyRunnableParametersInterface<String> aRunnable = new EasyRunnableParameters<String>() {
+			public void run() {
+				String message = this.getParam();
+				handler.user.network.connectTo(message);
+			}
+		};
+
+		return aRunnable;
 	}
 
 	public void userIsConnected() {
@@ -47,7 +66,7 @@ public class MultiplayerMenu extends SimpleMenu {
 
 		Runnable connectRunnable = new Runnable() {
 			public void run() {
-				handler.user.network.connectToLocalServer();
+				inputListener.getInput();
 			}
 		};
 
