@@ -63,7 +63,7 @@ public class MultiplayerMenu extends SimpleMenu {
 
 		Runnable messageRunnable = new Runnable() {
 			public void run() {
-				handler.user.network.sendMessage();
+				handler.user.network.gameClient.waitForTextInputAndSendMessage();
 			}
 		};
 

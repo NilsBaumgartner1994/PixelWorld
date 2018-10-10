@@ -5,12 +5,12 @@ import com.badlogic.gdx.Input.TextInputListener;
 import com.gentlemansoftware.easyServer.EasyRunnableParametersInterface;
 
 public class MyTextInputListener implements TextInputListener {
-	public EasyRunnableParametersInterface<?> runnable;
+	public EasyRunnableParametersInterface<String> runnable;
 	public String dialogTitle;
 	public String initialValue;
 	public String hintValue;
 
-	public MyTextInputListener(EasyRunnableParametersInterface<?> runnable, String dialogTitle, String initialValue,
+	public MyTextInputListener(EasyRunnableParametersInterface<String> runnable, String dialogTitle, String initialValue,
 			String hintValue) {
 		this.runnable = runnable;
 		this.dialogTitle = dialogTitle;

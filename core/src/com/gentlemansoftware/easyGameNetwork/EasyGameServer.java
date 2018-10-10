@@ -1,0 +1,89 @@
+package com.gentlemansoftware.easyGameNetwork;
+
+import com.gentlemansoftware.easyServer.EasyConnectionToClient;
+import com.gentlemansoftware.easyServer.EasyServer;
+import com.gentlemansoftware.easyServer.EasyServerHelpers;
+import com.gentlemansoftware.easyServer.EasyServerInterface;
+import com.gentlemansoftware.pixelworld.game.Main;
+import com.gentlemansoftware.pixelworld.profiles.User;
+import com.gentlemansoftware.pixelworld.world.Chunk;
+import com.gentlemansoftware.pixelworld.world.TileWorld;
+
+public class EasyGameServer implements EasyServerInterface {
+
+	public EasyServer server;
+	EasyGameNetwork network;
+	public TileWorld gameWorld;
+	public User user;
+
+	public EasyGameServer(EasyGameNetwork network, User user) {
+		this.network = network;
+		this.user = user;
+		gameWorld = new TileWorld("Default");
+		server = new EasyServer(EasyServerHelpers.getLocalHost(), this);
+	}
+
+	public void stopServer() {
+		if (isAlive()) {
+			server.close();
+		}
+	}
+
+	public boolean isAlive() {
+		return server.isAlive();
+	}
+
+	public void startServer() {
+		server.start();
+	}
+
+	@Override
+	public void newConnection(EasyConnectionToClient client) {
+		network.addLogMessage(client.clientNumber + ": " + "joined");
+		String protocol = EasyGameCommunicationProtocol.sendMessage(client.clientNumber + ": " + "joined");
+		server.sendMessageToAll(protocol);
+	}
+
+	@Override
+	public void clientLeft(EasyConnectionToClient client) {
+		network.addLogMessage(client.clientNumber + ": " + "left");
+		String protocol = EasyGameCommunicationProtocol.sendMessage(client.clientNumber + ": " + "left");
+		server.sendMessageToAll(protocol);
+	}
+
+	@Override
+	public void messageReceived(EasyConnectionToClient client, String message) {
+		decompileReceivedMessage(client,message);
+	}
+
+	@Override
+	public void connectionLost(EasyConnectionToClient client, String message) {
+		network.addLogMessage(client.clientNumber + ": " + message);
+		String protocol = EasyGameCommunicationProtocol.sendMessage(client.clientNumber + ": " + message);
+		server.sendMessageToAll(protocol);
+	}
+
+	@Override
+	public void makeUpdates() {
+		// TODO Auto-generated method stub
+
+	}
+	
+	private void decompileReceivedMessage(EasyConnectionToClient client, String message){
+		EasyGameCommunicationProtocol protocol = EasyGameCommunicationProtocol.received(message);
+//		network.addLogMessage(message);
+		if(protocol.messageReq!=null){
+//			network.addLogMessage(client.clientNumber + ": " + message);
+			server.sendMessageToAll(client.clientNumber + ": " + protocol.messageReq.message);
+		}
+		if(protocol.chunkReq!=null){
+			int cx = protocol.chunkReq.cx;
+			int cy = protocol.chunkReq.cy;
+			Chunk c = this.gameWorld.getChunk(cx, cy);
+			String answer = EasyGameCommunicationProtocol.sendChunkRequest(cx, cy, c);
+			server.sendMessageTo(client, answer);
+		}
+		
+	}
+
+}

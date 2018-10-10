@@ -23,20 +23,20 @@ public class Ingame extends SimpleMenu {
 	private ControllerOverlay controlleroverlay;
 	private MiniMapOverlay minimap;
 	private ChatOverlay chatoverlay;
-	
+
 	public Ingame(MenuHandler handler, Menu parent) {
 		super(handler, parent, "Back", null);
 		this.drawConnectors = false;
 		initMenuComponents();
 	}
-	
-	private void initMenuComponents(){
+
+	private void initMenuComponents() {
 		controlleroverlay = new ControllerOverlay(this.handler.user.gamepad);
 		this.addContent(controlleroverlay);
-		
+
 		minimap = new MiniMapOverlay(this.handler);
 		this.addContent(minimap);
-		
+
 		chatoverlay = new ChatOverlay(this.handler);
 		this.addContent(chatoverlay);
 	}
@@ -59,12 +59,14 @@ public class Ingame extends SimpleMenu {
 		if (gamepad.isButtonTyped(GamePadButtons.UP)) {
 			user.cameraController.changeDistance(-1);
 		}
-		if(gamepad.isButtonTyped(GamePadButtons.START)){
-			if(user.network != null){
-				user.network.sendMessage();
+		if (gamepad.isButtonTyped(GamePadButtons.START)) {
+			if (user.network != null) {
+				if (user.network.gameClient.isConnected()) {
+					user.network.gameClient.waitForTextInputAndSendMessage();
+				}
 			}
 		}
-		
+
 		user.updateControlledEntitys();
 		Human human = user.human;
 

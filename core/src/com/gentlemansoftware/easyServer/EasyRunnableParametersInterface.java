@@ -1,8 +1,8 @@
 package com.gentlemansoftware.easyServer;
 
-public interface EasyRunnableParametersInterface<E extends Enum<E>> extends Runnable{
+public interface EasyRunnableParametersInterface<E> extends Runnable{
 
-	public void setParam(final Object param);
-	public Object getParam();
+	public void setParam(final E param);
+	public E getParam();
 
 }

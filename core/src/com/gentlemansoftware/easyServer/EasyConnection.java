@@ -15,26 +15,22 @@ import java.net.UnknownHostException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class EasyCommunicationConnectionToClient implements Runnable {
+public class EasyConnection implements Runnable {
 
 	private Socket socket;
 	BufferedWriter bw;
 	BufferedReader br;
-	int clientNumber;
-	EasyServerCommunicationReceive callback;
 	boolean holdConnection;
-	EasyCommunicationServer server;
-	
+	EasyConnectionInterface callback;
+
 	Thread ownThread;
 
-	public EasyCommunicationConnectionToClient(EasyCommunicationServer server, Socket socket, int clientNumber, EasyServerCommunicationReceive callback) {
-		this.server = server;
+	public EasyConnection(Socket socket, EasyConnectionInterface callback) {
+		this.callback = callback;
 		this.socket = socket;
 		this.holdConnection = true;
-		this.callback = callback;
-		this.clientNumber = clientNumber;
 		createReaderAndWriter();
-		
+
 		ownThread = new Thread(this);
 		ownThread.start();
 	}
@@ -53,6 +49,26 @@ public class EasyCommunicationConnectionToClient implements Runnable {
 		return true;
 	}
 
+	public void close() {
+		holdConnection = false;
+		
+		try {
+			bw.close();
+			br.close();
+			socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			ownThread.join(1000L, 0);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public void run() {
 		String anfrage;
@@ -60,20 +76,17 @@ public class EasyCommunicationConnectionToClient implements Runnable {
 		try {
 			while (holdConnection) {
 				anfrage = br.readLine();
-				if(anfrage!=null){
-					callback.receiveMessage("Client "+clientNumber+": "+anfrage);
+				if (anfrage != null) {
+					callback.receiveMessage(anfrage);
 				} else {
-					callback.receiveMessage("Client "+clientNumber+": left");
-					callback.connectionLost("Client "+clientNumber+" left unexpected cause sending null?");
+					callback.connectionLost("Connection los unexpected cause receiving null?");
 					holdConnection = false;
 				}
 			}
 
-			bw.close();
-			br.close();
-			socket.close();
+			close();
 		} catch (IOException e) {
-			callback.connectionLost("Client left unexpected ?");
+			callback.connectionLost("Connection closed unexpected ?");
 		}
 	}
 

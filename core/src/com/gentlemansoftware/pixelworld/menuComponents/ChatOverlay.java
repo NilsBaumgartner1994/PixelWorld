@@ -2,7 +2,7 @@ package com.gentlemansoftware.pixelworld.menuComponents;
 
 import java.util.List;
 
-import com.gentlemansoftware.easyServer.MyEasyNetwork;
+import com.gentlemansoftware.easyGameNetwork.EasyGameNetwork;
 import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
 import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.inputs.GamePad;
@@ -19,19 +19,18 @@ public class ChatOverlay implements SimpleMenuComponent {
 
 	@Override
 	public int render(CameraControllerInterface display, int ypos) {
-		MyEasyNetwork network = handler.user.network;
-		if(network != null){
-			List<Object[]> logMessages = network.getLogMessages();
-			ypos = display.getHeight()-128;
-			
-			for(Object[] objAr : logMessages){
-				String message = (String) objAr[1];
+		EasyGameNetwork network = handler.user.network;
+		if (network != null) {
+			List<Object> logMessages = network.getLogMessages();
+			ypos = display.getHeight() - 128;
+			for (Object objAr : logMessages) {
+				String message = (String) objAr;
 				display.drawInformationRightAlignedAtPos(display.getWidth(), ypos, message);
-				ypos-=15;
+				ypos -= 15;
 			}
-			
+
 		}
-		
+
 		return 0;
 	}
 
@@ -44,19 +43,19 @@ public class ChatOverlay implements SimpleMenuComponent {
 	@Override
 	public void select() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setActive(boolean b) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

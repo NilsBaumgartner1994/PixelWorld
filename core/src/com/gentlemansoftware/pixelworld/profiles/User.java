@@ -2,7 +2,7 @@ package com.gentlemansoftware.pixelworld.profiles;
 
 import com.badlogic.gdx.Gdx;
 import com.gentlemansoftware.pixelworld.inputs.GamePad;
-import com.gentlemansoftware.easyServer.MyEasyNetwork;
+import com.gentlemansoftware.easyGameNetwork.EasyGameNetwork;
 import com.gentlemansoftware.pixelworld.entitys.Bat;
 import com.gentlemansoftware.pixelworld.entitys.Human;
 import com.gentlemansoftware.pixelworld.game.CameraController2D;
@@ -23,10 +23,9 @@ public class User {
 	public CameraControllerInterface cameraController;
 	public UserSoundManager soundManager;
 	public GamePad gamepad;
-	public TileWorld activGameWorld;
 	public Human human;
 	public MenuHandler menuHandler;
-	public MyEasyNetwork network;
+	public EasyGameNetwork network;
 
 	public User() {
 		new UserProfile().save();
@@ -35,9 +34,7 @@ public class User {
 
 		initHandlers();
 
-//		this.activGameWorld = Main.getInstance().titleScreenWorld;
-		
-		network = new MyEasyNetwork(this);
+		network = new EasyGameNetwork(this);
 
 //		Position startPos = new Position(0, 0, 0, 0, 1, 0);
 
@@ -52,6 +49,15 @@ public class User {
 //		// }
 		
 		
+	}
+	
+	public TileWorld getTileWorld(){
+		if(network.gameClient.isConnected()){
+			return network.gameClient.gameWorld;
+		} else if(network.gameServer.isAlive()){
+			return network.gameServer.gameWorld;
+		}
+		return Main.getInstance().titleScreenWorld;
 	}
 
 	private void initHandlers() {

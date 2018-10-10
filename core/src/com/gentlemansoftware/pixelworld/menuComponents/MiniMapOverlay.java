@@ -39,7 +39,7 @@ public class MiniMapOverlay implements SimpleMenuComponent {
 	}
 	
 	private MapTile getMapTileCameraIsLookingAt(){
-		TileWorld world = this.handler.user.activGameWorld;
+		TileWorld world = this.handler.user.getTileWorld();
 		Position camera = this.handler.user.cameraController.getCameraPosition();
 		return world.getMapTileFromGlobalPos(camera.x, camera.y);
 	}

@@ -1,8 +1,8 @@
 package com.gentlemansoftware.easyServer;
 
-public class EasyRunnableParameters<E extends Enum<E>> implements EasyRunnableParametersInterface<E>{
+public class EasyRunnableParameters<E> implements EasyRunnableParametersInterface<E>{
 
-	private Object param;
+	private E param;
 	
 	@Override
 	public void run() {
@@ -11,13 +11,13 @@ public class EasyRunnableParameters<E extends Enum<E>> implements EasyRunnablePa
 	}
 
 	@Override
-	public void setParam(Object param) {
+	public void setParam(E param) {
 		// TODO Auto-generated method stub
 		this.param = param;
 	}
 
 	@Override
-	public Object getParam() {
+	public E getParam() {
 		return param;
 	}
 

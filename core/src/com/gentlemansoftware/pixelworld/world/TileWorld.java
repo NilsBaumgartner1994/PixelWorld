@@ -45,11 +45,15 @@ public class TileWorld extends SaveAndLoadable {
 	}
 
 	public TileWorld(String name) {
-		this(name, null, new WorldTime(0), null, new NatureGenerator());
+		this(name, new NatureGenerator());
+	}
+
+	public TileWorld(String name, GeneratorInterface generator) {
+		this(name, null, new WorldTime(0), null, generator);
 	}
 
 	public TileWorld(String name, List<Chunk> generatedChunks, WorldTime time, Map<Integer, Entity> entitys,
-			NatureGenerator generator) {
+			GeneratorInterface generator) {
 		this.name = name;
 		eventhandler = new TileWorldEventHandler(this);
 		activeChunks = new ArrayList<Chunk>();
@@ -82,7 +86,7 @@ public class TileWorld extends SaveAndLoadable {
 		}
 	}
 
-	public static TileWorld load(String name, User user) {
+	public static TileWorld load(String name) {
 		TileWorld world = new TileWorld(name, null, new WorldTime(0), null, null);
 
 		List<Chunk> chunks = new LinkedList<Chunk>();
@@ -91,28 +95,15 @@ public class TileWorld extends SaveAndLoadable {
 
 		dirHandle = Gdx.files.internal("./" + WORLDS + name + "/");
 
-		int humansFound = 0;
 		for (FileHandle entry : dirHandle.list()) {
 			if (entry.extension().equals(Chunk.ENDINGNAME)) {
 				Chunk chunk = Chunk.loadFromInternal(entry.path(), Chunk.class);
 				chunk.setTransients(world);
-				for (Entity e : chunk.entitys) {
-					if (e instanceof Human) {
-						humansFound++;
-						user.human = (Human) e;
-						user.cameraController.setTrack(e);
-					}
-				}
 				chunks.add(chunk);
 			}
 		}
 
-		Main.log(TileWorld.class, "Humans: " + humansFound);
-
 		world.setGeneratedChunks(chunks);
-
-		// return loadFromExternal(WORLDS + name + ENDING, TileWorld.class);
-		user.activGameWorld = world;
 
 		return world;
 	}
@@ -136,8 +127,10 @@ public class TileWorld extends SaveAndLoadable {
 	}
 
 	public void deactivateAllChunks() {
-		for (Chunk c : chunks.values()) {
-			deactivateChunk(c);
+		if (chunks != null) {
+			for (Chunk c : chunks.values()) {
+				deactivateChunk(c);
+			}
 		}
 	}
 

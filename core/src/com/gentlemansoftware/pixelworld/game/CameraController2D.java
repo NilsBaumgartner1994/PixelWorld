@@ -144,7 +144,7 @@ public class CameraController2D implements CameraControllerInterface {
 			fboBatch.setColor(shaddow);
 		}
 
-		TileWorld world = user.activGameWorld;
+		TileWorld world = user.getTileWorld();
 		if (world != null) {
 			world.deactivateAllChunks();
 			Chunk playerChunk = world.getChunkGlobalPos(camera.getPosition().x, camera.getPosition().y);
@@ -153,7 +153,7 @@ public class CameraController2D implements CameraControllerInterface {
 			List<Entity> area = getAreaToDraw(world);
 			Collections.sort(area, new EntityComperator(this.cameraDirection));
 			// drawNatureShaddow(area, world);
-			drawNatureAndEntitys(area);
+			drawNatureAndEntitys(area,world);
 		}
 
 		fboBatch.setColor(save);
@@ -242,7 +242,7 @@ public class CameraController2D implements CameraControllerInterface {
 		fboBatch.setColor(save);
 	}
 
-	private void drawNatureAndEntitys(List<Entity> entitys) {
+	private void drawNatureAndEntitys(List<Entity> entitys, TileWorld world) {
 		int tileWidth = scaleZoom(MapTile.tileWidth);
 		int tileHeight = scaleZoom(MapTile.tileHeight);
 		int tileWidthHalf = tileWidth / 2;
@@ -251,7 +251,7 @@ public class CameraController2D implements CameraControllerInterface {
 		drawOrderNumber = 0;
 		for (Entity e : entitys) {
 			if (e.world == null) {
-				e.setTransient(this.user.activGameWorld);
+				e.setTransient(world);
 			}
 			e.playSoundForUser(getCameraPosition(), this.user);
 			Sprite s = e.getSprite(this.cameraDirection);
@@ -575,7 +575,7 @@ public class CameraController2D implements CameraControllerInterface {
 		drawInformationLine("Zoom: " + zoomLevel);
 		drawInformationLine("CameraDirection: " + this.cameraDirection);
 
-		TileWorld world = this.user.activGameWorld;
+		TileWorld world = this.user.getTileWorld();
 		if (world != null) {
 			drawTileWorldInformations(world);
 		}

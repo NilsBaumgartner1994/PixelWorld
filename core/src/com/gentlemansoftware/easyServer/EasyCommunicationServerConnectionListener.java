@@ -11,37 +11,53 @@ public class EasyCommunicationServerConnectionListener implements Runnable {
 
 	boolean alive = true;
 	boolean acceptNewConnections = true;
-	int clientNumber = 0;
+	int clientNumber;
 
-	EasyCommunicationServer server;
+	EasyServer server;
 	ServerSocket listener;
 	Thread ownThread;
 
-	public EasyCommunicationServerConnectionListener(EasyCommunicationServer server) {
+	public EasyCommunicationServerConnectionListener(EasyServer server) {
 		this.server = server;
+	}
+
+	public void start() {
+		alive = true;
+		clientNumber = 0;
 		ownThread = new Thread(this);
 		ownThread.start();
 	}
 
 	public void newConnection(Socket socket) {
-		EasyCommunicationConnectionToClient client = new EasyCommunicationConnectionToClient(server,socket, clientNumber++,
-				server.callback);
+		EasyConnectionToClient client = new EasyConnectionToClient(server, socket, clientNumber++);
 		server.newConnection(client);
 	}
-	
-	public void close(){
+
+	public void close() {
 		this.alive = false;
+		closeListener();
+		closeThread();
+	}
+
+	private void closeListener() {
 		try {
-			listener.close();
+			if (listener != null) {
+				listener.close();
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		try {
-			ownThread.join(1000L, 0);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	}
+
+	private void closeThread() {
+		if (ownThread != null) {
+			try {
+				ownThread.join(1000L, 0);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -56,18 +72,13 @@ public class EasyCommunicationServerConnectionListener implements Runnable {
 					newConnection(newConnection);
 				}
 			}
-		} catch(SocketException e){
-			
+		} catch (SocketException e) {
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			try {
-				listener.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			closeListener();
 		}
 	}
 

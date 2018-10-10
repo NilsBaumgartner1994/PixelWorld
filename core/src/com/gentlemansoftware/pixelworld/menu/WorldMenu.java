@@ -24,32 +24,32 @@ public class WorldMenu extends SimpleMenu {
 
 	public List<SimpleMenuComponent> initMenuComponents() {
 		List<SimpleMenuComponent> menuComponents = new LinkedList<SimpleMenuComponent>();
-		
+
 		Runnable saveRunnable = new Runnable() {
 			public void run() {
-				handler.user.activGameWorld.save();
+				handler.user.getTileWorld().save();
 			}
 		};
-		
-		SimpleMenuRunnableItem saveMenuComponent = new SimpleMenuRunnableItem("TODO: Save", SimpleMenuNameTypes.SUB,saveRunnable);
+
+		SimpleMenuRunnableItem saveMenuComponent = new SimpleMenuRunnableItem("TODO: Save", SimpleMenuNameTypes.SUB,
+				saveRunnable);
 		menuComponents.add(saveMenuComponent);
-		
-		
+
 		Runnable loadRunnable = new Runnable() {
 			public void run() {
-				TileWorld.load("Default",handler.user);
+				if (handler.user.network.gameServer.isAlive()) {
+					handler.user.network.gameServer.gameWorld = TileWorld.load("Default");
+				}
 			}
 		};
-		
-		SimpleMenuRunnableItem loadMenuComponent = new SimpleMenuRunnableItem("TODO: Load", SimpleMenuNameTypes.SUB,loadRunnable);
+
+		SimpleMenuRunnableItem loadMenuComponent = new SimpleMenuRunnableItem("TODO: Load", SimpleMenuNameTypes.SUB,
+				loadRunnable);
 		menuComponents.add(loadMenuComponent);
-		
-		
+
 		menuComponents.add(parent);
 
 		return menuComponents;
 	}
-	
-	
 
 }

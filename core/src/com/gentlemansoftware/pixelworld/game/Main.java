@@ -73,6 +73,7 @@ public class Main extends ApplicationAdapter {
 	public void create() {
 		instance = this;
 		initAssetAndResourceLoader();
+		initTileWorld();
 		initPlayerHandler();
 		initInputHandler();
 
