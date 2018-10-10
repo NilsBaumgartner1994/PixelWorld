@@ -93,14 +93,14 @@ public class EasyGameClient implements EasyClientInterface {
 	}
 	
 	private void decompileReceivedMessage(String message){
-		Main.log(getClass(), "Decompiling Message");
+//		Main.log(getClass(), "Decompiling Message");
 		EasyGameCommunicationProtocol protocol = EasyGameCommunicationProtocol.received(message);
-		Main.log(getClass(), "Message decompiled null?: "+(protocol==null));
+//		Main.log(getClass(), "Message decompiled null?: "+(protocol==null));
 		if(protocol.messageReq!=null){
 			network.addLogMessage(protocol.messageReq.message);
 		}
 		if(protocol.chunkReq!=null){
-			Main.log(getClass(), "Received a Chunk Request Response with length: "+message.length());
+//			Main.log(getClass(), "Received a Chunk Request Response with length: "+message.length());
 			Chunk c = protocol.chunkReq.chunk;
 			c.setTransients(gameWorld);
 			this.gameWorld.setChunk(c);

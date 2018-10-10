@@ -39,11 +39,12 @@ public class EasyClient implements EasyConnectionInterface {
 	}
 
 	public void connectToServer() {
-//		callback.connectionSettingUp("Setting up");
-		this.connection = new EasyConnection(setupSocket(),this);
-		callback.connectionEstablished();
-		this.connected = true;
-//		this.callback.connectionEstablished("Connected to Server");
+		Socket s = setupSocket();
+		if(s!=null){
+			this.connection = new EasyConnection(s,this);
+			callback.connectionEstablished();
+			this.connected = true;
+		}
 	}
 	
 	public boolean isConnected(){
@@ -54,7 +55,16 @@ public class EasyClient implements EasyConnectionInterface {
 	public Socket setupSocket() {
 		try {
 			return new Socket(serverInformation.getIP(), Integer.parseInt(serverInformation.getPort()));
-		} catch (NumberFormatException | IOException e) {
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ConnectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

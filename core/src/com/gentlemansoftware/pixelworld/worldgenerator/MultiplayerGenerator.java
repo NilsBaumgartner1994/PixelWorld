@@ -39,7 +39,6 @@ public class MultiplayerGenerator implements GeneratorInterface {
 		world.setChunk(c);
 		Main.log(getClass(), "Chunk(" + cx + "|" + cy + "): noise");
 		String proto = EasyGameCommunicationProtocol.sendChunkRequest(cx, cy);
-		Main.log(getClass(), "Client Sending Chunk Request: "+proto);
 		client.sendMessage(proto);
 		Main.log(getClass(), "Chunk(" + cx + "|" + cy + "): just blank first");
 	}

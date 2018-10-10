@@ -30,7 +30,7 @@ public class MultiplayerMenu extends SimpleMenu {
 	
 	public MultiplayerMenu(MenuHandler handler, Menu parent) {
 		super(handler, parent, "Multiplayer", null);
-		inputListener = new MyTextInputListener(createRunnableSendMessage(), "Connect to IP", "localhost",
+		inputListener = new MyTextInputListener(createRunnableSendMessage(), "Connect to IP", "",
 				"Ip Adress");
 		this.setContent(initMenuComponents());
 		userIsNotConnected();

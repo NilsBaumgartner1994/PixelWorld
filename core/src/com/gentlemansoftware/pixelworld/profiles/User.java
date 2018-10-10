@@ -89,18 +89,21 @@ public class User {
 				break;
 			}
 		} else {
-			Direction dir = Direction.getDirectionFromVector(gamepad.getLeftStick().getVec());
-			int speed = 4;
-			speed = gamepad.isButtonPressed(GamePadButtons.SHIFT) ? speed * 4 : speed;
-			int x = dir == Direction.EAST ? 2 * speed : 0;
-			x = dir == Direction.WEST ? -2 * speed : x;
-			int y = dir == Direction.NORTH ? 1 * speed : 0;
-			y = dir == Direction.SOUTH ? -1 * speed : y;
+			if (gamepad.getLeftStick().getVec().len2() > 0) {
+				Direction dir = Direction.getDirectionFromVector(gamepad.getLeftStick().getVec());
+				int speed = 4;
+				speed = gamepad.isButtonPressed(GamePadButtons.SHIFT) ? speed * 4 : speed;
+				int x = dir == Direction.EAST ? 2 * speed : 0;
+				x = dir == Direction.WEST ? -2 * speed : x;
+				int y = dir == Direction.NORTH ? 1 * speed : 0;
+				y = dir == Direction.SOUTH ? -1 * speed : y;
 
-			x = dir == Direction.MIDDLE ? 0 : x;
-			y = dir == Direction.MIDDLE ? 0 : y;
+				x = dir == Direction.MIDDLE ? 0 : x;
+				y = dir == Direction.MIDDLE ? 0 : y;
 
-			this.cameraController.setCameraPosition(this.cameraController.getCameraPosition().addAndSet(0, x, 0, y));
+				this.cameraController
+						.setCameraPosition(this.cameraController.getCameraPosition().addAndSet(0, x, 0, y));
+			}
 		}
 	}
 

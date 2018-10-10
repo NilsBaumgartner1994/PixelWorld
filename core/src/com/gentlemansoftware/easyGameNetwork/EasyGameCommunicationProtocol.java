@@ -1,6 +1,7 @@
 package com.gentlemansoftware.easyGameNetwork;
 
 import com.badlogic.gdx.utils.Json;
+import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.world.Chunk;
 
 public class EasyGameCommunicationProtocol {
@@ -21,8 +22,8 @@ public class EasyGameCommunicationProtocol {
 	public static String sendChunkRequest(int cx, int cy){
 		EasyGameCommunicationProtocol protocol = new EasyGameCommunicationProtocol();
 		GameProtocolChunkRequest mess = new GameProtocolChunkRequest();
-		mess.cx = cx;
-		mess.cy = cy;
+		mess.setX(cx);
+		mess.setY(cy);
 		protocol.chunkReq = mess;
 		Json json = new Json();
 		return json.toJson(protocol);
