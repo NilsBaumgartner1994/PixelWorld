@@ -1,6 +1,5 @@
 package com.gentlemansoftware.easyGameNetwork;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import com.gentlemansoftware.easyServer.EasyServerHelpers;
@@ -11,21 +10,21 @@ public class EasyGameNetwork {
 	public EasyGameServer gameServer;
 	public EasyGameClient gameClient;
 	private User user;
-	public List<Object> logMessages;
+	public EasyGameLogMessages logMessages;
 
 	public EasyGameNetwork(User user) {
 		this.user = user;
-		logMessages = new LinkedList<Object>();
-		this.gameServer = new EasyGameServer(this,user);
+		logMessages = new EasyGameLogMessages();
+		this.gameServer = new EasyGameServer(this);
 		this.gameClient = new EasyGameClient(this,user);
 	}
 
 	public List<Object> getLogMessages() {
-		return this.logMessages;
+		return logMessages.getLogMessages();
 	}
 	
 	public void addLogMessage(String message){
-		this.logMessages.add(message);
+		this.logMessages.addLogMessage(message);
 	}
 
 	public void disconnect() {

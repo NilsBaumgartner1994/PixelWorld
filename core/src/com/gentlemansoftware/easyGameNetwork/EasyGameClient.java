@@ -93,9 +93,8 @@ public class EasyGameClient implements EasyClientInterface {
 		Main.log(getClass(), "Decompiling Message");
 		EasyGameCommunicationProtocol protocol = EasyGameCommunicationProtocol.received(message);
 		Main.log(getClass(), "Message decompiled null?: "+(protocol==null));
-//		network.addLogMessage(message);
 		if(protocol.messageReq!=null){
-//			network.addLogMessage(protocol.messageReq.message);
+			network.addLogMessage(protocol.messageReq.message);
 		}
 		if(protocol.chunkReq!=null){
 			Main.log(getClass(), "Received a Chunk Request Response with length: "+message.length());

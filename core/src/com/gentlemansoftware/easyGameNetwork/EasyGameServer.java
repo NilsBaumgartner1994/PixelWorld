@@ -12,13 +12,16 @@ import com.gentlemansoftware.pixelworld.world.TileWorld;
 public class EasyGameServer implements EasyServerInterface {
 
 	public EasyServer server;
-	EasyGameNetwork network;
+//	EasyGameNetwork network;
 	public TileWorld gameWorld;
-	public User user;
+	public EasyGameLogMessages logMessages;
 
-	public EasyGameServer(EasyGameNetwork network, User user) {
-		this.network = network;
-		this.user = user;
+	public EasyGameServer(EasyGameNetwork network) {
+		this(network.logMessages);
+	}
+
+	public EasyGameServer(EasyGameLogMessages logMessages) {
+		this.logMessages = logMessages;
 		gameWorld = new TileWorld("Default");
 		server = new EasyServer(EasyServerHelpers.getLocalHost(), this);
 	}
@@ -39,14 +42,14 @@ public class EasyGameServer implements EasyServerInterface {
 
 	@Override
 	public void newConnection(EasyConnectionToClient client) {
-		network.addLogMessage(client.clientNumber + ": " + "joined");
+		logMessages.addLogMessage(client.clientNumber + ": " + "joined");
 		String protocol = EasyGameCommunicationProtocol.sendMessage(client.clientNumber + ": " + "joined");
 		server.sendMessageToAll(protocol);
 	}
 
 	@Override
 	public void clientLeft(EasyConnectionToClient client) {
-		network.addLogMessage(client.clientNumber + ": " + "left");
+		logMessages.addLogMessage(client.clientNumber + ": " + "left");
 		String protocol = EasyGameCommunicationProtocol.sendMessage(client.clientNumber + ": " + "left");
 		server.sendMessageToAll(protocol);
 	}
@@ -58,7 +61,7 @@ public class EasyGameServer implements EasyServerInterface {
 
 	@Override
 	public void connectionLost(EasyConnectionToClient client, String message) {
-		network.addLogMessage(client.clientNumber + ": " + message);
+		logMessages.addLogMessage(client.clientNumber + ": " + message);
 		String protocol = EasyGameCommunicationProtocol.sendMessage(client.clientNumber + ": " + message);
 		server.sendMessageToAll(protocol);
 	}
@@ -73,8 +76,10 @@ public class EasyGameServer implements EasyServerInterface {
 		EasyGameCommunicationProtocol protocol = EasyGameCommunicationProtocol.received(message);
 //		network.addLogMessage(message);
 		if(protocol.messageReq!=null){
-//			network.addLogMessage(client.clientNumber + ": " + message);
-			server.sendMessageToAll(client.clientNumber + ": " + protocol.messageReq.message);
+			String logMessage = client.clientNumber + ": "+protocol.messageReq.message;
+			logMessages.addLogMessage(logMessage);
+			String answer = EasyGameCommunicationProtocol.sendMessage(logMessage);
+			server.sendMessageToAll(answer);
 		}
 		if(protocol.chunkReq!=null){
 			int cx = protocol.chunkReq.cx;

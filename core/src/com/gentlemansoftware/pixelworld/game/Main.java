@@ -1,7 +1,5 @@
 package com.gentlemansoftware.pixelworld.game;
 
-import java.util.List;
-
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -13,8 +11,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
-import com.gentlemansoftware.pixelworld.helper.SplitScreenDimension;
-import com.gentlemansoftware.pixelworld.helper.SplitscreenHelper;
 import com.gentlemansoftware.pixelworld.inputs.InputHandler;
 import com.gentlemansoftware.pixelworld.profiles.User;
 import com.gentlemansoftware.pixelworld.profiles.UserHandler;
