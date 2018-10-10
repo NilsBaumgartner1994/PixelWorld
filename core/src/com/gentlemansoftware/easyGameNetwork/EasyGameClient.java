@@ -64,12 +64,14 @@ public class EasyGameClient implements EasyClientInterface {
 	public void quit() {
 		if (client != null)
 			client.close();
+		user.menuHandler.setActivMenu(user.menuHandler.mainMenu);
 	}
 
 	@Override
 	public void connectionEstablished() {
 		// TODO Auto-generated method stub
 		user.menuHandler.mainMenu.multiplayerMenu.userIsConnected();
+		user.menuHandler.setActivMenu(user.menuHandler.ingameMenu);
 	}
 
 	@Override
@@ -77,6 +79,7 @@ public class EasyGameClient implements EasyClientInterface {
 		// TODO Auto-generated method stub
 		network.addLogMessage(message);
 		user.menuHandler.mainMenu.multiplayerMenu.userIsNotConnected();
+		user.menuHandler.setActivMenu(user.menuHandler.mainMenu);
 	}
 
 	@Override

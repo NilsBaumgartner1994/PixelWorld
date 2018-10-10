@@ -51,6 +51,8 @@ public interface CameraControllerInterface {
 	public void setTrack(Entity body);
 
 	public Position getCameraPosition();
+	
+	public void setCameraPosition(Position pos);
 
 	public int getWidth();
 

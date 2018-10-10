@@ -220,7 +220,7 @@ public class WorldToPNG {
 			for (int y = 0; y < height; y++) {
 				if (tile != null && tile.chunk != null && tile.chunk.world != null) {
 					MapTile t = tile.chunk.world.getMapTileFromGlobalPos(left + x + gx, down + y + gy);
-					if (t != null) {
+					if (t != null && t.block != null) {
 						// System.out.println(mapping.size());
 						Color color = mapping.get(t.block.material.getID());
 						if (color == null) {

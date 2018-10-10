@@ -59,7 +59,7 @@ public class CameraController2D implements CameraControllerInterface {
 
 	public GlyphLayout layout;
 
-	private Entity track;
+	public Entity track;
 
 	private User user;
 
@@ -93,6 +93,10 @@ public class CameraController2D implements CameraControllerInterface {
 
 	public Position getCameraPosition() {
 		return this.camera.getPosition().cpy();
+	}
+	
+	public void setCameraPosition(Position pos) {
+		this.camera.setPositionForce(pos);
 	}
 
 	public void resize(SplitScreenDimension dimension) {

@@ -37,6 +37,10 @@ public class Body {
 	public Body setPositionForce(int x, int y) {
 		return setPosition(new Position(x, y));
 	}
+	
+	public Body setPositionForce(Position pos) {
+		return setPosition(pos);
+	}
 
 	protected Body setPosition(Position newpos) {
 		this.position = newpos.cpy();

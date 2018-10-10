@@ -66,20 +66,23 @@ public class Ingame extends SimpleMenu {
 				}
 			}
 		}
-
-		user.updateControlledEntitys();
-		Human human = user.human;
-
 		if (gamepad.isButtonTyped(GamePadButtons.R2)) {
 			user.cameraController.rotateCamera(10);
 			// human.use(human.getNextBlockInDirection());
 		}
-		human.run(gamepad.isButtonPressed(GamePadButtons.SHIFT));
-		if (gamepad.isButtonTyped(GamePadButtons.LEFTPAD_LEFT)) {
-			human.inventory.setActivSlot(human.inventory.getActivSlot() - 1);
-		}
-		if (gamepad.isButtonTyped(GamePadButtons.LEFTPAD_RIGHT)) {
-			human.inventory.setActivSlot(human.inventory.getActivSlot() + 1);
+
+		user.updateControlledEntitys();
+
+		Human human = user.human;
+
+		if (human != null) {
+			human.run(gamepad.isButtonPressed(GamePadButtons.SHIFT));
+			if (gamepad.isButtonTyped(GamePadButtons.LEFTPAD_LEFT)) {
+				human.inventory.setActivSlot(human.inventory.getActivSlot() - 1);
+			}
+			if (gamepad.isButtonTyped(GamePadButtons.LEFTPAD_RIGHT)) {
+				human.inventory.setActivSlot(human.inventory.getActivSlot() + 1);
+			}
 		}
 
 		return true;
@@ -95,24 +98,26 @@ public class Ingame extends SimpleMenu {
 		Sprite activIconFrame = new Sprite(ResourceLoader.getInstance().getIcon("frame_activ"));
 
 		Human human = this.handler.user.human;
-		int invPos = 0;
-		for (int i = -4; i < 4; i++) {
-			Sprite drawFrame = human.inventory.isActivSlot(invPos) ? activIconFrame : iconFrame;
+		if (human != null) {
+			int invPos = 0;
+			for (int i = -4; i < 4; i++) {
+				Sprite drawFrame = human.inventory.isActivSlot(invPos) ? activIconFrame : iconFrame;
 
-			int xPos = display.getWidth() / 2 + (i * iconFrame.getRegionWidth() + i * 10 + 5);
-			int yPos = 10 + framebar.getRegionHeight() / 2 - activIconFrame.getRegionHeight() / 2;
+				int xPos = display.getWidth() / 2 + (i * iconFrame.getRegionWidth() + i * 10 + 5);
+				int yPos = 10 + framebar.getRegionHeight() / 2 - activIconFrame.getRegionHeight() / 2;
 
-			drawFrame.setPosition(xPos, yPos);
-			display.drawSprite(drawFrame);
+				drawFrame.setPosition(xPos, yPos);
+				display.drawSprite(drawFrame);
 
-			AbstractItem item = human.inventory.getItem(invPos);
-			if (item != null) {
-				Sprite itemIcon = new Sprite(item.getTexture());
-				itemIcon.setPosition(xPos, yPos);
-				display.drawSprite(itemIcon);
+				AbstractItem item = human.inventory.getItem(invPos);
+				if (item != null) {
+					Sprite itemIcon = new Sprite(item.getTexture());
+					itemIcon.setPosition(xPos, yPos);
+					display.drawSprite(itemIcon);
+				}
+
+				invPos++;
 			}
-
-			invPos++;
 		}
 	}
 
