@@ -1,8 +1,6 @@
 package com.gentlemansoftware.pixelworld.inputs;
 
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.PovDirection;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.gentlemansoftware.pixelworld.helper.EasyColor;
 import com.gentlemansoftware.pixelworld.menuComponents.GlyphAndSymbols;
 

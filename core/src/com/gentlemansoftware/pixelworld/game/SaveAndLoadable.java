@@ -2,9 +2,6 @@ package com.gentlemansoftware.pixelworld.game;
 
 import java.io.Serializable;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Base64Coder;
 import com.badlogic.gdx.utils.Json;
 

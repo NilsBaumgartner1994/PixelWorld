@@ -3,9 +3,7 @@ package com.gentlemansoftware.pixelworld.simplemenu;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
-import com.gentlemansoftware.pixelworld.game.ResourceLoader;
 import com.gentlemansoftware.pixelworld.inputs.GamePad;
-import com.gentlemansoftware.pixelworld.profiles.VarHolder;
 
 public class SimpleMenuNameItem implements SimpleMenuComponent{
 

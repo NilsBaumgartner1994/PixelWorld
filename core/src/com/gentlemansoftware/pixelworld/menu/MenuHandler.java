@@ -1,7 +1,7 @@
 package com.gentlemansoftware.pixelworld.menu;
 
-import com.gentlemansoftware.pixelworld.inputs.GamePad;
 import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
+import com.gentlemansoftware.pixelworld.inputs.GamePad;
 import com.gentlemansoftware.pixelworld.profiles.User;
 
 public class MenuHandler {

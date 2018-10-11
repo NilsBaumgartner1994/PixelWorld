@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
-import com.gentlemansoftware.pixelworld.entitys.Human;
 import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.helper.SplitScreenDimension;
 import com.gentlemansoftware.pixelworld.helper.SplitscreenHelper;

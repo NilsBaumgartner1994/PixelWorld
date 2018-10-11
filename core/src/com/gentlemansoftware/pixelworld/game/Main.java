@@ -92,9 +92,9 @@ public class Main extends ApplicationAdapter {
 	public void updateWorlds() {
 		float deltaTime = Gdx.graphics.getDeltaTime();
 		
-//		this.titleScreenWorld.timePassed(deltaTime);
+		this.titleScreenWorld.timePassed(deltaTime);
 		for(User user : userHandler.getUsers()){
-//			user.activGameWorld.timePassed(deltaTime);
+			user.getTileWorld().timePassed(deltaTime);
 		}
 	}
 

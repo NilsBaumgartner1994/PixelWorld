@@ -1,18 +1,13 @@
 package com.gentlemansoftware.pixelworld.menuComponents;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
+import com.gentlemansoftware.pixelworld.game.ResourceLoader;
 import com.gentlemansoftware.pixelworld.inputs.Button;
 import com.gentlemansoftware.pixelworld.inputs.GamePad;
 import com.gentlemansoftware.pixelworld.inputs.GamePadButtons;
-import com.gentlemansoftware.pixelworld.inputs.GamePadType;
 import com.gentlemansoftware.pixelworld.inputs.Stick;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuComponent;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
-import com.gentlemansoftware.pixelworld.game.ResourceLoader;
-import com.gentlemansoftware.pixelworld.helper.EasyColor;
 
 public class ControllerOverlay implements SimpleMenuComponent {
 

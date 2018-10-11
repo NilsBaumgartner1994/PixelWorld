@@ -9,7 +9,7 @@ public class EasyGameNetwork {
 
 	public EasyGameServer gameServer;
 	public EasyGameClient gameClient;
-	private User user;
+	public User user;
 	public EasyGameLogMessages logMessages;
 
 	public EasyGameNetwork(User user) {

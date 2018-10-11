@@ -4,14 +4,12 @@ import java.io.Serializable;
 import java.util.UUID;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.physics.Body;
 import com.gentlemansoftware.pixelworld.physics.Direction;
 import com.gentlemansoftware.pixelworld.physics.Navigation;
 import com.gentlemansoftware.pixelworld.physics.Position;
 import com.gentlemansoftware.pixelworld.physics.Speed;
 import com.gentlemansoftware.pixelworld.profiles.User;
-import com.gentlemansoftware.pixelworld.profiles.UserSoundProfile;
 import com.gentlemansoftware.pixelworld.world.Chunk;
 import com.gentlemansoftware.pixelworld.world.MapTile;
 import com.gentlemansoftware.pixelworld.world.TileWorld;
@@ -27,7 +25,7 @@ public class Entity extends Body implements Serializable, EasyDrawableInterface 
 	private EntityHostileType type;
 	protected int speed;
 	public transient TileWorld world;
-	private UUID uuid;
+	private String uuid;
 
 	Navigation nav;
 
@@ -65,11 +63,11 @@ public class Entity extends Body implements Serializable, EasyDrawableInterface 
 		this(world, new Position(x, xFraction, y, yFraction), type);
 	}
 
-	public void setUUID(UUID uuid) {
+	public void setUUID(String uuid) {
 		this.uuid = uuid;
 	}
 
-	public UUID getUUID() {
+	public String getUUID() {
 		return this.uuid;
 	}
 
@@ -198,10 +196,15 @@ public class Entity extends Body implements Serializable, EasyDrawableInterface 
 		MapTile oldReffer = getMapTile();
 		oldReffer.unregisterEntity(this);
 	}
+	
+	private void unregisterEntityHandler(){
+		world.entityhandler.unregisterEntity(this);
+	}
 
 	public void destroy() {
 		unregisterChunkReffer();
 		unregisterMapTileReffer();
+		unregisterEntityHandler();
 	}
 
 	@Override

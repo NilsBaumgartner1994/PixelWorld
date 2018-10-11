@@ -9,5 +9,7 @@ public interface EasyClientInterface {
 	public void messageReceived(String message);
 	
 	public boolean isConnected();
+	
+	public void sendUpdates();
 
 }

@@ -1,6 +1,7 @@
 package com.gentlemansoftware.pixelworld.world;
 
 import java.io.Serializable;
+
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.gentlemansoftware.pixelworld.entitys.Entity;
 import com.gentlemansoftware.pixelworld.entitys.EntityHostileType;

@@ -1,6 +1,5 @@
 package com.gentlemansoftware.pixelworld.sound;
 
-import com.badlogic.gdx.audio.Sound;
 import com.gentlemansoftware.pixelworld.profiles.UserSoundProfile;
 
 public class UserSoundManager {

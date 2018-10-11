@@ -3,10 +3,7 @@ package com.gentlemansoftware.pixelworld.entitys;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.gentlemansoftware.pixelworld.game.ResourceLoader;
-import com.gentlemansoftware.pixelworld.physics.Direction;
 
 public class PlayerSpriteCreator{
 

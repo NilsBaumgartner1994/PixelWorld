@@ -1,12 +1,16 @@
 package com.gentlemansoftware.easyServer;
 
+import java.util.List;
+
 public interface EasyServerInterface {
 
 	public void newConnection(EasyConnectionToClient client);
 	
 	public void connectionLost(EasyConnectionToClient client, String message);
 	
-	public void makeUpdates();
+	public List<EasyConnectionToClient> getAllClients();
+	
+	public void sendUpdates();
 
 	public void clientLeft(EasyConnectionToClient client);
 	

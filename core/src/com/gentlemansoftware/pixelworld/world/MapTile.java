@@ -3,16 +3,9 @@ package com.gentlemansoftware.pixelworld.world;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.math.Vector2;
 import com.gentlemansoftware.pixelworld.entitys.Entity;
-import com.gentlemansoftware.pixelworld.materials.MyMaterial;
 import com.gentlemansoftware.pixelworld.physics.Body;
-import com.gentlemansoftware.pixelworld.physics.Direction;
 import com.gentlemansoftware.pixelworld.physics.Position;
 
 public class MapTile extends Position implements Serializable {
@@ -73,16 +66,6 @@ public class MapTile extends Position implements Serializable {
 	public void unregisterEntity(Body body){
 		entitys.remove(body);
 		checkSolid();
-	}
-
-	private MapTile getOffset(int xi, int yi) {
-		xi = (int) (this.getPosition().x + xi);
-		yi = (int) (this.getPosition().y + yi);
-
-		if (xi < 0 || xi > Chunk.CHUNKSIZE || yi < 0 || yi > Chunk.CHUNKSIZE) {
-			return null;
-		}
-		return chunk.getMapTileFromLocalPos(xi, yi);
 	}
 	
 	public Position getGlobalPosition(){

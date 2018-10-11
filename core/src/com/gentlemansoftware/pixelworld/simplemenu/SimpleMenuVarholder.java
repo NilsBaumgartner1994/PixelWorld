@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.gentlemansoftware.pixelworld.menu.Menu;
 import com.gentlemansoftware.pixelworld.menu.MenuHandler;
-import com.gentlemansoftware.pixelworld.profiles.UserVariableProfile;
 import com.gentlemansoftware.pixelworld.profiles.VarHolder;
 
 public class SimpleMenuVarholder extends SimpleMenu {

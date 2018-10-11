@@ -42,12 +42,12 @@ public class NatureGenerator implements GeneratorInterface {
 	@Override
 	public void generateChunkAt(int cx, int cy) {
 
-		Main.log(getClass(), "Chunk(" + cx + "|" + cy + "): generating");
+//		Main.log(getClass(), "Chunk(" + cx + "|" + cy + "): generating");
 		Chunk c = new Chunk(this.world,cx,cy);
 		world.setChunk(c);
-		Main.log(getClass(), "Chunk(" + cx + "|" + cy + "): noise");
+//		Main.log(getClass(), "Chunk(" + cx + "|" + cy + "): noise");
 		noise.Generate2DNoise(c);
-		Main.log(getClass(), "Chunk(" + cx + "|" + cy + "): ready");
+//		Main.log(getClass(), "Chunk(" + cx + "|" + cy + "): ready");
 	}
 
 }

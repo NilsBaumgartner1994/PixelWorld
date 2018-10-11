@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.gentlemansoftware.easyGameNetwork.EasyGameNetwork;
 import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
-import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.inputs.GamePad;
 import com.gentlemansoftware.pixelworld.menu.MenuHandler;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuComponent;

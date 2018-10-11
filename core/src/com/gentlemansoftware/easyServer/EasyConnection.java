@@ -7,13 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.BindException;
-import java.net.ConnectException;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.LinkedList;
-import java.util.List;
 
 public class EasyConnection implements Runnable {
 
@@ -42,7 +36,7 @@ public class EasyConnection implements Runnable {
 			bw.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 			return false;
 		}
 

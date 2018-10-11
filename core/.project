@@ -2,16 +2,16 @@
 <projectDescription>
 	<name>PixelWorld-core</name>
 	<comment></comment>
-	<projects/>
+	<projects />
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
 	<buildSpec>
 		<buildCommand>
 			<name>org.eclipse.jdt.core.javabuilder</name>
-			<arguments/>
+			<arguments />
 		</buildCommand>
 	</buildSpec>
-	<linkedResources/>
-	<filteredResources/>
+	<linkedResources />
+	<filteredResources />
 </projectDescription>

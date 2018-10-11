@@ -1,9 +1,7 @@
 package com.gentlemansoftware.pixelworld.worldgenerator;
 
-import java.util.Random;
-
 import com.gentlemansoftware.easyGameNetwork.EasyGameClient;
-import com.gentlemansoftware.easyGameNetwork.EasyGameCommunicationProtocol;
+import com.gentlemansoftware.easyGameNetworkProtocol.EasyGameCommunicationProtocol;
 import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.world.Chunk;
 import com.gentlemansoftware.pixelworld.world.TileWorld;
@@ -34,13 +32,13 @@ public class MultiplayerGenerator implements GeneratorInterface {
 
 	@Override
 	public void generateChunkAt(int cx, int cy) {
-		Main.log(getClass(), "Chunk(" + cx + "|" + cy + "): generating");
+//		Main.log(getClass(), "Chunk(" + cx + "|" + cy + "): generating");
 		Chunk c = new Chunk(this.world,cx,cy);
 		world.setChunk(c);
-		Main.log(getClass(), "Chunk(" + cx + "|" + cy + "): noise");
+//		Main.log(getClass(), "Chunk(" + cx + "|" + cy + "): noise");
 		String proto = EasyGameCommunicationProtocol.sendChunkRequest(cx, cy);
 		client.sendMessage(proto);
-		Main.log(getClass(), "Chunk(" + cx + "|" + cy + "): just blank first");
+//		Main.log(getClass(), "Chunk(" + cx + "|" + cy + "): just blank first");
 	}
 
 }

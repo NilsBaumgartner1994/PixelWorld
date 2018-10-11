@@ -4,16 +4,15 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.game.ResourceLoader;
+import com.gentlemansoftware.pixelworld.items.AbstractItem;
+import com.gentlemansoftware.pixelworld.items.Inventory;
+import com.gentlemansoftware.pixelworld.items.Item;
+import com.gentlemansoftware.pixelworld.items.Tool;
 import com.gentlemansoftware.pixelworld.physics.Direction;
 import com.gentlemansoftware.pixelworld.physics.Position;
 import com.gentlemansoftware.pixelworld.physics.Speed;
 import com.gentlemansoftware.pixelworld.world.MapTile;
 import com.gentlemansoftware.pixelworld.world.TileWorld;
-
-import com.gentlemansoftware.pixelworld.items.AbstractItem;
-import com.gentlemansoftware.pixelworld.items.Inventory;
-import com.gentlemansoftware.pixelworld.items.Item;
-import com.gentlemansoftware.pixelworld.items.Tool;
 
 public class Human extends Entity {
 
@@ -42,8 +41,6 @@ public class Human extends Entity {
 		sneaking = false;
 		initInventory();
 		resetInputVariables();
-		world.entityhandler.registerEntity(this);
-		Main.log(getClass(), "UUID is: "+this.getUUID());
 	}
 
 	public void sneak(boolean sneak) {

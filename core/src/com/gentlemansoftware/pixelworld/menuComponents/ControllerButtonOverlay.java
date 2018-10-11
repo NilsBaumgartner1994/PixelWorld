@@ -1,11 +1,11 @@
 package com.gentlemansoftware.pixelworld.menuComponents;
 
-import com.gentlemansoftware.pixelworld.inputs.Button;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
 import com.gentlemansoftware.pixelworld.helper.EasyColor;
+import com.gentlemansoftware.pixelworld.inputs.Button;
 
 public class ControllerButtonOverlay {
 

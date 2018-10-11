@@ -4,7 +4,7 @@ import java.net.Socket;
 
 public class EasyConnectionToClient implements EasyConnectionInterface {
 
-	public int clientNumber;
+	public EasyClientInformation clientInf;
 	boolean holdConnection;
 	EasyConnection connection;
 	EasyServer server;
@@ -14,7 +14,8 @@ public class EasyConnectionToClient implements EasyConnectionInterface {
 	public EasyConnectionToClient(EasyServer server, Socket socket, int clientNumber) {
 		this.server = server;
 		this.holdConnection = true;
-		this.clientNumber = clientNumber;
+		this.clientInf = new EasyClientInformation();
+		this.clientInf.clientNumber = clientNumber;
 		
 		connection = new EasyConnection(socket,this);
 	}

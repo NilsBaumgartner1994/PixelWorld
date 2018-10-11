@@ -7,7 +7,7 @@ public class EasyServer implements Runnable, EasyServerInterface {
 
 	List<EasyConnectionToClient> clients;
 	int clientNumber = 0;
-	int tickRate = 15;
+	int tickRate = 1000/10;
 
 	EasyServerInformationInterface serverInformation;
 	EasyCommunicationServerConnectionListener connectionListener;
@@ -59,19 +59,21 @@ public class EasyServer implements Runnable, EasyServerInterface {
 			client.sendMessage(message);
 		}
 	}
-	
-	public void sendMessageTo(EasyConnectionToClient client, String message){
+
+	public void sendMessageTo(EasyConnectionToClient client, String message) {
 		client.sendMessage(message);
 	}
 
 	@Override
 	public void run() {
-		try {
-			Thread.sleep(tickRate);
-			makeUpdates();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		while (this.isAlive()) {
+			try {
+				Thread.sleep(tickRate);
+				sendUpdates();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -87,8 +89,13 @@ public class EasyServer implements Runnable, EasyServerInterface {
 	}
 
 	@Override
-	public void makeUpdates() {
-		server.makeUpdates();
+	public void sendUpdates() {
+		server.sendUpdates();
+	}
+
+	@Override
+	public List<EasyConnectionToClient> getAllClients() {
+		return this.clients;
 	}
 
 }

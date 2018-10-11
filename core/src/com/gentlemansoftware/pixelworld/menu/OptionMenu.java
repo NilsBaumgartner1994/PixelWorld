@@ -2,16 +2,13 @@ package com.gentlemansoftware.pixelworld.menu;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.profiles.UserProfile;
-import com.gentlemansoftware.pixelworld.profiles.VarHolder;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenu;
-import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuBooleanEditable;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuComponent;
-import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuFloatEditable;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuNameTypes;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuRunnableItem;
-import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuVarHolderComponentHelper;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuVarholder;
 import com.gentlemansoftware.pixelworld.world.WorldToPNG;
 

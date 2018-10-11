@@ -2,7 +2,6 @@ package com.gentlemansoftware.pixelworld.physics;
 
 import java.io.Serializable;
 
-import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.profiles.VarHolder;
 
 public class WorldTime implements Serializable {

@@ -3,15 +3,11 @@ package com.gentlemansoftware.pixelworld.menu;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenu;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuComponent;
-import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuImage;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuNameTypes;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuRunnableItem;
 import com.gentlemansoftware.pixelworld.world.TileWorld;
-import com.gentlemansoftware.pixelworld.world.WorldToPNG;
 
 public class WorldMenu extends SimpleMenu {
 

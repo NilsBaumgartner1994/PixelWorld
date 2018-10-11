@@ -2,9 +2,7 @@ package com.gentlemansoftware.pixelworld.inputs;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.gentlemansoftware.pixelworld.helper.EasyColor;
 import com.gentlemansoftware.pixelworld.menuComponents.ControllerButtonOverlay;
-import com.gentlemansoftware.pixelworld.menuComponents.GlyphAndSymbols;
 
 public class GamePadLayout {
 

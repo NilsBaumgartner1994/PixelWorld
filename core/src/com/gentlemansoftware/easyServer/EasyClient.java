@@ -1,32 +1,26 @@
 package com.gentlemansoftware.easyServer;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.BindException;
 import java.net.ConnectException;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.LinkedList;
-import java.util.List;
 
-public class EasyClient implements EasyConnectionInterface {
+public class EasyClient implements EasyConnectionInterface, Runnable {
 
 	private EasyServerInformationInterface serverInformation;
 
-	Thread ownThread;
 	private EasyConnection connection;
 	boolean connected;
 	EasyClientInterface callback;
-	
-	public EasyClient(EasyClientInterface callback) {
+	private Thread ownThread;
+	int tickRate = 1000/10;
+	public EasyClientInformation clientInf;
+
+	public EasyClient(EasyClientInterface callback, String username) {
 		this.callback = callback;
 		this.connected = false;
+		this.clientInf = new EasyClientInformation();
+		this.clientInf.name = username;
 	}
 
 	public void connectToServer(String ip) {
@@ -40,17 +34,18 @@ public class EasyClient implements EasyConnectionInterface {
 
 	public void connectToServer() {
 		Socket s = setupSocket();
-		if(s!=null){
-			this.connection = new EasyConnection(s,this);
-			callback.connectionEstablished();
+		if (s != null) {
+			this.connection = new EasyConnection(s, this);
 			this.connected = true;
+			callback.connectionEstablished();
+			ownThread = new Thread(this);
+			ownThread.start();
 		}
 	}
-	
-	public boolean isConnected(){
+
+	public boolean isConnected() {
 		return this.connected;
 	}
-
 
 	public Socket setupSocket() {
 		try {
@@ -91,6 +86,30 @@ public class EasyClient implements EasyConnectionInterface {
 	public void close() {
 		this.connected = false;
 		connection.close();
+		try {
+			ownThread.join(1000L, 0);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ownThread = null;
+	}
+
+	public void sendUpdates() {
+		callback.sendUpdates();
+	}
+
+	@Override
+	public void run() {
+		while (this.isConnected()) {
+			try {
+				Thread.sleep(tickRate);
+				sendUpdates();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

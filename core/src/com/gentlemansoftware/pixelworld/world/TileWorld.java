@@ -9,14 +9,11 @@ import java.util.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
-import com.gentlemansoftware.pixelworld.entitys.Bat;
 import com.gentlemansoftware.pixelworld.entitys.Entity;
-import com.gentlemansoftware.pixelworld.entitys.Human;
 import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.game.SaveAndLoadable;
 import com.gentlemansoftware.pixelworld.game.TileWorldEventHandler;
 import com.gentlemansoftware.pixelworld.physics.WorldTime;
-import com.gentlemansoftware.pixelworld.profiles.User;
 import com.gentlemansoftware.pixelworld.worldgenerator.GeneratorInterface;
 import com.gentlemansoftware.pixelworld.worldgenerator.NatureGenerator;
 
@@ -75,7 +72,6 @@ public class TileWorld extends SaveAndLoadable {
 
 	public static final String DATA = "data/";
 	public static final String WORLDS = DATA + "worlds/";
-	public static final String ENDING = ".world";
 
 	public void save() {
 		for (Chunk c : chunks.values()) {
@@ -93,11 +89,11 @@ public class TileWorld extends SaveAndLoadable {
 
 		FileHandle dirHandle;
 
-		dirHandle = Gdx.files.internal("./" + WORLDS + name + "/");
+		dirHandle = Gdx.files.external("./" + WORLDS + name + "/");
 
 		for (FileHandle entry : dirHandle.list()) {
 			if (entry.extension().equals(Chunk.ENDINGNAME)) {
-				Chunk chunk = Chunk.loadFromInternal(entry.path(), Chunk.class);
+				Chunk chunk = Chunk.loadFromExternal(entry.path(), Chunk.class);
 				chunk.setTransients(world);
 				chunks.add(chunk);
 			}

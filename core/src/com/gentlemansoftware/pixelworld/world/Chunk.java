@@ -17,13 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.gentlemansoftware.pixelworld.entitys.Entity;
-import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.game.SaveAndLoadable;
-import com.gentlemansoftware.pixelworld.materials.MyMaterial;
 import com.gentlemansoftware.pixelworld.physics.Body;
-import com.gentlemansoftware.pixelworld.physics.Direction;
-import com.gentlemansoftware.pixelworld.worldgenerator.Amortized2DNoise;
-import com.gentlemansoftware.pixelworld.worldgenerator.NatureGenerator;
 
 public class Chunk extends SaveAndLoadable {
 
@@ -38,7 +33,7 @@ public class Chunk extends SaveAndLoadable {
 	public static final int CHUNKSIZE = 32;
 
 	MapTile[][] tiles;
-	List<Entity> entitys;
+	public List<Entity> entitys;
 
 	public transient TileWorld world;
 
@@ -84,7 +79,7 @@ public class Chunk extends SaveAndLoadable {
 
 	public void save(TileWorld world) {
 		System.out.println("Saving: " + x + "-" + y + ENDING);
-		saveToInternal(TileWorld.WORLDS + world.name + "/" + x + "-" + y + ENDING);
+		saveToExternal(TileWorld.WORLDS + world.name + "/" + x + "-" + y + ENDING);
 		System.out.println("Saved to: " + TileWorld.WORLDS + world.name + "/" + x + "-" + y + ENDING);
 	}
 

@@ -1,23 +1,18 @@
 package com.gentlemansoftware.pixelworld.profiles;
 
 import com.badlogic.gdx.Gdx;
-import com.gentlemansoftware.pixelworld.inputs.GamePad;
-import com.gentlemansoftware.pixelworld.inputs.GamePadButtons;
 import com.gentlemansoftware.easyGameNetwork.EasyGameNetwork;
-import com.gentlemansoftware.pixelworld.entitys.Bat;
 import com.gentlemansoftware.pixelworld.entitys.Human;
 import com.gentlemansoftware.pixelworld.game.CameraController2D;
 import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
 import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.helper.SplitScreenDimension;
+import com.gentlemansoftware.pixelworld.inputs.GamePad;
+import com.gentlemansoftware.pixelworld.inputs.GamePadButtons;
 import com.gentlemansoftware.pixelworld.menu.MenuHandler;
 import com.gentlemansoftware.pixelworld.physics.Direction;
-import com.gentlemansoftware.pixelworld.physics.Position;
-import com.gentlemansoftware.pixelworld.sound.SoundManager;
 import com.gentlemansoftware.pixelworld.sound.UserSoundManager;
-import com.gentlemansoftware.pixelworld.world.MapTile;
 import com.gentlemansoftware.pixelworld.world.TileWorld;
-import com.gentlemansoftware.pixelworld.worldgenerator.Amortized2DNoise;
 
 public class User {
 
@@ -37,20 +32,6 @@ public class User {
 		initHandlers();
 
 		network = new EasyGameNetwork(this);
-
-		// Position startPos = new Position(0, 0, 0, 0, 1, 0);
-
-		// this.human = new Human(this.activGameWorld, startPos, "Bob");
-		// this.human.spawn();
-		// cameraController.setTrack(human);
-		//
-		//
-		// // for (int i = 0; i < 1000; i++) {
-		// new Bat(this.activGameWorld, startPos.cpy().addAndSet(2, 0, 0, 0, 1,
-		// 0)).spawn();
-		//// bat.spawn();
-		// // }
-
 	}
 
 	public TileWorld getTileWorld() {

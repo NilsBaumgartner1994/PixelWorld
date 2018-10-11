@@ -2,13 +2,8 @@ package com.gentlemansoftware.pixelworld.inputs;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.math.Vector2;
-import com.gentlemansoftware.pixelworld.entitys.Human;
 import com.gentlemansoftware.pixelworld.game.Main;
-import com.gentlemansoftware.pixelworld.helper.EasyColor;
-import com.gentlemansoftware.pixelworld.menuComponents.ControllerButtonOverlay;
-import com.gentlemansoftware.pixelworld.physics.Direction;
 import com.gentlemansoftware.pixelworld.profiles.User;
 
 public class KeyboardHandler {
