@@ -215,22 +215,20 @@ public class WorldToPNG {
 			for (int y = 0; y < height; y++) {
 				if (tile != null && tile.chunk != null && tile.chunk.world != null) {
 					MapTile t = tile.chunk.world.getMapTileFromGlobalPos(left + x + gx, down + y + gy);
-					if (t != null && t.block != null) {
+					if (t != null && t.b != null) {
 						// System.out.println(mapping.size());
-						Color color = mapping.get(t.block.material.getID());
+						Color color = mapping.get(t.b.m.getID());
 						if (color == null) {
 							color = EasyColor.PLAYSTATION_TRIANGLE;
 						}
 						_pixmap.setColor(color);
 						_pixmap.drawPixel(x, height - y - 1);
 
-						List<Entity> entitys = new LinkedList<>(t.entitys);
+						List<Entity> entitys = new LinkedList<>(t.e);
 
 						for (Entity entity : entitys) {
-							if (!(entity instanceof Block)) {
-								_pixmap.setColor(Color.RED);
-								_pixmap.drawPixel(x, height - y - 1);
-							}
+							_pixmap.setColor(Color.RED);
+							_pixmap.drawPixel(x, height - y - 1);
 						}
 					}
 				}

@@ -7,7 +7,7 @@ public class EasyServer implements Runnable, EasyServerInterface {
 
 	List<EasyConnectionToClient> clients;
 	int clientNumber = 0;
-	int tickRate = 1000/10;
+	int tickRate = 1000/128;
 
 	EasyServerInformationInterface serverInformation;
 	EasyCommunicationServerConnectionListener connectionListener;

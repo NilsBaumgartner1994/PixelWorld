@@ -33,34 +33,14 @@ public class Chunk extends SaveAndLoadable {
 	public static final int CHUNKSIZE = 32;
 
 	MapTile[][] tiles;
-	public List<Entity> entitys;
+	public transient List<Entity> entitys;
 
 	public transient TileWorld world;
 
 	public Chunk() {
-
+		
 	}
-
-	public void setTransients(TileWorld world) {
-		this.world = world;
-		entitys = new ArrayList<Entity>(); // while Loading old References where
-											// hold
-		for (MapTile[] t1 : tiles) {
-			for (MapTile t : t1) {
-				t.setTransients(this);
-				entitys.addAll(t.entitys); // need to update these References
-											// now
-			}
-		}
-		for (Entity e : entitys) {
-			e.setTransient(world);
-		}
-	}
-
-	public String toString() {
-		return "[" + this.x + "|" + this.y + "]";
-	}
-
+	
 	public Chunk(TileWorld world, int cx, int cy) {
 		this.world = world;
 		this.x = cx;
@@ -72,6 +52,26 @@ public class Chunk extends SaveAndLoadable {
 			}
 		}
 		entitys = new ArrayList<Entity>();
+	}
+
+	public void setTransients(TileWorld world) {
+		this.world = world;
+		entitys = new ArrayList<Entity>(); // while Loading old References where
+											// hold
+		for (MapTile[] t1 : tiles) {
+			for (MapTile t : t1) {
+				t.setTransients(this);
+				entitys.addAll(t.e); // need to update these References
+											// now
+			}
+		}
+		for (Entity e : entitys) {
+			e.setTransient(world);
+		}
+	}
+
+	public String toString() {
+		return "[" + this.x + "|" + this.y + "]";
 	}
 
 	public final static String ENDINGNAME = "chunk";

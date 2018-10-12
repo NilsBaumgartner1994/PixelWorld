@@ -16,98 +16,87 @@ public class MapTile extends Position implements Serializable {
 	private static final long serialVersionUID = 216668977777721960L;
 	public final static transient int tileWidth = 128;
 	public final static transient int tileHeight = 64;
-	
-	private boolean shaddow;
 
 	public transient Chunk chunk;
-	public Block block;
-	
-	public List<Entity> entitys;
-	private boolean solid;
-	
-	public MapTile(){
+	public Block b;
+
+	public List<Entity> e;
+	private transient boolean solid;
+
+	public MapTile() {
 		
 	}
-	
-	public void setTransients(Chunk chunk){
+
+	public void setTransients(Chunk chunk) {
 		this.chunk = chunk;
-		block.setTransient(this.chunk.world);
+		this.b.tile = this;
 	}
 
 	public MapTile(Chunk c, int x, int y) {
 		super(x, y);
-		entitys = new ArrayList<Entity>();
+		e = new ArrayList<Entity>();
 		this.chunk = c;
 		setSolid(solid);
 	}
-	
-	public void setBlock(Block b){
-		this.block = b;
+
+	public void setBlock(Block b) {
+		this.b = b;
 	}
-	
-	public void checkSolid(){
+
+	public void checkSolid() {
 		this.setSolid(false);
-		
-		for(Entity e : entitys){
-			if(e.isSolid()){
+
+		if (b != null) {
+			setSolid(b.isSolid());
+		}
+
+		for (Entity e : e) {
+			if (e.isSolid()) {
 				this.setSolid(true);
 				return;
 			}
 		}
 	}
-	
-	public void registerEntity(Entity body){
-		if(!entitys.contains(body)){
-			entitys.add(body);
+
+	public void registerEntity(Entity body) {
+		if (!e.contains(body)) {
+			e.add(body);
 			checkSolid();
 		}
 	}
-	
-	public void unregisterEntity(Body body){
-		entitys.remove(body);
+
+	public void unregisterEntity(Body body) {
+		e.remove(body);
 		checkSolid();
 	}
-	
-	public Position getGlobalPosition(){
-		return new Position(getGlobalX(),getGlobalY());
+
+	public Position getGlobalPosition() {
+		return new Position(getGlobalX(), getGlobalY());
 	}
 
 	public int getGlobalX() {
-		if(this.getPosition()==null || chunk==null) return 0;
+		if (this.getPosition() == null || chunk == null)
+			return 0;
 		return (int) (chunk.x * Chunk.CHUNKSIZE + this.getPosition().x);
 	}
 
 	public int getGlobalY() {
-		if(this.getPosition()==null || chunk==null) return 0;
+		if (this.getPosition() == null || chunk == null)
+			return 0;
 		return (int) (chunk.y * Chunk.CHUNKSIZE + this.getPosition().y);
 	}
-	
+
 	public boolean isSolid() {
 		return this.solid;
 	}
-	
-	private void setSolid(boolean bool){
+
+	private void setSolid(boolean bool) {
 		this.solid = bool;
 	}
-	
-	private void setShaddow(boolean selected){
-		this.shaddow = selected;
-	}
-	
-	public boolean isInShaddow(){
-		return this.shaddow;
-	}
-	
-	public void select(){
-		setShaddow(true);
-	}
-	
-	public void unselect(){
-		setShaddow(false);
-	}
-	
-	public String toString(){
-		return "Chunk: "+this.chunk.x+":"+this.chunk.y+" LocalPos: "+this.x+":"+this.y+" GlobalPos: "+this.getGlobalX()+":"+this.getGlobalY();
+
+	public String toString() {
+		return "Chunk: " + this.chunk.x + ":" + this.chunk.y + " LocalPos: " + this.x + ":" + this.y + " GlobalPos: "
+				+ this.getGlobalX() + ":" + this.getGlobalY();
 	}
 
 }

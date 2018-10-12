@@ -340,7 +340,6 @@ public class Amortized2DNoise {
 					b = new Block(t, MyMaterial.STONE);
 				}
 				t.setBlock(b);
-				b.spawn();
 			}
 		}
 
@@ -363,7 +362,7 @@ public class Amortized2DNoise {
 			int yy = y + rand.nextInt(15) - rand.nextInt(15);
 			if (xx >= 0 && yy >= 0 && xx < Chunk.CHUNKSIZE && yy < Chunk.CHUNKSIZE) {
 				MapTile tile = c.getMapTileFromLocalPos(xx, yy);
-				if (tile.block.material.equals(MyMaterial.GRASS)) {
+				if (tile.b.m.equals(MyMaterial.GRASS)) {
 					TallGrass grass = new TallGrass(c.world, tile.getGlobalPosition().addAndSet(0, 0, 0, 0, 1, 0));
 					grass.spawn();
 				}
@@ -380,7 +379,7 @@ public class Amortized2DNoise {
 			int yy = y + rand.nextInt(15) - rand.nextInt(15);
 			if (xx >= 0 && yy >= 0 && xx < Chunk.CHUNKSIZE && yy < Chunk.CHUNKSIZE) {
 				MapTile tile = c.getMapTileFromLocalPos(xx, yy);
-				if (tile.block.material.equals(MyMaterial.GRASS)) {
+				if (tile.b.m.equals(MyMaterial.GRASS)) {
 					Tree tree = new Tree(c.world, tile.getGlobalPosition().addAndSet(0, 0, 0, 0, 1, 0));
 					tree.spawn();
 				}

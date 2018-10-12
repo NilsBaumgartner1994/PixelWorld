@@ -2,20 +2,21 @@ package com.gentlemansoftware.pixelworld.physics;
 
 import java.util.Comparator;
 
+import com.gentlemansoftware.pixelworld.entitys.EasyDrawableInterface;
 import com.gentlemansoftware.pixelworld.entitys.Entity;
 
-public class EntityComperator implements Comparator<Entity> {
+public class EasyDrawableInterfaceComperator implements Comparator<EasyDrawableInterface> {
 
 	Direction direction;
 	PositionComperator poscomp;
 
-	public EntityComperator(Direction direction) {
+	public EasyDrawableInterfaceComperator(Direction direction) {
 		this.direction = direction;
 		poscomp = new PositionComperator(this.direction);
 	}
 
 	@Override
-	public int compare(Entity o1, Entity o2) {
+	public int compare(EasyDrawableInterface o1, EasyDrawableInterface o2) {
 		return poscomp.compare(o1.getPosition(), o2.getPosition());
 	}
 

@@ -118,8 +118,7 @@ public class EasyGameClient implements EasyClientInterface {
 			network.addLogMessage(protocol.messageReq.message);
 		}
 		if (protocol.chunkReq != null) {
-			// Main.log(getClass(), "Received a Chunk Request Response with
-			// length: "+message.length());
+			Main.log(getClass(), message);
 			Chunk c = protocol.chunkReq.chunk;
 			c.setTransients(gameWorld);
 			this.gameWorld.setChunk(c);

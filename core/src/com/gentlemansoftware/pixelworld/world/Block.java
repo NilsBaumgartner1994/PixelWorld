@@ -3,52 +3,59 @@ package com.gentlemansoftware.pixelworld.world;
 import java.io.Serializable;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.gentlemansoftware.pixelworld.entitys.EasyDrawableInterface;
 import com.gentlemansoftware.pixelworld.entitys.Entity;
 import com.gentlemansoftware.pixelworld.entitys.EntityHostileType;
 import com.gentlemansoftware.pixelworld.entitys.MotionState;
 import com.gentlemansoftware.pixelworld.materials.MyMaterial;
 import com.gentlemansoftware.pixelworld.physics.Direction;
+import com.gentlemansoftware.pixelworld.physics.Position;
 
-public class Block extends Entity implements Serializable {
+public class Block implements Serializable, EasyDrawableInterface {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 4737139312313773562L;
-	
-	public MyMaterial material;
-	
-	public Block(){
+
+	public MyMaterial m;
+	public transient MapTile tile;
+
+	public Block() {
 		super();
 	}
 
-	public Block(MapTile tile, MyMaterial m){
-		super(tile.chunk.world,tile.getGlobalPosition(), MotionState.STOP,EntityHostileType.FRIENDLY,MyMaterial.isSolidMaterial(m));
+	public Block(MapTile tile, MyMaterial m) {
+		this.tile = tile;
 		setMaterial(m);
 	}
 
-	private Sprite getMaterialSprite(){
-		return new Sprite(material.getTexture());
+	private Sprite getMaterialSprite() {
+		return new Sprite(m.getTexture());
 	}
-	
-	public void setMaterial(MyMaterial m){
-		this.material = m;
-		this.setSolid(MyMaterial.isSolidMaterial(m));
-		setHeight(MyMaterial.getDefaultHeightByID(this.material.getID()));
+
+	public void setMaterial(MyMaterial m) {
+		this.m = m;
+	};
+
+	public boolean isSolid() {
+		return MyMaterial.isSolidMaterial(m);
 	}
-	
-	public void setHeight(int height){
-		this.position.zFraction = height;
-	}
-	
-	public int getHeight(){
-		return this.position.zFraction;
+
+	public int getHeight() {
+		return MyMaterial.getDefaultHeightByID(this.m.getID());
 	}
 
 	@Override
-	public Sprite getSprite(Direction cameraDirection){
-		if(material==null) return new Sprite(MyMaterial.ERROR.getTexture());
+	public Sprite getSprite(Direction cameraDirection) {
+		if (m == null)
+			return new Sprite(MyMaterial.ERROR.getTexture());
 		return getMaterialSprite();
+	}
+
+	@Override
+	public Position getPosition() {
+		return this.tile.getGlobalPosition().addAndSet(0, 0, 0, 0, 0, getHeight());
 	}
 
 }

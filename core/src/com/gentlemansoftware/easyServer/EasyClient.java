@@ -13,7 +13,7 @@ public class EasyClient implements EasyConnectionInterface, Runnable {
 	boolean connected;
 	EasyClientInterface callback;
 	private Thread ownThread;
-	int tickRate = 1000/10;
+	int tickRate = 1000/128;
 	public EasyClientInformation clientInf;
 
 	public EasyClient(EasyClientInterface callback, String username) {

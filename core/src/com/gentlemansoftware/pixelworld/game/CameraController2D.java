@@ -14,13 +14,13 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.gentlemansoftware.pixelworld.entitys.EasyDrawableInterface;
 import com.gentlemansoftware.pixelworld.entitys.Entity;
-import com.gentlemansoftware.pixelworld.entitys.Human;
 import com.gentlemansoftware.pixelworld.helper.SplitScreenDimension;
 import com.gentlemansoftware.pixelworld.inputs.Mouse;
 import com.gentlemansoftware.pixelworld.physics.Body;
 import com.gentlemansoftware.pixelworld.physics.Direction;
-import com.gentlemansoftware.pixelworld.physics.EntityComperator;
+import com.gentlemansoftware.pixelworld.physics.EasyDrawableInterfaceComperator;
 import com.gentlemansoftware.pixelworld.physics.Position;
 import com.gentlemansoftware.pixelworld.physics.PositionComperator;
 import com.gentlemansoftware.pixelworld.profiles.User;
@@ -39,7 +39,7 @@ public class CameraController2D implements CameraControllerInterface {
 
 	public SpriteBatch fboBatch;
 	public BitmapFont font;
-	
+
 	public SplitScreenDimension dimension;
 
 	public static int zoomLevel = 0;
@@ -85,7 +85,7 @@ public class CameraController2D implements CameraControllerInterface {
 	public Position getCameraPosition() {
 		return this.camera.getPosition().cpy();
 	}
-	
+
 	public void setCameraPosition(Position pos) {
 		this.camera.setPositionForce(pos);
 	}
@@ -105,13 +105,13 @@ public class CameraController2D implements CameraControllerInterface {
 	}
 
 	private void initFrameBuffer() {
-		if(fbo!=null){
+		if (fbo != null) {
 			fbo.dispose();
 		}
 		fbo = new FrameBuffer(Format.RGBA8888, getWidth(), getHeight(), true);
 		fbo.getColorBufferTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 
-		if(fbUI!=null){
+		if (fbUI != null) {
 			fbUI.dispose();
 		}
 		fbUI = new FrameBuffer(Format.RGBA8888, getWidth(), getHeight(), true);
@@ -145,10 +145,10 @@ public class CameraController2D implements CameraControllerInterface {
 			Chunk playerChunk = world.getChunkGlobalPos(camera.getPosition().x, camera.getPosition().y);
 			world.activateChunk(playerChunk);
 			world.activateChunk(playerChunk.getMoore());
-			List<Entity> area = getAreaToDraw(world);
-			Collections.sort(area, new EntityComperator(this.cameraDirection));
+			List<EasyDrawableInterface> area = getAreaToDraw(world);
+			Collections.sort(area, new EasyDrawableInterfaceComperator(this.cameraDirection));
 			// drawNatureShaddow(area, world);
-			drawNatureAndEntitys(area,world);
+			drawNatureAndEntitys(area, world);
 		}
 
 		fboBatch.setColor(save);
@@ -161,12 +161,12 @@ public class CameraController2D implements CameraControllerInterface {
 		return this.cameraDirection;
 	}
 
-	public List<Entity> getAreaToDraw(TileWorld world) {
+	public List<EasyDrawableInterface> getAreaToDraw(TileWorld world) {
 		if (track != null) {
 			camera.setPositionForce(track);
 		}
 
-		List<Entity> entitys = new ArrayList<Entity>();
+		List<EasyDrawableInterface> entitys = new ArrayList<EasyDrawableInterface>();
 
 		int xcenter = camera.getPosition().x;
 		int ycenter = camera.getPosition().y;
@@ -185,7 +185,10 @@ public class CameraController2D implements CameraControllerInterface {
 				int y = (a - b) / 2;
 				MapTile m = world.getMapTileFromGlobalPos(xcenter + x, ycenter + y);
 				if (m != null) {
-					entitys.addAll(m.entitys);
+					if (m.b != null) {
+						entitys.add(m.b);
+					}
+					entitys.addAll(m.e);
 				}
 			}
 		}
@@ -237,20 +240,23 @@ public class CameraController2D implements CameraControllerInterface {
 		fboBatch.setColor(save);
 	}
 
-	private void drawNatureAndEntitys(List<Entity> entitys, TileWorld world) {
+	private void drawNatureAndEntitys(List<EasyDrawableInterface> entitys, TileWorld world) {
 		int tileWidth = scaleZoom(MapTile.tileWidth);
 		int tileHeight = scaleZoom(MapTile.tileHeight);
 		int tileWidthHalf = tileWidth / 2;
 		int tileHeightHalf = tileHeight / 2;
 
 		drawOrderNumber = 0;
-		for (Entity e : entitys) {
-			if (e.world == null) {
-				e.setTransient(world);
+		for (EasyDrawableInterface d : entitys) {
+			if (d instanceof Entity) {
+				Entity e = (Entity) d;
+				if (e.world == null) {
+					e.setTransient(world);
+				}
+				e.playSoundForUser(getCameraPosition(), this.user);
 			}
-			e.playSoundForUser(getCameraPosition(), this.user);
-			Sprite s = e.getSprite(this.cameraDirection);
-			drawTileSprite(s, e.getPosition(), tileWidthHalf, tileHeightHalf, 0);
+			Sprite s = d.getSprite(this.cameraDirection);
+			drawTileSprite(s, d.getPosition(), tileWidthHalf, tileHeightHalf, 0);
 			drawOrderNumber++;
 		}
 	}
@@ -578,7 +584,8 @@ public class CameraController2D implements CameraControllerInterface {
 		Mouse m = Main.getInstance().inputHandler.keyboardHandler.mouse;
 
 		if (m != null) {
-			drawInformationLine("Mouse: " + getGlobalPosFromScreenPos(m.getX(), this.getHeight() - m.getY()).toString());
+			drawInformationLine(
+					"Mouse: " + getGlobalPosFromScreenPos(m.getX(), this.getHeight() - m.getY()).toString());
 		}
 		font.setColor(Color.BLACK);
 
@@ -669,7 +676,8 @@ public class CameraController2D implements CameraControllerInterface {
 		Sprite hand = new Sprite(ResourceLoader.getInstance().getGUI("cursor/hand_select"));
 
 		if (m != null) {
-			hand.setPosition(m.getX() - hand.getRegionWidth() / 2, this.getHeight() - m.getY() - hand.getRegionHeight() / 2);
+			hand.setPosition(m.getX() - hand.getRegionWidth() / 2,
+					this.getHeight() - m.getY() - hand.getRegionHeight() / 2);
 			fboBatch.draw(hand, hand.getX(), hand.getY(), hand.getOriginX(), hand.getOriginY(), hand.getWidth(),
 					hand.getHeight(), hand.getScaleX(), hand.getScaleY(), hand.getRotation());
 		}
