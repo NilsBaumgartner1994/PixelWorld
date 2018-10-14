@@ -1,9 +1,7 @@
 package com.gentlemansoftware.easyGameNetwork;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.badlogic.gdx.utils.Json;
 import com.gentlemansoftware.easyGameNetworkProtocol.EasyGameCommunicationProtocol;
@@ -13,7 +11,6 @@ import com.gentlemansoftware.easyServer.EasyServer;
 import com.gentlemansoftware.easyServer.EasyServerHelpers;
 import com.gentlemansoftware.easyServer.EasyServerInterface;
 import com.gentlemansoftware.pixelworld.entitys.Entity;
-import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.physics.Position;
 import com.gentlemansoftware.pixelworld.profiles.User;
 import com.gentlemansoftware.pixelworld.world.Chunk;

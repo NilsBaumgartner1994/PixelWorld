@@ -1,7 +1,5 @@
 package com.gentlemansoftware.easyGameNetwork;
 
-import java.util.UUID;
-
 import com.badlogic.gdx.utils.Json;
 import com.gentlemansoftware.easyGameNetworkProtocol.EasyGameCommunicationProtocol;
 import com.gentlemansoftware.easyGameNetworkProtocol.GameProtocolEntity;

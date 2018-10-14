@@ -2,7 +2,6 @@ package com.gentlemansoftware.pixelworld.entitys;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.game.ResourceLoader;
 import com.gentlemansoftware.pixelworld.items.AbstractItem;
 import com.gentlemansoftware.pixelworld.items.Inventory;
@@ -15,6 +14,11 @@ import com.gentlemansoftware.pixelworld.world.MapTile;
 import com.gentlemansoftware.pixelworld.world.TileWorld;
 
 public class Human extends Entity {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7583882846710148919L;
 
 	public String name;
 
@@ -81,10 +85,10 @@ public class Human extends Entity {
 
 			AbstractItem activItem = this.inventory.getActivItem();
 			if (activItem instanceof Item) {
-				Item item = (Item) activItem;
+//				Item item = (Item) activItem;
 			}
 			if (activItem instanceof Tool) {
-				Tool tool = (Tool) activItem;
+//				Tool tool = (Tool) activItem;
 				// getMapTile().removeNature();
 			}
 

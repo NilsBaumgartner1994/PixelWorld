@@ -20,14 +20,6 @@ public class Navigation implements Serializable{
 		this.path = path;
 	}
 
-	public Navigation(final Position path) {
-		this(new LinkedList<Position>() {
-			{
-				add(path);
-			}
-		});
-	}
-
 	public void arrivedAtDestiny() {
 		if (!this.path.isEmpty()) {
 			this.path.remove(0);

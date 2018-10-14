@@ -7,7 +7,6 @@ import com.gentlemansoftware.easyGameNetworkProtocol.EasyGameCommunicationProtoc
 import com.gentlemansoftware.easyGameNetworkProtocol.GameProtocolEntity;
 import com.gentlemansoftware.easyServer.EasyClient;
 import com.gentlemansoftware.easyServer.EasyClientInterface;
-import com.gentlemansoftware.easyServer.EasyConnectionToClient;
 import com.gentlemansoftware.easyServer.EasyRunnableParameters;
 import com.gentlemansoftware.easyServer.EasyRunnableParametersInterface;
 import com.gentlemansoftware.easyServer.EasyServerHelpers;

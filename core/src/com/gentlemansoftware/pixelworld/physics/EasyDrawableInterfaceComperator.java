@@ -3,7 +3,6 @@ package com.gentlemansoftware.pixelworld.physics;
 import java.util.Comparator;
 
 import com.gentlemansoftware.pixelworld.entitys.EasyDrawableInterface;
-import com.gentlemansoftware.pixelworld.entitys.Entity;
 
 public class EasyDrawableInterfaceComperator implements Comparator<EasyDrawableInterface> {
 

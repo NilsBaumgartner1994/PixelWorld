@@ -342,7 +342,7 @@ public class Amortized2DNoise {
 				t.setBlock(b);
 			}
 		}
-
+		
 		for (int i = 0; i < Chunk.CHUNKSIZE * Chunk.CHUNKSIZE / 400; i++) {
 			// Main.log(getClass(), "Start Spawning Random Trees");
 			randomTree(c);

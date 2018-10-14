@@ -70,6 +70,7 @@ public class EasyConnection implements Runnable {
 		try {
 			while (holdConnection) {
 				anfrage = br.readLine();
+
 				if (anfrage != null) {
 					callback.receiveMessage(anfrage);
 				} else {

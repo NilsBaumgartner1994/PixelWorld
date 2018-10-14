@@ -279,14 +279,10 @@ public class CameraController2D implements CameraControllerInterface {
 
 		drawSprite(sprite);
 		if (this.user.profile.debugProfile.showCoordinatesOnMapTiles.getVar()) {
-			Sprite mouse = new Sprite(ResourceLoader.getInstance().getTile("mouseMatter"));
-
 			drawInformationCenteredAtPos(xy[0] + scaleZoom(sprite.getRegionWidth() / 2),
 					xy[1] + tileHeightHalf * 3 + tileHeightHalf / 2, globalPos.x + "/" + globalPos.y);
 		}
 		if (this.user.profile.debugProfile.showMapTilesDrawOrder.getVar()) {
-			Sprite mouse = new Sprite(ResourceLoader.getInstance().getTile("mouseMatter"));
-
 			PositionComperator comp = new PositionComperator(this.cameraDirection);
 			drawInformationCenteredAtPos(xy[0] + scaleZoom(sprite.getRegionWidth() / 2),
 					xy[1] + tileHeightHalf * 5 + scaleZoom(globalPos.zFraction),

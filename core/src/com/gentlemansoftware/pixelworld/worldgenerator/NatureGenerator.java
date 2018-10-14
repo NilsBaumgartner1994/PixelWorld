@@ -2,7 +2,6 @@ package com.gentlemansoftware.pixelworld.worldgenerator;
 
 import java.util.Random;
 
-import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.world.Chunk;
 import com.gentlemansoftware.pixelworld.world.TileWorld;
 

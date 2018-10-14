@@ -10,7 +10,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.gentlemansoftware.pixelworld.entitys.Entity;
-import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.game.SaveAndLoadable;
 import com.gentlemansoftware.pixelworld.game.TileWorldEventHandler;
 import com.gentlemansoftware.pixelworld.physics.WorldTime;

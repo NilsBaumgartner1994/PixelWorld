@@ -6,11 +6,6 @@ import java.util.List;
 
 public class UserSoundProfile implements UserVariableProfile {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3207593096419342158L;
-
 	public VarHolder<Float> masterVolume;
 	public VarHolder<Float> uiSound;
 	public VarHolder<Float> natureSound;

@@ -4,9 +4,6 @@ import java.io.Serializable;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.gentlemansoftware.pixelworld.entitys.EasyDrawableInterface;
-import com.gentlemansoftware.pixelworld.entitys.Entity;
-import com.gentlemansoftware.pixelworld.entitys.EntityHostileType;
-import com.gentlemansoftware.pixelworld.entitys.MotionState;
 import com.gentlemansoftware.pixelworld.materials.MyMaterial;
 import com.gentlemansoftware.pixelworld.physics.Direction;
 import com.gentlemansoftware.pixelworld.physics.Position;

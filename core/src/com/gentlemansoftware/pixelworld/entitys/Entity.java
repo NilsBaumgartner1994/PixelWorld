@@ -1,7 +1,6 @@
 package com.gentlemansoftware.pixelworld.entitys;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.gentlemansoftware.pixelworld.physics.Body;

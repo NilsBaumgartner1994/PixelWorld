@@ -57,8 +57,6 @@ public class SaveAndLoadable implements Serializable{
 		FileController c = FileController.getInstance();
 		String serialized = encode();
 		c.writeExternalFile(path, serialized);
-	}
-	
-	
+	}	
 	
 }
