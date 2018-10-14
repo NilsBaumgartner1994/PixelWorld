@@ -1,13 +1,17 @@
 package com.gentlemansoftware.pixelworld.entitys;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.gentlemansoftware.pixelworld.game.ResourceLoader;
 import com.gentlemansoftware.pixelworld.physics.Direction;
 import com.gentlemansoftware.pixelworld.physics.Position;
 import com.gentlemansoftware.pixelworld.physics.Speed;
 import com.gentlemansoftware.pixelworld.physics.WorldTime;
 import com.gentlemansoftware.pixelworld.profiles.User;
+import com.gentlemansoftware.pixelworld.searchstrategies.SearchStrategie;
 import com.gentlemansoftware.pixelworld.sound.EasySounds;
 import com.gentlemansoftware.pixelworld.world.MapTile;
 import com.gentlemansoftware.pixelworld.world.TileWorld;
@@ -22,17 +26,30 @@ public class Bat extends Entity {
 	public Bat() {
 
 	}
+	
+	public String followUUID;
 
 	public Bat(TileWorld world, Position globalPos) {
 		super(world, globalPos, EntityHostileType.ANIMAL);
 		this.resetInputVariables();
-		setNextRandomGoal();
+//		setNextRandomGoal();
 	}
 
 	@Override
 	public void updateLogic() {
-		if (this.nav.hasFinished()) { // find next random Position to move
-			setNextRandomGoal();
+//		if (this.nav.hasFinished()) { // find next random Position to move
+//			setNextRandomGoal();
+//		}
+		if(this.nav.hasFinished()){
+			Entity follow = this.world.entityhandler.getEntity(followUUID);
+			if(follow!=null){
+				List<MapTile> path = SearchStrategie.getShortestPath(getMapTile(), follow.getMapTile());
+				List<Position> pathPos = new LinkedList<Position>();
+				for(MapTile m : path){
+					pathPos.add(m.getGlobalPosition());
+				}
+				this.nav.setPath(pathPos);
+			}
 		}
 	}
 
@@ -96,6 +113,8 @@ public class Bat extends Entity {
 
 	@Override
 	public Sprite getSprite(Direction camdir) {
+//		return new Sprite(ResourceLoader.getInstance().getEntity("layerTest", "layerTest"));
+//		
 		if(this.world==null){
 			System.out.println("World is null...");
 		}

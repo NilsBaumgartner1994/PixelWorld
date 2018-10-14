@@ -10,6 +10,7 @@ import com.gentlemansoftware.easyServer.EasyClientInterface;
 import com.gentlemansoftware.easyServer.EasyRunnableParameters;
 import com.gentlemansoftware.easyServer.EasyRunnableParametersInterface;
 import com.gentlemansoftware.easyServer.EasyServerHelpers;
+import com.gentlemansoftware.pixelworld.entitys.Bat;
 import com.gentlemansoftware.pixelworld.entitys.Entity;
 import com.gentlemansoftware.pixelworld.entitys.Human;
 import com.gentlemansoftware.pixelworld.game.Main;
@@ -117,7 +118,7 @@ public class EasyGameClient implements EasyClientInterface {
 			network.addLogMessage(protocol.messageReq.message);
 		}
 		if (protocol.chunkReq != null) {
-			Main.log(getClass(), message);
+//			Main.log(getClass(), message);
 			Chunk c = protocol.chunkReq.chunk;
 			c.setTransients(gameWorld);
 			this.gameWorld.setChunk(c);
@@ -165,16 +166,26 @@ public class EasyGameClient implements EasyClientInterface {
 				Position p = protocol.entityProtocol.position;
 				String su = protocol.entityProtocol.uuid;
 				Entity e = gameWorld.entityhandler.getEntity(su);
-//				Main.log(getClass(), "Received a Spawn Protocol");
+				Main.log(getClass(), "Received a Spawn Protocol");
+				Main.log(getClass(), message);
 				if (e != null) {
 //					Main.log(getClass(), "Found in the entityhandler already a Entity");
 					e.setPosition(p);
 				} else {
-//					Main.log(getClass(), "Okay no Entity found in entity handler");
-					e = new Human(gameWorld, p, "Bob");
-					e.setUUID(su);
-					e.spawn();
-					gameWorld.entityhandler.registerEntity(e);
+					if(protocol.entityProtocol.entityClass.equals(Human.class.getName())){
+						e = new Human(gameWorld, p, "Bob");
+						e.setUUID(su);
+						e.spawn();
+						gameWorld.entityhandler.registerEntity(e);
+					}
+					if(protocol.entityProtocol.entityClass.equals(Bat.class.getName())){
+						Bat b = new Bat(gameWorld,p);
+						b.followUUID = protocol.entityProtocol.followUUID;
+						b.setUUID(su);
+						b.spawn();
+						Main.log(getClass(), "Spawning a Bat!");
+						gameWorld.entityhandler.registerEntity(b);
+					}
 				}
 				if (protocol.entityProtocol.ownEntity) {
 //					Main.log(getClass(), "Oh wow it is my own entity");

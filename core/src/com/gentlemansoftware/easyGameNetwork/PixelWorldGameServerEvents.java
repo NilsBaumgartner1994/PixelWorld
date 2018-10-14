@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.Json;
 import com.gentlemansoftware.easyGameNetworkProtocol.EasyGameCommunicationProtocol;
 import com.gentlemansoftware.easyGameNetworkProtocol.GameProtocolEntity;
 import com.gentlemansoftware.easyServer.EasyConnectionToClient;
+import com.gentlemansoftware.pixelworld.entitys.Bat;
 import com.gentlemansoftware.pixelworld.entitys.Entity;
 import com.gentlemansoftware.pixelworld.entitys.Human;
 import com.gentlemansoftware.pixelworld.game.Main;
@@ -18,7 +19,7 @@ public class PixelWorldGameServerEvents {
 		newPlayer.spawn();
 		server.gameWorld.entityhandler.registerEntity(newPlayer);
 		String newUUID = newPlayer.getUUID();
-		Main.log(PixelWorldGameServerEvents.class, "ClientEntitysEmpty?: "+(server.clientEntitys==null));
+		Main.log(PixelWorldGameServerEvents.class, "ClientEntitysEmpty?: " + (server.clientEntitys == null));
 		server.clientEntitys.put(client, newPlayer);
 
 		EasyGameCommunicationProtocol protocol = new EasyGameCommunicationProtocol();
@@ -26,6 +27,7 @@ public class PixelWorldGameServerEvents {
 		entityProto.spawn = true;
 		entityProto.position = startPos;
 		entityProto.uuid = newUUID;
+		entityProto.entityClass = Human.class.getName();
 		entityProto.ownEntity = true;
 		protocol.addGameProtocolEntity(entityProto);
 
@@ -41,6 +43,30 @@ public class PixelWorldGameServerEvents {
 			}
 		}
 
+		
+		//spawn a following Bat
+		Bat bat = new Bat(server.gameWorld, startPos.cpy().addAndSet(1, 0, 0, 0));
+		bat.spawn();
+		bat.followUUID = newPlayer.getUUID();
+		server.gameWorld.entityhandler.registerEntity(bat);
+
+		protocol = new EasyGameCommunicationProtocol();
+		entityProto = new GameProtocolEntity();
+		entityProto.spawn = true;
+		entityProto.entityClass = Bat.class.getName();
+		entityProto.followUUID = bat.followUUID;
+		entityProto.position = bat.getPosition();
+		entityProto.uuid = bat.getUUID();
+		entityProto.ownEntity = false;
+		protocol.addGameProtocolEntity(entityProto);
+		
+		message = json.toJson(protocol);
+		Main.log(PixelWorldGameServerEvents.class, message);
+
+		for (EasyConnectionToClient otherClient : server.getAllClients()) {
+			server.sendGameProtocolTo(protocol, otherClient);
+		}
+		server.sendGameProtocolTo(protocol, client);
 	}
 
 	public static void clientLeft(EasyGameServer server, EasyConnectionToClient client) {

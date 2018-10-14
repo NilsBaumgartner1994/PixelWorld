@@ -10,6 +10,8 @@ public class GameProtocolEntity {
 	public String uuid;
 	public boolean ownEntity;
 	public boolean despawning;
+	public String followUUID;
+	public String entityClass;
 
 	public GameProtocolEntity() {
 		

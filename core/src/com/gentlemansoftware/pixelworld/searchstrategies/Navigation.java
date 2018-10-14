@@ -1,8 +1,10 @@
-package com.gentlemansoftware.pixelworld.physics;
+package com.gentlemansoftware.pixelworld.searchstrategies;
 
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+
+import com.gentlemansoftware.pixelworld.physics.Position;
 
 public class Navigation implements Serializable{
 

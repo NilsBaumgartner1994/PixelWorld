@@ -344,10 +344,11 @@ public class Amortized2DNoise {
 		}
 		
 		for (int i = 0; i < Chunk.CHUNKSIZE * Chunk.CHUNKSIZE / 400; i++) {
-			// Main.log(getClass(), "Start Spawning Random Trees");
-			randomTree(c);
-			// Main.log(getClass(), "Start Spawning Random Grass");
 			randomGrass(c);
+		}
+		
+		for (int i = 0; i < Chunk.CHUNKSIZE * Chunk.CHUNKSIZE / 20; i++) {
+			randomTree(c);
 		}
 
 		// return tiles;

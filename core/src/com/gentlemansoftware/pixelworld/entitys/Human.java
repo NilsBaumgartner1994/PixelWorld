@@ -99,10 +99,10 @@ public class Human extends Entity {
 		if (stickLeft.len() != 0) {
 			Direction dir = Direction.getDirectionFromVector(stickLeft);
 			MapTile nextBlock = getNextBlockInDirection(dir);
-//			if (!nextBlock.isSolid()) {
+			if (!nextBlock.isSolid()) {
 				Position nextBlockMiddle = nextBlock.getGlobalPosition().addAndSet(0, 0, 0, 0, 1, 0);
 				this.nav.setSecondDestiny(nextBlockMiddle);
-//			}
+			}
 		}
 	}
 

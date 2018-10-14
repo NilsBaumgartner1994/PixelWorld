@@ -24,7 +24,7 @@ public class MapTile extends Position implements Serializable {
 	private transient boolean solid;
 
 	public MapTile() {
-		
+
 	}
 
 	public void setTransients(Chunk chunk) {
@@ -36,6 +36,7 @@ public class MapTile extends Position implements Serializable {
 		super(x, y);
 		e = new ArrayList<Entity>();
 		this.chunk = c;
+		checkSolid();
 		setSolid(solid);
 	}
 
@@ -56,6 +57,11 @@ public class MapTile extends Position implements Serializable {
 				return;
 			}
 		}
+	}
+
+	public MapTile getMapTileByOffset(int x, int y) {
+		Position gp = this.getGlobalPosition().addAndSet(x, 0, y, 0);
+		return this.chunk.world.getMapTileFromGlobalPos(gp.x, gp.y);
 	}
 
 	public void registerEntity(Entity body) {
@@ -95,8 +101,8 @@ public class MapTile extends Position implements Serializable {
 	}
 
 	public String toString() {
-		return "Chunk: " + this.chunk.x + ":" + this.chunk.y + " LocalPos: " + this.x + ":" + this.y + " GlobalPos: "
-				+ this.getGlobalX() + ":" + this.getGlobalY();
+		return "Chunk: " + this.chunk.x + ":" + this.chunk.y + " GlobalPos: " + this.getGlobalX() + ":"
+				+ this.getGlobalY();
 	}
 
 }
