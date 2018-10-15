@@ -581,7 +581,7 @@ public class CameraController2D implements CameraControllerInterface {
 
 		if (m != null) {
 			drawInformationLine(
-					"Mouse: " + getGlobalPosFromScreenPos(m.getX(), this.getHeight() - m.getY()).toString());
+					"Mouse: " + getGlobalPosFromScreenPos((int)m.getPos().x, this.getHeight() - (int)m.getPos().y).toString());
 		}
 		font.setColor(Color.BLACK);
 
