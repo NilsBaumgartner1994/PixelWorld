@@ -6,21 +6,26 @@ public class GamePad {
 	private Stick leftStick;
 	private Stick rightStick;
 	private Button[] buttons;
+	private Mouse cursor;
 
 	public GamePad() {
 		layouttype = new GamePadLayoutKeyboard();
 		initValues();
 		resetValues();
 	}
-	
-	public Stick getLeftStick(){
+
+	public Stick getLeftStick() {
 		return this.leftStick;
 	}
-	
-	public Stick getRightStick(){
+
+	public Stick getRightStick() {
 		return this.rightStick;
 	}
 	
+	public Mouse getCursor(){
+		return this.cursor;
+	}
+
 	public void setButtonState(GamePadButtons b, boolean pressed) {
 		getButton(b).setState(pressed);
 	}
@@ -48,6 +53,7 @@ public class GamePad {
 	private void initValues() {
 		this.leftStick = new Stick();
 		this.rightStick = new Stick();
+		this.cursor = new Mouse();
 
 		int amountButtons = GamePadButtons.values().length;
 		buttons = new Button[amountButtons];

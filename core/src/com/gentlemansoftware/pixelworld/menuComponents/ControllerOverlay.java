@@ -1,11 +1,14 @@
 package com.gentlemansoftware.pixelworld.menuComponents;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
+import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.game.ResourceLoader;
 import com.gentlemansoftware.pixelworld.inputs.Button;
 import com.gentlemansoftware.pixelworld.inputs.GamePad;
 import com.gentlemansoftware.pixelworld.inputs.GamePadButtons;
+import com.gentlemansoftware.pixelworld.inputs.Mouse;
 import com.gentlemansoftware.pixelworld.inputs.Stick;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuComponent;
 
@@ -85,8 +88,17 @@ public class ControllerOverlay implements SimpleMenuComponent {
 	public int render(CameraControllerInterface display, int ypos) {
 		drawSticks(display);
 		drawButtons(display);
+		drawCursor(display);
 
 		return ypos;
+	}
+
+	public void drawCursor(CameraControllerInterface display) {
+		Sprite hand = new Sprite(ResourceLoader.getInstance().getGUI("cursor/hand_select"));
+		Vector2 pos = this.gamepad.getCursor().getPos();
+
+		hand.setPosition(pos.x - hand.getRegionWidth() / 2, display.getHeight() - pos.y - hand.getRegionHeight() / 2);
+		display.drawSprite(hand);
 	}
 
 	@Override

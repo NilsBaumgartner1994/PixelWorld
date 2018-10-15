@@ -649,7 +649,6 @@ public class CameraController2D implements CameraControllerInterface {
 		// GL20.GL_DEPTH_BUFFER_BIT);
 
 		drawMenu();
-		drawMouseIcon();
 
 		fboBatch.end();
 		fbUI.end();
@@ -664,19 +663,6 @@ public class CameraController2D implements CameraControllerInterface {
 		s.setPosition(xpos, ypos);
 		drawSprite(s);
 		return ypos;
-	}
-
-	private void drawMouseIcon() {
-		Mouse m = Main.getInstance().inputHandler.keyboardHandler.mouse;
-
-		Sprite hand = new Sprite(ResourceLoader.getInstance().getGUI("cursor/hand_select"));
-
-		if (m != null) {
-			hand.setPosition(m.getX() - hand.getRegionWidth() / 2,
-					this.getHeight() - m.getY() - hand.getRegionHeight() / 2);
-			fboBatch.draw(hand, hand.getX(), hand.getY(), hand.getOriginX(), hand.getOriginY(), hand.getWidth(),
-					hand.getHeight(), hand.getScaleX(), hand.getScaleY(), hand.getRotation());
-		}
 	}
 
 	public void renderToScreen() {

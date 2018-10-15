@@ -17,8 +17,8 @@ public class KeyboardHandler {
 		inputHandlerName = "Keyboard";
 		keyboard = new KeyBoard();
 		keyboardLayout = new GamePadLayoutKeyboard();
-//		keyboardLayout = new GamePadLayoutXBox360();
-//		keyboardLayout = new GamePadLayoutPlaystation4();
+		// keyboardLayout = new GamePadLayoutXBox360();
+		// keyboardLayout = new GamePadLayoutPlaystation4();
 		mouse = new Mouse();
 	}
 
@@ -27,6 +27,7 @@ public class KeyboardHandler {
 		if (isKeyboardLastInput()) {
 			updateButtons();
 		}
+		updateRightStick();
 	}
 
 	private boolean isKeyboardLastInput() {
@@ -72,6 +73,13 @@ public class KeyboardHandler {
 		}
 	}
 
+	public void updateRightStick() {
+		Mouse m = mouse;
+
+		User u = getUser();
+		u.gamepad.getCursor().setPos(m.getPos());
+	}
+
 	public void updateButtons() {
 		User u = getUser();
 		u.gamepad.setButtonState(GamePadButtons.SHIFT, keyboard.isPressed(Keys.SHIFT_LEFT, Keys.SHIFT_RIGHT));
@@ -111,7 +119,7 @@ public class KeyboardHandler {
 	}
 
 	public boolean mouseMoved(int screenX, int screenY) {
-		mouse.updatePosition(screenX, screenY);
+		mouse.setPos(screenX, screenY);
 
 		return true;
 	}
