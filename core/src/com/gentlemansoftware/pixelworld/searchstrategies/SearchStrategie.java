@@ -27,10 +27,6 @@ public class SearchStrategie {
 			// Ziel erreicht
 			if (expand.at.equals(to)) {
 				wayFound = true;
-				Main.log(SearchStrategie.class, "AAAAAAAAAAHHHHHHHHH!!!!!!");
-				Main.log(SearchStrategie.class, "AAAAAAAAAAHHHHHHHHH!!!!!!");
-				Main.log(SearchStrategie.class, "AAAAAAAAAAHHHHHHHHH!!!!!!");
-				Main.log(SearchStrategie.class, "AAAAAAAAAAHHHHHHHHH!!!!!!");
 				while (expand != null) {
 					besterWeg.add(expand.at);
 					expand = expand.previous;
@@ -90,8 +86,6 @@ public class SearchStrategie {
 			}
 
 		}
-		Main.log(SearchStrategie.class,
-				"Select cost(" + min_cost + ")Node: " + best.at.toString() + " zum Ziel: " + to.toString());
 
 		return best;
 	}

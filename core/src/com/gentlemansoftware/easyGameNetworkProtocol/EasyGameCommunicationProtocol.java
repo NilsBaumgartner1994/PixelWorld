@@ -51,5 +51,10 @@ public class EasyGameCommunicationProtocol {
 		Json json = new Json();
 		return json.toJson(protocol);
 	}
+	
+	public String getJsonString(){
+		Json json = new Json();
+		return json.toJson(this);
+	}
 
 }

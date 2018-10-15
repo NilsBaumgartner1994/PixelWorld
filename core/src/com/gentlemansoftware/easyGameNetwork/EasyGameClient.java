@@ -124,20 +124,24 @@ public class EasyGameClient implements EasyClientInterface {
 			this.gameWorld.setChunk(c);
 			for (Entity e : new ArrayList<Entity>(c.entitys)) {
 				if (e.getUUID() != null) {
-//					Main.log(getClass(), "Chunk: Oh wow, there is an entity with an UUID, have i seen it before?");
+					Main.log(getClass(), "Chunk: Oh wow, there is an entity with an UUID, have i seen it before?");
 					Entity known = gameWorld.entityhandler.getEntity(e.getUUID());
 					if (known != null) {
-//						Main.log(getClass(), "Chunk: Oh yea I saw this one somewhere before, better update mine");
+						if(known instanceof Bat){
+							Main.log(getClass(), "Uhhh its my Bat");
+						}
+						Main.log(getClass(), "Chunk: Oh yea I saw this one somewhere before, better update mine");
 						known.setPosition(e.getPosition());
 						e.destroy();
 						known.destroy();
+						gameWorld.entityhandler.registerEntity(known);
 						known.spawn();
 						// known.destroy();
 						// known.setPosition(e.getPosition());
 						// known.spawn();
 //						Main.log(getClass(), "Chunk: HumanIDUpdated?: " + known.toString());
 					} else {
-//						Main.log(getClass(), "Chunk: Hmm seems new to me");
+						Main.log(getClass(), "Chunk: Hmm seems new to me");
 						e.setPosition(e.getPosition());
 						e.destroy();
 						e.spawn();
@@ -151,8 +155,11 @@ public class EasyGameClient implements EasyClientInterface {
 			if(protocol.entityProtocol.setPosition){
 				String su = protocol.entityProtocol.uuid;
 				Entity e = gameWorld.entityhandler.getEntity(su);
+				Main.log(getClass(), "Received SetPosition: "+message);
+				Main.log(getClass(), "The Entity was found?: "+(e!=null));
 				if(e!=null){
 					if(e!=user.human){
+						Main.log(getClass(), "Set Position: "+protocol.getJsonString());
 						Position p = protocol.entityProtocol.position;
 						e.setPosition(p);
 					}
@@ -166,8 +173,8 @@ public class EasyGameClient implements EasyClientInterface {
 				Position p = protocol.entityProtocol.position;
 				String su = protocol.entityProtocol.uuid;
 				Entity e = gameWorld.entityhandler.getEntity(su);
-				Main.log(getClass(), "Received a Spawn Protocol");
-				Main.log(getClass(), message);
+//				Main.log(getClass(), "Received a Spawn Protocol");
+//				Main.log(getClass(), message);
 				if (e != null) {
 //					Main.log(getClass(), "Found in the entityhandler already a Entity");
 					e.setPosition(p);
@@ -180,6 +187,7 @@ public class EasyGameClient implements EasyClientInterface {
 					}
 					if(protocol.entityProtocol.entityClass.equals(Bat.class.getName())){
 						Bat b = new Bat(gameWorld,p);
+						b.stupid = true;
 						b.followUUID = protocol.entityProtocol.followUUID;
 						b.setUUID(su);
 						b.spawn();

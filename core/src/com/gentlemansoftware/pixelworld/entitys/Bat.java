@@ -26,29 +26,32 @@ public class Bat extends Entity {
 	public Bat() {
 
 	}
-	
+
 	public String followUUID;
+	public boolean stupid;
 
 	public Bat(TileWorld world, Position globalPos) {
 		super(world, globalPos, EntityHostileType.ANIMAL);
 		this.resetInputVariables();
-//		setNextRandomGoal();
+		// setNextRandomGoal();
 	}
 
 	@Override
 	public void updateLogic() {
-//		if (this.nav.hasFinished()) { // find next random Position to move
-//			setNextRandomGoal();
-//		}
-		if(this.nav.hasFinished()){
-			Entity follow = this.world.entityhandler.getEntity(followUUID);
-			if(follow!=null){
-				List<MapTile> path = SearchStrategie.getShortestPath(getMapTile(), follow.getMapTile());
-				List<Position> pathPos = new LinkedList<Position>();
-				for(MapTile m : path){
-					pathPos.add(m.getGlobalPosition());
+		// if (this.nav.hasFinished()) { // find next random Position to move
+		// setNextRandomGoal();
+		// }
+		if (!stupid) {
+			if (this.nav.hasFinished()) {
+				Entity follow = this.world.entityhandler.getEntity(followUUID);
+				if (follow != null) {
+					List<MapTile> path = SearchStrategie.getShortestPath(getMapTile(), follow.getMapTile());
+					List<Position> pathPos = new LinkedList<Position>();
+					for (MapTile m : path) {
+						pathPos.add(m.getGlobalPosition());
+					}
+					this.nav.setPath(pathPos);
 				}
-				this.nav.setPath(pathPos);
 			}
 		}
 	}
@@ -113,12 +116,13 @@ public class Bat extends Entity {
 
 	@Override
 	public Sprite getSprite(Direction camdir) {
-//		return new Sprite(ResourceLoader.getInstance().getEntity("layerTest", "layerTest"));
-//		
-		if(this.world==null){
+		// return new Sprite(ResourceLoader.getInstance().getEntity("layerTest",
+		// "layerTest"));
+		//
+		if (this.world == null) {
 			System.out.println("World is null...");
 		}
-		
+
 		return new Sprite(BatSpriteAnimations.getTexture(getMotionState(), this.world.time));
 	}
 
