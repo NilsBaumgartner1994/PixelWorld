@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.gentlemansoftware.pixelworld.entitys.Entity;
+import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.physics.Body;
 import com.gentlemansoftware.pixelworld.physics.Position;
 
@@ -29,7 +30,9 @@ public class MapTile extends Position implements Serializable {
 
 	public void setTransients(Chunk chunk) {
 		this.chunk = chunk;
-		this.b.tile = this;
+		if(this.b!=null){
+			this.b.tile = this;
+		}
 	}
 
 	public MapTile(Chunk c, int x, int y) {

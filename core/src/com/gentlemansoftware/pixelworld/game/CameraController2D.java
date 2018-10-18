@@ -580,8 +580,8 @@ public class CameraController2D implements CameraControllerInterface {
 		Mouse m = Main.getInstance().inputHandler.keyboardHandler.mouse;
 
 		if (m != null) {
-			drawInformationLine(
-					"Mouse: " + getGlobalPosFromScreenPos((int)m.getPos().x, this.getHeight() - (int)m.getPos().y).toString());
+			drawInformationLine("Mouse: "
+					+ getGlobalPosFromScreenPos((int) m.getPos().x, this.getHeight() - (int) m.getPos().y).toString());
 		}
 		font.setColor(Color.BLACK);
 

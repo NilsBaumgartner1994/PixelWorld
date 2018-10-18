@@ -82,6 +82,12 @@ public class EasyGameServer implements EasyServerInterface {
 		String message = json.toJson(proto);
 		server.sendMessageTo(client, message);
 	}
+	
+	public void sendGameProtocolToAll(EasyGameCommunicationProtocol protocol){
+		for (EasyConnectionToClient client : this.getAllClients()) {
+			this.sendGameProtocolTo(protocol, client);
+		}
+	}
 
 	@Override
 	public void clientLeft(EasyConnectionToClient client) {
@@ -112,9 +118,7 @@ public class EasyGameServer implements EasyServerInterface {
 			entityProto.uuid = e.getUUID();
 			protocol.addGameProtocolEntity(entityProto);
 
-			for (EasyConnectionToClient client : this.getAllClients()) {
-				this.sendGameProtocolTo(protocol, client);
-			}
+			sendGameProtocolToAll(protocol);
 		}
 	}
 
@@ -134,8 +138,12 @@ public class EasyGameServer implements EasyServerInterface {
 		if (protocol.messageReq != null) {
 			String logMessage = client.clientInf.getClientID() + ": " + protocol.messageReq.message;
 			logMessages.addLogMessage(logMessage);
-			String answer = EasyGameCommunicationProtocol.sendMessage(logMessage);
-			server.sendMessageToAll(answer);
+			if(CommandEvents.isCommand(protocol.messageReq.message)){
+				CommandEvents.handleCommand(this, client, protocol.messageReq.message);
+			} else {
+				String answer = EasyGameCommunicationProtocol.sendMessage(logMessage);
+				server.sendMessageToAll(answer);
+			}
 		}
 		if (protocol.chunkReq != null) {
 			int cx = protocol.chunkReq.cx;

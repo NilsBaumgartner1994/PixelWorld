@@ -15,7 +15,7 @@ import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuRunnableItem;
 public class MultiplayerMenu extends SimpleMenu {
 
 	ChatOverlay chatoverlay;
-	SimpleMenuRunnableItem connectToLocal, hostLocal, messageItem, disconnectItem;
+	SimpleMenuRunnableItem startAndConnectToLocal, connectToServer, hostLocal, messageItem, disconnectItem;
 	private MyTextInputListener inputListener;
 
 	public MultiplayerMenu(MenuHandler handler, Menu parent) {
@@ -38,9 +38,10 @@ public class MultiplayerMenu extends SimpleMenu {
 
 	public void removeAllConents() {
 		this.removeContent(hostLocal);
-		this.removeContent(connectToLocal);
+		this.removeContent(connectToServer);
 		this.removeContent(disconnectItem);
 		this.removeContent(messageItem);
+		this.removeContent(startAndConnectToLocal);
 	}
 
 	public void userIsConnected() {
@@ -51,19 +52,36 @@ public class MultiplayerMenu extends SimpleMenu {
 
 	public void userIsNotConnected() {
 		removeAllConents();
+		this.addContent(startAndConnectToLocal);
 		this.addContent(hostLocal);
-		this.addContent(connectToLocal);
+		this.addContent(connectToServer);
 	}
 
 	public List<SimpleMenuComponent> initMenuComponents() {
 		List<SimpleMenuComponent> menuComponents = new LinkedList<SimpleMenuComponent>();
+
+		Runnable playLocalRunnable = new Runnable() {
+			public void run() {
+				handler.user.network.hostServer();
+
+				Thread thread = new Thread() {
+					public void run() {
+						handler.user.network.connectTo("localhost");
+					}
+				};
+
+				thread.start();
+
+			}
+		};
+		startAndConnectToLocal = new SimpleMenuRunnableItem("Play Local", SimpleMenuNameTypes.SUB, playLocalRunnable);
 
 		Runnable connectRunnable = new Runnable() {
 			public void run() {
 				inputListener.getInput();
 			}
 		};
-		connectToLocal = new SimpleMenuRunnableItem("Connect", SimpleMenuNameTypes.SUB, connectRunnable);
+		connectToServer = new SimpleMenuRunnableItem("Connect", SimpleMenuNameTypes.SUB, connectRunnable);
 
 		Runnable hostRunnable = new Runnable() {
 			public void run() {

@@ -58,11 +58,11 @@ public class Ingame extends SimpleMenu {
 			if (user.network != null) {
 				if (user.network.gameClient.isConnected()) {
 					user.network.gameClient.waitForTextInputAndSendMessage();
-				}
+				} 
 			}
 		}
 		if (gamepad.isButtonTyped(GamePadButtons.R2)) {
-			user.cameraController.rotateCamera(10);
+			user.cameraController.rotateCamera(90);
 			// human.use(human.getNextBlockInDirection());
 		}
 

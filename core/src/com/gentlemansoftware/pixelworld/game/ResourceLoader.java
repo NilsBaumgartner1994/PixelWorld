@@ -38,6 +38,7 @@ public class ResourceLoader {
 
 	private void loadAsset(String path, Class class1) {
 		assets.load(Gdx.files.internal(path).path(), class1);
+		
 		float progress = 0;
 		while (!assets.update()) {
 			if (progress != assets.getProgress()) {

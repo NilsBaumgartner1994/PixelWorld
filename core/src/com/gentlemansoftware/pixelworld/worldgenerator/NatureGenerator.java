@@ -32,21 +32,23 @@ public class NatureGenerator implements GeneratorInterface {
 		random = new Random();
 		noise = new Amortized2DNoise(Amortized2DNoise.CELLSIZE2D);
 	}
-	
+
 	@Override
-	public void setTileWorld(TileWorld world){
+	public void setTileWorld(TileWorld world) {
 		this.world = world;
 	}
 
 	@Override
 	public void generateChunkAt(int cx, int cy) {
 
-//		Main.log(getClass(), "Chunk(" + cx + "|" + cy + "): generating");
-		Chunk c = new Chunk(this.world,cx,cy);
+		// Main.log(getClass(), "Chunk(" + cx + "|" + cy + "): generating");
+		Chunk c = new Chunk(this.world, cx, cy);
+		// Main.log(getClass(), "Chunk(" + cx + "|" + cy + "): noise");
+
 		world.setChunk(c);
-//		Main.log(getClass(), "Chunk(" + cx + "|" + cy + "): noise");
 		noise.Generate2DNoise(c);
-//		Main.log(getClass(), "Chunk(" + cx + "|" + cy + "): ready");
+
+		// Main.log(getClass(), "Chunk(" + cx + "|" + cy + "): ready");
 	}
 
 }

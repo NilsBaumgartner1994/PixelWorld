@@ -55,7 +55,7 @@ public class GlyphAndSymbols {
 	}
 
 	private static Texture getGlyphTexture() {
-		return ResourceLoader.getInstance().getTexture(ResourceLoader.controlls + "myGlyph.png");
+		return ResourceLoader.getInstance().getTexture(ResourceLoader.controlls + "MyGlyph.png");
 	}
 
 }

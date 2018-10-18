@@ -94,7 +94,13 @@ public class Main extends ApplicationAdapter {
 		
 		this.titleScreenWorld.timePassed(deltaTime);
 		for(User user : userHandler.getUsers()){
-			user.getTileWorld().timePassed(deltaTime);
+			if(user.network.gameClient.isConnected()){
+				user.network.gameClient.gameWorld.timePassed(deltaTime);
+			}
+			if(user.network.gameServer.isAlive()){
+				user.network.gameServer.gameWorld.timePassed(deltaTime);
+			}
+//			user.getTileWorld().timePassed(deltaTime);
 		}
 	}
 
