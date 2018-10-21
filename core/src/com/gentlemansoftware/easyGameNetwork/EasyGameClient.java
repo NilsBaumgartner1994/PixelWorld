@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.utils.Json;
 import com.gentlemansoftware.easyGameNetworkProtocol.EasyGameCommunicationProtocol;
 import com.gentlemansoftware.easyGameNetworkProtocol.GameProtocolEntity;
+import com.gentlemansoftware.easyGameNetworkProtocol.GameProtocolTime;
 import com.gentlemansoftware.easyServer.EasyClient;
 import com.gentlemansoftware.easyServer.EasyClientInterface;
 import com.gentlemansoftware.easyServer.EasyRunnableParameters;
@@ -17,7 +18,9 @@ import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.helper.MyTextInputListener;
 import com.gentlemansoftware.pixelworld.physics.Position;
 import com.gentlemansoftware.pixelworld.profiles.User;
+import com.gentlemansoftware.pixelworld.world.Block;
 import com.gentlemansoftware.pixelworld.world.Chunk;
+import com.gentlemansoftware.pixelworld.world.MapTile;
 import com.gentlemansoftware.pixelworld.world.TileWorld;
 import com.gentlemansoftware.pixelworld.worldgenerator.MultiplayerGenerator;
 
@@ -33,9 +36,9 @@ public class EasyGameClient implements EasyClientInterface {
 		this.user = user;
 		this.network = network;
 		this.gameWorld = new TileWorld("Default", new MultiplayerGenerator().setGameClient(this));
-		client = new EasyClient(this, EasyServerHelpers.getUsername());
-		sendListener = new MyTextInputListener(createRunnableSendMessage(), "Dialog Title", "Initial Value",
-				"Hint Value");
+		client = new EasyClient(this, EasyServerHelpers.getUsername(), user.profile.uuid.getVar());
+		sendListener = new MyTextInputListener(createRunnableSendMessage(), "Send Message", "",
+				"Message");
 	}
 
 	private EasyRunnableParametersInterface<String> createRunnableSendMessage() {
@@ -110,24 +113,37 @@ public class EasyGameClient implements EasyClientInterface {
 		Json json = new Json();
 		EasyGameCommunicationProtocol protocol = json.fromJson(EasyGameCommunicationProtocol.class, message);
 
+		if (protocol.time != null) {
+			long now = System.currentTimeMillis();
+			long diff = now - protocol.time.time;
+			Main.log(getClass(), "Latency: " + diff);
+		}
+		if (protocol.blockChange != null) {
+			Chunk c = this.gameWorld.getChunk(protocol.blockChange.cx, protocol.blockChange.cy);
+			MapTile t = c.getMapTileFromLocalPos(protocol.blockChange.x, protocol.blockChange.y);
+			Block b = new Block(t, protocol.blockChange.m);
+			t.setBlock(b);
+		}
 		if (protocol.clientInf != null) {
-//			Main.log(getClass(), "Got answer of ClientInformation");
+			// Main.log(getClass(), "Got answer of ClientInformation");
 			client.clientInf = protocol.clientInf;
 		}
 		if (protocol.messageReq != null) {
 			network.addLogMessage(protocol.messageReq.message);
 		}
 		if (protocol.chunkReq != null) {
-//			Main.log(getClass(), message);
+			// Main.log(getClass(), message);
 			Chunk c = protocol.chunkReq.chunk;
 			c.setTransients(gameWorld);
 			this.gameWorld.setChunk(c);
 			for (Entity e : new ArrayList<Entity>(c.entitys)) {
 				if (e.getUUID() != null) {
-//					Main.log(getClass(), " Chunk: Oh wow, there is an entity with an UUID, have i seen it before?");
+					// Main.log(getClass(), " Chunk: Oh wow, there is an entity
+					// with an UUID, have i seen it before?");
 					Entity known = gameWorld.entityhandler.getEntity(e.getUUID());
 					if (known != null) {
-//						Main.log(getClass(), "Chunk: Oh yea I saw this one somewhere before, better update mine");
+						// Main.log(getClass(), "Chunk: Oh yea I saw this one
+						// somewhere before, better update mine");
 						known.setPosition(e.getPosition());
 						e.destroy();
 						known.destroy();
@@ -136,9 +152,10 @@ public class EasyGameClient implements EasyClientInterface {
 						// known.destroy();
 						// known.setPosition(e.getPosition());
 						// known.spawn();
-//						Main.log(getClass(), "Chunk: HumanIDUpdated?: " + known.toString());
+						// Main.log(getClass(), "Chunk: HumanIDUpdated?: " +
+						// known.toString());
 					} else {
-//						Main.log(getClass(), "Chunk: Hmm seems new to me");
+						// Main.log(getClass(), "Chunk: Hmm seems new to me");
 						e.setPosition(e.getPosition());
 						e.destroy();
 						e.spawn();
@@ -148,15 +165,16 @@ public class EasyGameClient implements EasyClientInterface {
 			}
 		}
 		if (protocol.entityProtocol != null) {
-//			Main.log(getClass(), message);
-			if(protocol.entityProtocol.setPosition){
+			// Main.log(getClass(), message);
+			if (protocol.entityProtocol.setPosition) {
 				String su = protocol.entityProtocol.uuid;
 				Entity e = gameWorld.entityhandler.getEntity(su);
-//				Main.log(getClass(), "Received SetPosition: "+message);
-//				Main.log(getClass(), "The Entity was found?: "+(e!=null));
-				if(e!=null){
-					if(e!=user.human){
-//						Main.log(getClass(), "Set Position: "+protocol.getJsonString());
+				// Main.log(getClass(), "Received SetPosition: "+message);
+				// Main.log(getClass(), "The Entity was found?: "+(e!=null));
+				if (e != null) {
+					if (e != user.human) {
+						// Main.log(getClass(), "Set Position:
+						// "+protocol.getJsonString());
 						Position p = protocol.entityProtocol.position;
 						e.setPosition(p);
 					}
@@ -170,30 +188,31 @@ public class EasyGameClient implements EasyClientInterface {
 				Position p = protocol.entityProtocol.position;
 				String su = protocol.entityProtocol.uuid;
 				Entity e = gameWorld.entityhandler.getEntity(su);
-//				Main.log(getClass(), "Received a Spawn Protocol");
-//				Main.log(getClass(), message);
+				// Main.log(getClass(), "Received a Spawn Protocol");
+				// Main.log(getClass(), message);
 				if (e != null) {
-//					Main.log(getClass(), "Found in the entityhandler already a Entity");
+					// Main.log(getClass(), "Found in the entityhandler already
+					// a Entity");
 					e.setPosition(p);
 				} else {
-					if(protocol.entityProtocol.entityClass.equals(Human.class.getName())){
+					if (protocol.entityProtocol.entityClass.equals(Human.class.getName())) {
 						e = new Human(gameWorld, p, "Bob");
 						e.setUUID(su);
 						e.spawn();
 						gameWorld.entityhandler.registerEntity(e);
 					}
-					if(protocol.entityProtocol.entityClass.equals(Bat.class.getName())){
-						Bat b = new Bat(gameWorld,p);
+					if (protocol.entityProtocol.entityClass.equals(Bat.class.getName())) {
+						Bat b = new Bat(gameWorld, p);
 						b.stupid = true;
 						b.followUUID = protocol.entityProtocol.followUUID;
 						b.setUUID(su);
 						b.spawn();
-//						Main.log(getClass(), "Spawning a Bat!");
+						// Main.log(getClass(), "Spawning a Bat!");
 						gameWorld.entityhandler.registerEntity(b);
 					}
 				}
 				if (protocol.entityProtocol.ownEntity) {
-//					Main.log(getClass(), "Oh wow it is my own entity");
+					// Main.log(getClass(), "Oh wow it is my own entity");
 					user.human = (Human) e;
 					user.cameraController.setTrack(e);
 				}
@@ -205,15 +224,20 @@ public class EasyGameClient implements EasyClientInterface {
 	public void sendUpdates() {
 		if (this.isConnected()) {
 			if (user.human != null) {
-//				Main.log(getClass(), "Sending Update");
+				// Main.log(getClass(), "Sending Update");
 				EasyGameCommunicationProtocol protocol = new EasyGameCommunicationProtocol();
 				GameProtocolEntity entityProto = new GameProtocolEntity();
 				entityProto.position = user.human.getPosition();
 				entityProto.uuid = user.human.getUUID();
 				entityProto.setPosition = true;
 				protocol.entityProtocol = entityProto;
+
+//				GameProtocolTime t = new GameProtocolTime();
+//				t.time = System.currentTimeMillis();
+//				protocol.time = t;
 				sendGameProtocol(protocol);
 			}
+
 		}
 	}
 

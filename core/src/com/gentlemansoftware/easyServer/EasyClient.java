@@ -16,11 +16,12 @@ public class EasyClient implements EasyConnectionInterface, Runnable {
 	int tickRate = 1000 / 10;
 	public EasyClientInformation clientInf;
 
-	public EasyClient(EasyClientInterface callback, String username) {
+	public EasyClient(EasyClientInterface callback, String username, String uuid) {
 		this.callback = callback;
 		this.connected = false;
 		this.clientInf = new EasyClientInformation();
 		this.clientInf.name = username;
+		this.clientInf.uuid = uuid;
 	}
 
 	public void connectToServer(String ip) {

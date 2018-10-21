@@ -19,7 +19,6 @@ public class PixelWorldGameServerEvents {
 		newPlayer.spawn();
 		server.gameWorld.entityhandler.registerEntity(newPlayer);
 		String newUUID = newPlayer.getUUID();
-		Main.log(PixelWorldGameServerEvents.class, "ClientEntitysEmpty?: " + (server.clientEntitys == null));
 		server.clientEntitys.put(client, newPlayer);
 
 		EasyGameCommunicationProtocol protocol = new EasyGameCommunicationProtocol();
@@ -42,10 +41,9 @@ public class PixelWorldGameServerEvents {
 				server.sendGameProtocolTo(protocol, otherClient);
 			}
 		}
-
 		
 		//spawn a following Bat
-		Bat bat = new Bat(server.gameWorld, startPos.cpy().addAndSet(1, 0, 0, 0));
+		Bat bat = new Bat(server.gameWorld, startPos.cpy());
 		bat.spawn();
 		bat.followUUID = newPlayer.getUUID();
 		server.gameWorld.entityhandler.registerEntity(bat);

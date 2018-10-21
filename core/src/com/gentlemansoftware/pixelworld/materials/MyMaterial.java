@@ -34,8 +34,12 @@ public class MyMaterial implements Serializable {
 	public static final MyMaterial SAND = new MyMaterial((byte) 12);
 	public static final Integer SANDHEIGHT = -10;
 
+	public static final MyMaterial SELECTION = new MyMaterial((byte) 126);
+	public static final Integer SELECTIONHEIGHT = 0;
 	public static final MyMaterial DEBUG = new MyMaterial((byte) 127);
+	public static final Integer DEBUGHEIGHT = 0;
 	public static final MyMaterial ERROR = new MyMaterial((byte) -128);
+	public static final Integer ERRORHEIGHT = 0;
 
 	private final static Map<Byte, String> materialList = new HashMap<Byte, String>();
 	private final static Map<Byte, String> addonMaterialList = new HashMap<Byte, String>();
@@ -45,6 +49,7 @@ public class MyMaterial implements Serializable {
 		materialList.put(DIRT.getID(), "dirt");
 		materialList.put(WATER.getID(), "water");
 		materialList.put(SAND.getID(), "sand");
+		materialList.put(SELECTION.getID(), "selection");
 		materialList.put(DEBUG.getID(), "debug");
 		materialList.put(ERROR.getID(), "error");
 	}
@@ -55,6 +60,9 @@ public class MyMaterial implements Serializable {
 		materialHeightList.put(GRASS.getID(), GRASSHEIGHT);
 		materialHeightList.put(WATER.getID(), WATERHEIGHT);
 		materialHeightList.put(SAND.getID(), SANDHEIGHT);
+		materialHeightList.put(SELECTION.getID(), SELECTIONHEIGHT);
+		materialHeightList.put(ERROR.getID(), ERRORHEIGHT);
+		materialHeightList.put(DEBUG.getID(), DEBUGHEIGHT);
 	}
 
 	public static int getDefaultHeightByID(Byte id) {

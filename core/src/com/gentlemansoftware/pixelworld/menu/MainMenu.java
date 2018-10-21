@@ -14,6 +14,8 @@ import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuRunnableItem;
 public class MainMenu extends SimpleMenu {
 
 	public MultiplayerMenu multiplayerMenu;
+	Menu optionMenu;
+	Menu userProfiles;
 	public Menu worldMenu;
 	public ChatOverlay chatoverlay;
 
@@ -28,6 +30,12 @@ public class MainMenu extends SimpleMenu {
 		
 		menuComponents.add(multiplayerMenu);
 
+		optionMenu = new OptionMenu(handler, this);
+		menuComponents.add(optionMenu);
+		
+		userProfiles = new UserProfileListMenu(handler,this);
+		menuComponents.add(userProfiles);
+		
 		worldMenu = new WorldMenu(handler, this);
 		menuComponents.add(worldMenu);
 

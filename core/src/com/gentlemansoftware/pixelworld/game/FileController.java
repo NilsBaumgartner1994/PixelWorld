@@ -29,13 +29,22 @@ public class FileController {
 	}
 	
 	public void writeLocalFile(String path, String content, boolean appendOnly){
-		FileHandle file = Gdx.files.local(path);
+		FileHandle file = getLocalFileHandle(path);
 		file.writeString(content, appendOnly);
 	}
 	
 	public String readLocalFile(String path){
-		FileHandle file = Gdx.files.local(path);
+		FileHandle file = getLocalFileHandle(path);
 		return file.readString();
+	}
+	
+	public void deleteLocalFile(String path){
+		FileHandle file = getLocalFileHandle(path);
+		file.deleteDirectory();
+	}
+	
+	public FileHandle getLocalFileHandle(String path){
+		return Gdx.files.local(path);
 	}
 	
 	/**
@@ -46,13 +55,22 @@ public class FileController {
 	}
 	
 	public void writeExternalFile(String path, String content, boolean appendOnly){
-		FileHandle file = Gdx.files.external(path);
+		FileHandle file = getExternalFileHandle(path);
 		file.writeString(content, appendOnly);
 	}
 	
 	public String readExternalFile(String path){
-		FileHandle file = Gdx.files.external(path);
+		FileHandle file = getExternalFileHandle(path);
 		return file.readString();
+	}
+	
+	public void deleteExternalFile(String path){
+		FileHandle file = getExternalFileHandle(path);
+		file.deleteDirectory();
+	}
+	
+	public FileHandle getExternalFileHandle(String path){
+		return Gdx.files.external(path);
 	}
 	
 	

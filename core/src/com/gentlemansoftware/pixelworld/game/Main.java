@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
+import com.gentlemansoftware.pixelworld.helper.MemoryHelper;
 import com.gentlemansoftware.pixelworld.inputs.InputHandler;
 import com.gentlemansoftware.pixelworld.profiles.User;
 import com.gentlemansoftware.pixelworld.profiles.UserHandler;
@@ -106,6 +107,8 @@ public class Main extends ApplicationAdapter {
 
 	@Override
 	public void render() {
+		MemoryHelper.calcMemory();
+		
 		inputHandler.updateInputLogic();
 
 		camera.update();

@@ -15,6 +15,9 @@ public class SimpleMenuVarHolderComponentHelper {
 		if (var.getVar().getClass()==Float.class) {
 			return new SimpleMenuFloatEditable((VarHolder<Float>) var);
 		}
+		if (var.getVar().getClass()==String.class) {
+			return new SimpleMenuStringEditable((VarHolder<String>) var);
+		}
 		return null;
 	}
 

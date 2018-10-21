@@ -8,13 +8,10 @@ import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuComponent;
 
 public class PauseMenu extends SimpleMenu {
 
-	Menu optionMenu;
 	Menu mapMenu;
 	
 	public PauseMenu(MenuHandler menuHandler, Menu parent) {
 		super(menuHandler, parent, "Pause", null);
-		
-		optionMenu = new OptionMenu(handler, this);
 		mapMenu = new MapMenu(handler,this);
 		
 		setContent(initMenuComponents());
@@ -24,7 +21,6 @@ public class PauseMenu extends SimpleMenu {
 		List<SimpleMenuComponent> menuComponents = new LinkedList<SimpleMenuComponent>();
 		menuComponents.add(this.handler.ingameMenu);
 //		menuComponents.add(mapMenu);
-		menuComponents.add(optionMenu);
 		menuComponents.add(handler.mainMenu);
 		
 		return menuComponents;

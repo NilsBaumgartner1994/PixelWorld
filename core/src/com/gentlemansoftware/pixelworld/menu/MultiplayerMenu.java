@@ -11,17 +11,20 @@ import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenu;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuComponent;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuNameTypes;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuRunnableItem;
+import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuVarholder;
 
 public class MultiplayerMenu extends SimpleMenu {
 
 	ChatOverlay chatoverlay;
 	SimpleMenuRunnableItem startAndConnectToLocal, connectToServer, hostLocal, messageItem, disconnectItem;
 	private MyTextInputListener inputListener;
+	SimpleMenuVarholder serverOptions;
 
 	public MultiplayerMenu(MenuHandler handler, Menu parent) {
 		super(handler, parent, "Multiplayer", null);
 		inputListener = new MyTextInputListener(createRunnableSendMessage(), "Connect to IP", "", "Ip Adress");
 		this.setContent(initMenuComponents());
+		
 		userIsNotConnected();
 	}
 
@@ -42,12 +45,16 @@ public class MultiplayerMenu extends SimpleMenu {
 		this.removeContent(disconnectItem);
 		this.removeContent(messageItem);
 		this.removeContent(startAndConnectToLocal);
+		this.removeContent(serverOptions);
 	}
 
 	public void userIsConnected() {
 		removeAllConents();
 		this.addContent(disconnectItem);
 		this.addContent(messageItem);
+		
+		serverOptions = new SimpleMenuVarholder(handler, this, "Server Options",handler.user.network.gameServer.server.variables.getVars());
+		this.addContent(serverOptions);
 	}
 
 	public void userIsNotConnected() {

@@ -10,6 +10,7 @@ import com.gentlemansoftware.pixelworld.items.AbstractItem;
 import com.gentlemansoftware.pixelworld.menuComponents.ChatOverlay;
 import com.gentlemansoftware.pixelworld.menuComponents.ControllerOverlay;
 import com.gentlemansoftware.pixelworld.menuComponents.MiniMapOverlay;
+import com.gentlemansoftware.pixelworld.physics.Position;
 import com.gentlemansoftware.pixelworld.profiles.User;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenu;
 
@@ -51,7 +52,7 @@ public class Ingame extends SimpleMenu {
 		if (gamepad.isButtonTyped(GamePadButtons.LEFTPAD_DOWN)) {
 			user.cameraController.changeDistance(1);
 		}
-		if (gamepad.isButtonTyped(GamePadButtons.UP)) {
+		if (gamepad.isButtonTyped(GamePadButtons.LEFTPAD_UP)) {
 			user.cameraController.changeDistance(-1);
 		}
 		if (gamepad.isButtonTyped(GamePadButtons.START)) {
@@ -77,6 +78,10 @@ public class Ingame extends SimpleMenu {
 			}
 			if (gamepad.isButtonTyped(GamePadButtons.LEFTPAD_RIGHT)) {
 				human.inventory.setActivSlot(human.inventory.getActivSlot() + 1);
+			}
+			if(gamepad.isButtonTyped(GamePadButtons.RIGHTSHOULDER)){
+				Position posAtWorld = user.cameraController.getGlobalPosFromScreenPos((int) gamepad.getCursor().pos.x, user.cameraController.getHeight() - (int) gamepad.getCursor().pos.y);
+				human.use(posAtWorld);
 			}
 		}
 

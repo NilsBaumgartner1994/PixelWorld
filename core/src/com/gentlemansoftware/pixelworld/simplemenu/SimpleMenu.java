@@ -80,7 +80,7 @@ public class SimpleMenu extends SimpleMenuNameItem implements Menu {
 			setActive(parent);
 			select();
 		}
-		if (gamepad.getButton(GamePadButtons.UP).isTyped()) {
+		if (gamepad.getButton(GamePadButtons.LEFTPAD_UP).isTyped()) {
 			changeActiveMenuComponent(-1);
 		}
 		if (gamepad.getButton(GamePadButtons.LEFTPAD_DOWN).isTyped()) {

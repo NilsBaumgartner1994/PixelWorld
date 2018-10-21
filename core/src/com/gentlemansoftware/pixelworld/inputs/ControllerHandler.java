@@ -136,7 +136,7 @@ public class ControllerHandler implements ControllerListener {
 	@Override
 	public boolean axisMoved(Controller controller, int axisCode, float value) {
 		// TODO Auto-generated method stub
-		// System.out.println("AxisMoved: "+axisCode+" value: "+value);
+//		 System.out.println("AxisMoved: "+axisCode+" value: "+value);
 		return false;
 	}
 

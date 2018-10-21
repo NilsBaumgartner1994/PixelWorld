@@ -3,11 +3,13 @@ package com.gentlemansoftware.easyServer;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.gentlemansoftware.pixelworld.profiles.GameServerProfile;
+
 public class EasyServer implements Runnable, EasyServerInterface {
 
 	List<EasyConnectionToClient> clients;
+	public GameServerProfile variables;
 	int clientNumber = 0;
-	int tickRate = 1000/10;
 
 	EasyServerInformationInterface serverInformation;
 	EasyCommunicationServerConnectionListener connectionListener;
@@ -16,9 +18,18 @@ public class EasyServer implements Runnable, EasyServerInterface {
 
 	public EasyServer(EasyServerInformationInterface serverInformation, EasyServerInterface server) {
 		this.serverInformation = serverInformation;
+		this.variables = new GameServerProfile();
 		this.clients = new LinkedList<EasyConnectionToClient>();
 		this.server = server;
 		this.connectionListener = new EasyCommunicationServerConnectionListener(this);
+	}
+	
+	public void setMaxClients(int maxClients){
+		this.variables.maxPlayers.setVar(maxClients);
+	}
+	
+	public void disableMaxClients(){
+		this.setMaxClients(-1);
 	}
 
 	public void start() {
@@ -68,7 +79,7 @@ public class EasyServer implements Runnable, EasyServerInterface {
 	public void run() {
 		while (this.isAlive()) {
 			try {
-				Thread.sleep(tickRate);
+				Thread.sleep(1000/this.variables.tickRate.getVar());
 				sendUpdates();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block

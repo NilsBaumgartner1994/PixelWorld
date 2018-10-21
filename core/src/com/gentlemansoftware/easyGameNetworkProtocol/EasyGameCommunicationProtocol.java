@@ -8,8 +8,10 @@ public class EasyGameCommunicationProtocol {
 
 	public GameProtocolChunkRequest chunkReq;
 	public GameProtocolMessage messageReq;
+	public GameProtocolTime time;
 	public GameProtocolEntity entityProtocol;
 	public EasyClientInformation clientInf;
+	public GameProtocolBlockChange blockChange;
 
 	public EasyGameCommunicationProtocol() {
 	}
@@ -51,8 +53,8 @@ public class EasyGameCommunicationProtocol {
 		Json json = new Json();
 		return json.toJson(protocol);
 	}
-	
-	public String getJsonString(){
+
+	public String getJsonString() {
 		Json json = new Json();
 		return json.toJson(this);
 	}

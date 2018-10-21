@@ -2,14 +2,18 @@ package com.gentlemansoftware.pixelworld.entitys;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.gentlemansoftware.easyGameNetworkProtocol.EasyGameCommunicationProtocol;
+import com.gentlemansoftware.easyGameNetworkProtocol.GameProtocolBlockChange;
 import com.gentlemansoftware.pixelworld.game.ResourceLoader;
 import com.gentlemansoftware.pixelworld.items.AbstractItem;
 import com.gentlemansoftware.pixelworld.items.Inventory;
 import com.gentlemansoftware.pixelworld.items.Item;
 import com.gentlemansoftware.pixelworld.items.Tool;
+import com.gentlemansoftware.pixelworld.materials.MyMaterial;
 import com.gentlemansoftware.pixelworld.physics.Direction;
 import com.gentlemansoftware.pixelworld.physics.Position;
 import com.gentlemansoftware.pixelworld.physics.Speed;
+import com.gentlemansoftware.pixelworld.world.Block;
 import com.gentlemansoftware.pixelworld.world.MapTile;
 import com.gentlemansoftware.pixelworld.world.TileWorld;
 
@@ -33,8 +37,8 @@ public class Human extends Entity {
 	public final long USECOOLDOWN = 1000 / 10L;
 	public long lastUse = System.currentTimeMillis();
 	public Position usePosition;
-	
-	public Human(){
+
+	public Human() {
 		super();
 	}
 
@@ -63,10 +67,9 @@ public class Human extends Entity {
 
 	public void initInventory() {
 		this.inventory = new Inventory();
-		// this.inventory.addItem(new Item(new Tree()));
-		// this.inventory.addItem(new Item(new TallGrass()));
 		this.inventory.addItem(new Tool());
-		// this.inventory.addItem(new Item(new Grass()));
+		this.inventory.addItem(new Item(MyMaterial.ERROR));
+		this.inventory.addItem(new Item(MyMaterial.GRASS));
 	}
 
 	public void use(Position pos) {
@@ -85,11 +88,34 @@ public class Human extends Entity {
 
 			AbstractItem activItem = this.inventory.getActivItem();
 			if (activItem instanceof Item) {
-//				Item item = (Item) activItem;
+				Item item = (Item) activItem;
+				MapTile t = this.world.getMapTileFromGlobalPos(this.usePosition.x, this.usePosition.y);
+				t.setBlock(new Block(t, item.getMaterial()));
+
+				EasyGameCommunicationProtocol protocol = new EasyGameCommunicationProtocol();
+				GameProtocolBlockChange bc = new GameProtocolBlockChange();
+				bc.cx = t.chunk.x;
+				bc.cy = t.chunk.y;
+				bc.x = t.x;
+				bc.y = t.y;
+				bc.m = item.getMaterial();
+				protocol.blockChange = bc;
 			}
 			if (activItem instanceof Tool) {
-//				Tool tool = (Tool) activItem;
-				// getMapTile().removeNature();
+				Tool tool = (Tool) activItem;
+				MapTile t = this.world.getMapTileFromGlobalPos(this.usePosition.x, this.usePosition.y);
+
+				t.setBlock(null);
+
+				EasyGameCommunicationProtocol protocol = new EasyGameCommunicationProtocol();
+				GameProtocolBlockChange bc = new GameProtocolBlockChange();
+				bc.cx = t.chunk.x;
+				bc.cy = t.chunk.y;
+				bc.x = t.x;
+				bc.y = t.y;
+				bc.m = MyMaterial.DEBUG;
+				protocol.blockChange = bc;
+
 			}
 
 		}
@@ -139,7 +165,8 @@ public class Human extends Entity {
 	@Override
 	public Sprite getSprite(Direction camdir) {
 		return new Sprite(ResourceLoader.getInstance().getEntity("layerTest", "layerTest"));
-
+		// return new Sprite(BatSpriteAnimations.getTexture(getMotionState(),
+		// this.world.time));
 		// return new Sprite(FoxSpriteAnimations.getTexture(getMotionState(),
 		// this.world.time));
 	}

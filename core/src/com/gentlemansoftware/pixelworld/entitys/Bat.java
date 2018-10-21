@@ -47,8 +47,10 @@ public class Bat extends Entity {
 				if (follow != null) {
 					List<MapTile> path = SearchStrategie.getShortestPath(getMapTile(), follow.getMapTile());
 					List<Position> pathPos = new LinkedList<Position>();
-					for (MapTile m : path) {
-						pathPos.add(m.getGlobalPosition());
+					if (path != null) {
+						for (MapTile m : path) {
+							pathPos.add(m.getGlobalPosition());
+						}
 					}
 					this.nav.setPath(pathPos);
 				}

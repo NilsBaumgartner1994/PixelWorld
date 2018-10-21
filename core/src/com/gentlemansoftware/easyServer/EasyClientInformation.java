@@ -5,6 +5,7 @@ public class EasyClientInformation {
 	public int clientNumber;
 	public boolean nameAccepted;
 	public String name;
+	public String uuid;
 
 	public EasyClientInformation() {
 

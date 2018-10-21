@@ -8,7 +8,6 @@ import java.net.SocketException;
 public class EasyCommunicationServerConnectionListener implements Runnable {
 
 	boolean alive = true;
-	boolean acceptNewConnections = true;
 	int clientNumber;
 
 	EasyServer server;
@@ -66,8 +65,10 @@ public class EasyCommunicationServerConnectionListener implements Runnable {
 			listener = new ServerSocket(Integer.parseInt(server.serverInformation.getPort()));
 			while (alive) {
 				Socket newConnection = listener.accept();
-				if (acceptNewConnections) {
+				if (acceptNewConnection()) {
 					newConnection(newConnection);
+				} else {
+					newConnection.close();
 				}
 			}
 		} catch (SocketException e) {
@@ -78,6 +79,10 @@ public class EasyCommunicationServerConnectionListener implements Runnable {
 		} finally {
 			closeListener();
 		}
+	}
+
+	public boolean acceptNewConnection() {
+		return server.variables.maxPlayers.getVar() < 0 || server.clients.size() < server.variables.maxPlayers.getVar();
 	}
 
 }

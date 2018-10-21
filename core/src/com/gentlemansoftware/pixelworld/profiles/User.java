@@ -27,7 +27,6 @@ public class User {
 	public User() {
 		new UserProfile().save();
 		this.profile = UserProfile.load("Default");
-		System.out.println(this.profile.name);
 
 		initHandlers();
 

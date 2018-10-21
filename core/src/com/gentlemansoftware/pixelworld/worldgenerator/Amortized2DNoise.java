@@ -88,7 +88,7 @@ public class Amortized2DNoise {
 		for (int i = n - 2; i >= 0; i--)
 			t[i] = t[i + 1] + d;
 	}
-
+	
 	public int h(int x) {
 		long xl = (long) x;
 		return (int) (1664525L * xl * xl + 1013904223L); // constants from the

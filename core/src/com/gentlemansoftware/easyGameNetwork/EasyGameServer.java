@@ -15,7 +15,9 @@ import com.gentlemansoftware.pixelworld.entitys.Entity;
 import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.physics.Position;
 import com.gentlemansoftware.pixelworld.profiles.User;
+import com.gentlemansoftware.pixelworld.world.Block;
 import com.gentlemansoftware.pixelworld.world.Chunk;
+import com.gentlemansoftware.pixelworld.world.MapTile;
 import com.gentlemansoftware.pixelworld.world.TileWorld;
 
 public class EasyGameServer implements EasyServerInterface {
@@ -82,10 +84,19 @@ public class EasyGameServer implements EasyServerInterface {
 		String message = json.toJson(proto);
 		server.sendMessageTo(client, message);
 	}
-	
-	public void sendGameProtocolToAll(EasyGameCommunicationProtocol protocol){
+
+	public void sendGameProtocolToAll(EasyGameCommunicationProtocol protocol) {
 		for (EasyConnectionToClient client : this.getAllClients()) {
 			this.sendGameProtocolTo(protocol, client);
+		}
+	}
+
+	public void sendGameProtocolToAllExcept(EasyGameCommunicationProtocol protocol,
+			EasyConnectionToClient exceptClient) {
+		for (EasyConnectionToClient client : this.getAllClients()) {
+			if (client != exceptClient) {
+				this.sendGameProtocolTo(protocol, client);
+			}
 		}
 	}
 
@@ -125,10 +136,26 @@ public class EasyGameServer implements EasyServerInterface {
 	private void decompileReceivedMessage(EasyConnectionToClient client, String message) {
 		Json json = new Json();
 		EasyGameCommunicationProtocol protocol = json.fromJson(EasyGameCommunicationProtocol.class, message);
+		if (protocol.time != null) {
+			EasyGameCommunicationProtocol response = new EasyGameCommunicationProtocol();
+			response.time = protocol.time;
+			sendGameProtocolTo(response, client);
+		}
+		if (protocol.blockChange != null) {
+			Chunk c = this.gameWorld.getChunk(protocol.blockChange.cx, protocol.blockChange.cy);
+			MapTile t = c.getMapTileFromLocalPos(protocol.blockChange.x, protocol.blockChange.y);
+			Block b = new Block(t, protocol.blockChange.m);
+			t.setBlock(b);
+
+			EasyGameCommunicationProtocol answer = new EasyGameCommunicationProtocol();
+			answer.blockChange = protocol.blockChange;
+			sendGameProtocolToAllExcept(protocol, client);
+		}
 		if (protocol.clientInf != null) {
-//			Main.log(getClass(), "Received request for ClientInformation");
+			// Main.log(getClass(), "Received request for ClientInformation");
 			client.clientInf.name = protocol.clientInf.name;
 			client.clientInf.nameAccepted = true;
+			client.clientInf.uuid = protocol.clientInf.uuid;
 
 			EasyGameCommunicationProtocol answer = new EasyGameCommunicationProtocol();
 			answer.clientInf = client.clientInf;
@@ -138,7 +165,7 @@ public class EasyGameServer implements EasyServerInterface {
 		if (protocol.messageReq != null) {
 			String logMessage = client.clientInf.getClientID() + ": " + protocol.messageReq.message;
 			logMessages.addLogMessage(logMessage);
-			if(CommandEvents.isCommand(protocol.messageReq.message)){
+			if (CommandEvents.isCommand(protocol.messageReq.message)) {
 				CommandEvents.handleCommand(this, client, protocol.messageReq.message);
 			} else {
 				String answer = EasyGameCommunicationProtocol.sendMessage(logMessage);
