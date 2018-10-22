@@ -164,9 +164,9 @@ public class Human extends Entity {
 
 	@Override
 	public Sprite getSprite(Direction camdir) {
-		return new Sprite(ResourceLoader.getInstance().getEntity("layerTest", "layerTest"));
-		// return new Sprite(BatSpriteAnimations.getTexture(getMotionState(),
-		// this.world.time));
+		// return new Sprite(ResourceLoader.getInstance().getEntity("layerTest",
+		// "layerTest"));
+		return new Sprite(BatSpriteAnimations.getTexture(getMotionState(), this.world.time));
 		// return new Sprite(FoxSpriteAnimations.getTexture(getMotionState(),
 		// this.world.time));
 	}

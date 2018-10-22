@@ -8,6 +8,7 @@ import com.gentlemansoftware.pixelworld.game.ResourceLoader;
 import com.gentlemansoftware.pixelworld.helper.SpriteHelper;
 import com.gentlemansoftware.pixelworld.inputs.GamePad;
 import com.gentlemansoftware.pixelworld.menu.MenuHandler;
+import com.gentlemansoftware.pixelworld.physics.Direction;
 import com.gentlemansoftware.pixelworld.physics.Position;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuComponent;
 import com.gentlemansoftware.pixelworld.world.Chunk;
@@ -27,7 +28,7 @@ public class MiniMapOverlay implements SimpleMenuComponent {
 	private final int WIDTH = 128;
 
 	public void updateMap() {
-		Pixmap pixmap = WorldToPNG.getPixmap(getMapTileCameraIsLookingAt());
+		Pixmap pixmap = WorldToPNG.getPixmap(getMapTileCameraIsLookingAt(),this.handler.user.cameraController.getCameraDirection());
 		this.map = new Sprite(new Texture(pixmap));
 		this.map = SpriteHelper.setToWidth(map, WIDTH);
 		pixmap.dispose();

@@ -25,7 +25,9 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.gentlemansoftware.pixelworld.entitys.Entity;
 import com.gentlemansoftware.pixelworld.helper.EasyColor;
+import com.gentlemansoftware.pixelworld.helper.PixmapHelper;
 import com.gentlemansoftware.pixelworld.materials.MyMaterial;
+import com.gentlemansoftware.pixelworld.physics.Direction;
 
 public class WorldToPNG {
 
@@ -67,12 +69,13 @@ public class WorldToPNG {
 		toPNG.renderPixmap();
 		return toPNG._pixmap;
 	}
+	
 
-	public static Pixmap getPixmap(MapTile tile) {
+	public static Pixmap getPixmap(MapTile tile, Direction cameraDirection) {
 		WorldToPNG toPNG = new WorldToPNG(tile, -Chunk.CHUNKSIZE / 2, -Chunk.CHUNKSIZE / 2, Chunk.CHUNKSIZE / 2,
 				Chunk.CHUNKSIZE / 2);
 		toPNG.renderPixmap();
-		return toPNG._pixmap;
+		return PixmapHelper.rotate(toPNG._pixmap, cameraDirection);
 	}
 
 	private void initVariables() {
