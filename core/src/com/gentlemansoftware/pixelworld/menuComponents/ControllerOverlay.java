@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
 import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.game.ResourceLoader;
+import com.gentlemansoftware.pixelworld.helper.Rectangle;
 import com.gentlemansoftware.pixelworld.inputs.Button;
 import com.gentlemansoftware.pixelworld.inputs.GamePad;
 import com.gentlemansoftware.pixelworld.inputs.GamePadButtons;
@@ -117,6 +118,12 @@ public class ControllerOverlay implements SimpleMenuComponent {
 	public void dispose() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public Rectangle getTouchRegion() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

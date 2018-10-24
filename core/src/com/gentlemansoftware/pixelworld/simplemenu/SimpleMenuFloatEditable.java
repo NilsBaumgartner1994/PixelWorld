@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
 import com.gentlemansoftware.pixelworld.game.ResourceLoader;
+import com.gentlemansoftware.pixelworld.helper.Rectangle;
 import com.gentlemansoftware.pixelworld.inputs.GamePad;
 import com.gentlemansoftware.pixelworld.profiles.VarHolder;
 
@@ -11,6 +12,7 @@ public class SimpleMenuFloatEditable implements SimpleMenuComponent {
 
 	VarHolder<Float> number;
 	boolean active;
+	private Rectangle touchRegion;
 
 	public SimpleMenuFloatEditable(VarHolder<Float> obj) {
 		setContent(obj);
@@ -36,6 +38,10 @@ public class SimpleMenuFloatEditable implements SimpleMenuComponent {
 		ypos = drawSingleContent(display, ypos);
 		int percent = (int) (this.number.value * 100);
 		drawSlider(display, helper, percent);
+
+		Sprite post_middle = new Sprite(ResourceLoader.getInstance().getGUI("menus/menu_information_top"));
+		setTouchRegion(new Rectangle(display.getWidth() / 2 - post_middle.getRegionWidth() / 2, ypos,
+				post_middle.getRegionWidth(), yposStart - ypos));
 
 		return ypos;
 	}
@@ -101,6 +107,15 @@ public class SimpleMenuFloatEditable implements SimpleMenuComponent {
 	public void dispose() {
 		// TODO Auto-generated method stub
 
+	}
+
+	public void setTouchRegion(Rectangle touchRegion) {
+		this.touchRegion = touchRegion;
+	}
+
+	@Override
+	public Rectangle getTouchRegion() {
+		return this.touchRegion;
 	}
 
 }

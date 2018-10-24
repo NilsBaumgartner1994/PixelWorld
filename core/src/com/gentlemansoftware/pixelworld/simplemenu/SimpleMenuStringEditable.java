@@ -8,6 +8,7 @@ import com.gentlemansoftware.easyServer.EasyRunnableParametersInterface;
 import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
 import com.gentlemansoftware.pixelworld.game.ResourceLoader;
 import com.gentlemansoftware.pixelworld.helper.MyTextInputListener;
+import com.gentlemansoftware.pixelworld.helper.Rectangle;
 import com.gentlemansoftware.pixelworld.inputs.GamePad;
 import com.gentlemansoftware.pixelworld.profiles.VarHolder;
 
@@ -17,23 +18,23 @@ public class SimpleMenuStringEditable implements SimpleMenuComponent {
 	boolean active;
 	private MyTextInputListener myListener;
 	private EasyRunnableParametersInterface callbackOnChange;
+	private Rectangle touchRegion;
 
 	public SimpleMenuStringEditable(VarHolder<String> obj) {
 		setContent(obj);
 		setActive(false);
-		myListener = new MyTextInputListener(createRunnableEdit(), obj.getName(), obj.getVar().toString(),
-				"");
+		myListener = new MyTextInputListener(createRunnableEdit(), obj.getName(), obj.getVar().toString(), "");
 	}
-	
-	public void setChangeCallback(EasyRunnableParametersInterface callback){
+
+	public void setChangeCallback(EasyRunnableParametersInterface callback) {
 		this.callbackOnChange = callback;
 	}
-	
+
 	private EasyRunnableParametersInterface<String> createRunnableEdit() {
 		EasyRunnableParametersInterface<String> aRunnable = new EasyRunnableParameters<String>() {
 			public void run() {
 				number.setVar(this.getParam());
-				if(callbackOnChange!=null){
+				if (callbackOnChange != null) {
 					callbackOnChange.run();
 				}
 			}
@@ -60,6 +61,10 @@ public class SimpleMenuStringEditable implements SimpleMenuComponent {
 
 		ypos = drawSingleContent(display, ypos);
 		drawText(display, this.number.getVar().toString(), helper);
+
+		Sprite post_middle = new Sprite(ResourceLoader.getInstance().getGUI("menus/menu_information_top"));
+		setTouchRegion(new Rectangle(display.getWidth() / 2 - post_middle.getRegionWidth() / 2, ypos,
+				post_middle.getRegionWidth(), yposStart - ypos));
 
 		return ypos;
 	}
@@ -105,6 +110,16 @@ public class SimpleMenuStringEditable implements SimpleMenuComponent {
 	public void dispose() {
 		// TODO Auto-generated method stub
 
+	}
+
+	public void setTouchRegion(Rectangle touchRegion) {
+		this.touchRegion = touchRegion;
+	}
+
+
+	@Override
+	public Rectangle getTouchRegion() {
+		return this.touchRegion;
 	}
 
 }

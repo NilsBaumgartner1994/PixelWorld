@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
 import com.gentlemansoftware.pixelworld.game.ResourceLoader;
+import com.gentlemansoftware.pixelworld.helper.Rectangle;
 import com.gentlemansoftware.pixelworld.helper.SpriteHelper;
 import com.gentlemansoftware.pixelworld.inputs.GamePad;
 import com.gentlemansoftware.pixelworld.menu.MenuHandler;
@@ -84,6 +85,12 @@ public class MiniMapOverlay implements SimpleMenuComponent {
 	public void dispose() {
 		// TODO Auto-generated method stub
 
+	}
+	
+	@Override
+	public Rectangle getTouchRegion() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

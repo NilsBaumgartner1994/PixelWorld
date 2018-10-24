@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.gentlemansoftware.easyGameNetwork.EasyGameNetwork;
 import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
+import com.gentlemansoftware.pixelworld.helper.Rectangle;
 import com.gentlemansoftware.pixelworld.inputs.GamePad;
 import com.gentlemansoftware.pixelworld.menu.MenuHandler;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuComponent;
@@ -55,6 +56,12 @@ public class ChatOverlay implements SimpleMenuComponent {
 	public void dispose() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public Rectangle getTouchRegion() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

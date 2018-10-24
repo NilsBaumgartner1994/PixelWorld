@@ -6,7 +6,7 @@ import com.gentlemansoftware.pixelworld.entitys.Human;
 import com.gentlemansoftware.pixelworld.game.CameraController2D;
 import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
 import com.gentlemansoftware.pixelworld.game.Main;
-import com.gentlemansoftware.pixelworld.helper.SplitScreenDimension;
+import com.gentlemansoftware.pixelworld.helper.Rectangle;
 import com.gentlemansoftware.pixelworld.inputs.GamePad;
 import com.gentlemansoftware.pixelworld.inputs.GamePadButtons;
 import com.gentlemansoftware.pixelworld.menu.MenuHandler;
@@ -46,7 +46,7 @@ public class User {
 		this.gamepad = new GamePad();
 		this.menuHandler = new MenuHandler(this);
 		this.soundManager = new UserSoundManager(this.profile.soundProfile);
-		SplitScreenDimension dim = new SplitScreenDimension(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		Rectangle dim = new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		this.cameraController = new CameraController2D(this, dim);
 	}
 

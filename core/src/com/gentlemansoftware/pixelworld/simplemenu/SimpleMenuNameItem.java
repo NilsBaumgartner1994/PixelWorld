@@ -3,28 +3,31 @@ package com.gentlemansoftware.pixelworld.simplemenu;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
+import com.gentlemansoftware.pixelworld.game.Main;
+import com.gentlemansoftware.pixelworld.helper.Rectangle;
 import com.gentlemansoftware.pixelworld.inputs.GamePad;
 
-public class SimpleMenuNameItem implements SimpleMenuComponent{
+public class SimpleMenuNameItem implements SimpleMenuComponent {
 
 	private String title;
 	boolean active;
 	SimpleMenuNameTypes type;
-	
+	private Rectangle touchRegion;
+
 	public SimpleMenuNameItem(String title, SimpleMenuNameTypes type) {
 		setTitle(title);
 		setType(type);
 		setActive(false);
 	}
-	
-	public void setType(SimpleMenuNameTypes type){
+
+	public void setType(SimpleMenuNameTypes type) {
 		this.type = type;
 	}
-	
-	public void setTitle(String title){
+
+	public void setTitle(String title) {
 		this.title = title;
 	}
-	
+
 	public void setActive(boolean active) {
 		this.active = active;
 	}
@@ -49,9 +52,16 @@ public class SimpleMenuNameItem implements SimpleMenuComponent{
 
 		display.getFont().setColor(oldColor);
 
+		setTouchRegion(new Rectangle(display.getWidth()/2 - menu_title.getRegionWidth()/2, display.getHeight()-yposStart,
+				menu_title.getRegionWidth(), yposStart - ypos));
+
 		return ypos;
 	}
-	
+
+	public void setTouchRegion(Rectangle touchRegion) {
+		this.touchRegion = touchRegion;
+	}
+
 	public Color getColor() {
 		return this.active ? Color.GOLD : Color.FIREBRICK;
 	}
@@ -71,17 +81,22 @@ public class SimpleMenuNameItem implements SimpleMenuComponent{
 	@Override
 	public void select() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public String getTitle() {
 		return title;
+	}
+
+	@Override
+	public Rectangle getTouchRegion() {
+		return this.touchRegion;
 	}
 
 }

@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.gentlemansoftware.pixelworld.entitys.Entity;
-import com.gentlemansoftware.pixelworld.helper.SplitScreenDimension;
+import com.gentlemansoftware.pixelworld.helper.Rectangle;
 import com.gentlemansoftware.pixelworld.physics.Direction;
 import com.gentlemansoftware.pixelworld.physics.Position;
 
@@ -14,7 +14,7 @@ public interface CameraControllerInterface {
 
 	public Direction getCameraDirection();
 
-	public void resize(SplitScreenDimension dimension);
+	public void resize(Rectangle dimension);
 
 	public void render();
 

@@ -17,7 +17,7 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.gentlemansoftware.pixelworld.entitys.EasyDrawableInterface;
 import com.gentlemansoftware.pixelworld.entitys.Entity;
 import com.gentlemansoftware.pixelworld.helper.MemoryHelper;
-import com.gentlemansoftware.pixelworld.helper.SplitScreenDimension;
+import com.gentlemansoftware.pixelworld.helper.Rectangle;
 import com.gentlemansoftware.pixelworld.inputs.Mouse;
 import com.gentlemansoftware.pixelworld.materials.MyMaterial;
 import com.gentlemansoftware.pixelworld.physics.Body;
@@ -43,7 +43,7 @@ public class CameraController2D implements CameraControllerInterface {
 	public SpriteBatch fboBatch;
 	public BitmapFont font;
 
-	public SplitScreenDimension dimension;
+	public Rectangle dimension;
 
 	public static int zoomLevel = 0;
 	public static int zoomLevelmin = -2;
@@ -57,7 +57,7 @@ public class CameraController2D implements CameraControllerInterface {
 
 	private User user;
 
-	public CameraController2D(User localUser, SplitScreenDimension dimension) {
+	public CameraController2D(User localUser, Rectangle dimension) {
 		resize(dimension);
 		this.user = localUser;
 		camera.setPositionForce(0, 0);
@@ -93,13 +93,13 @@ public class CameraController2D implements CameraControllerInterface {
 		this.camera.setPositionForce(pos);
 	}
 
-	public void resize(SplitScreenDimension dimension) {
+	public void resize(Rectangle dimension) {
 		setScreenSize(dimension);
 		initCamera();
 		initFrameBuffer();
 	}
 
-	private void setScreenSize(SplitScreenDimension dimension) {
+	private void setScreenSize(Rectangle dimension) {
 		this.dimension = dimension;
 	}
 
@@ -149,12 +149,15 @@ public class CameraController2D implements CameraControllerInterface {
 			world.activateChunk(playerChunk);
 			world.activateChunk(playerChunk.getMoore());
 			List<EasyDrawableInterface> area = getAreaToDraw(world);
-			
-			Position cursorPosOnWorld = getGlobalPosFromScreenPos((int) this.user.gamepad.getCursor().pos.x, this.getHeight() - (int) this.user.gamepad.getCursor().pos.y);
-			MapTile t = world.getMapTileFromGlobalPos(cursorPosOnWorld.x, cursorPosOnWorld.y);
-			Block selection = new Block(t,MyMaterial.SELECTION);
-			area.add(selection);
-			
+
+			if (gameActive) {
+				Position cursorPosOnWorld = getGlobalPosFromScreenPos((int) this.user.gamepad.getCursor().pos.x,
+						this.getHeight() - (int) this.user.gamepad.getCursor().pos.y);
+				MapTile t = world.getMapTileFromGlobalPos(cursorPosOnWorld.x, cursorPosOnWorld.y);
+				Block selection = new Block(t, MyMaterial.SELECTION);
+				area.add(selection);
+			}
+
 			Collections.sort(area, new EasyDrawableInterfaceComperator(this.cameraDirection));
 			// drawNatureShaddow(area, world);
 			drawNatureAndEntitys(area, world);
@@ -576,7 +579,7 @@ public class CameraController2D implements CameraControllerInterface {
 		line = 1;
 		font.setColor(Color.YELLOW);
 		drawInformationLine("FPS: " + Gdx.graphics.getFramesPerSecond());
-		
+
 		drawInformationLine("Min Memory: " + MemoryHelper.getMinMemory());
 		drawInformationLine("Max Memory: " + MemoryHelper.getMaxMemory());
 		drawInformationLine("Avg Memory: " + MemoryHelper.getAvgMemory());
@@ -596,10 +599,10 @@ public class CameraController2D implements CameraControllerInterface {
 			drawInformationLine("Mouse: "
 					+ getGlobalPosFromScreenPos((int) m.getPos().x, this.getHeight() - (int) m.getPos().y).toString());
 		}
-		
-		drawInformationLine("Cursor: "
-				+ getGlobalPosFromScreenPos((int) this.user.gamepad.getCursor().pos.x, this.getHeight() - (int) this.user.gamepad.getCursor().pos.y).toString());
-		
+
+		drawInformationLine("Cursor: " + getGlobalPosFromScreenPos((int) this.user.gamepad.getCursor().pos.x,
+				this.getHeight() - (int) this.user.gamepad.getCursor().pos.y).toString());
+
 		font.setColor(Color.BLACK);
 
 		fboBatch.end();

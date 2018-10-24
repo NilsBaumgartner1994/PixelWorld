@@ -4,8 +4,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
+import com.gentlemansoftware.pixelworld.game.Main;
 import com.gentlemansoftware.pixelworld.game.ResourceLoader;
+import com.gentlemansoftware.pixelworld.helper.Rectangle;
 import com.gentlemansoftware.pixelworld.inputs.GamePad;
 import com.gentlemansoftware.pixelworld.inputs.GamePadButtons;
 import com.gentlemansoftware.pixelworld.menu.Menu;
@@ -20,11 +23,13 @@ public class SimpleMenu extends SimpleMenuNameItem implements Menu {
 	protected MenuHandler handler;
 	protected Menu parent;
 	protected boolean drawConnectors;
+	protected boolean drawCursor;
 
 	public SimpleMenu(MenuHandler handler, Menu parent, String title, List<SimpleMenuComponent> content) {
 		super(title, SimpleMenuNameTypes.MAIN);
 		this.handler = handler;
 		this.drawConnectors = true;
+		this.drawCursor = true;
 		noCahincontents = new LinkedList<SimpleMenuComponent>();
 		setParent(parent);
 		setContent(content);
@@ -102,6 +107,10 @@ public class SimpleMenu extends SimpleMenuNameItem implements Menu {
 			select();
 		}
 
+		if (gamepad.getCursor().left.isTyped()) {
+			this.checkTouchAsMenu((int) gamepad.getCursor().getPos().x, (int) gamepad.getCursor().getPos().y);
+		}
+
 		return false;
 	}
 
@@ -156,6 +165,18 @@ public class SimpleMenu extends SimpleMenuNameItem implements Menu {
 		for (SimpleMenuComponent conent : this.noCahincontents) {
 			ypos = conent.render(display, ypos);
 		}
+
+		if (this.drawCursor) {
+			drawCursor(display);
+		}
+	}
+
+	public void drawCursor(CameraControllerInterface display) {
+		Sprite hand = new Sprite(ResourceLoader.getInstance().getGUI("cursor/hand_select"));
+		Vector2 pos = handler.user.gamepad.getCursor().getPos();
+
+		hand.setPosition(pos.x - hand.getRegionWidth() / 2, display.getHeight() - pos.y - hand.getRegionHeight() / 2);
+		display.drawSprite(hand);
 	}
 
 	@Override
@@ -174,6 +195,24 @@ public class SimpleMenu extends SimpleMenuNameItem implements Menu {
 	public void prepareForActivation() {
 		// TODO Auto-generated method stub
 
+	}
+
+	public void checkTouchAsMenu(int x, int y) {
+		for (SimpleMenuComponent item : contents) {
+			Rectangle reg = item.getTouchRegion();
+			if (reg != null && reg.isInRegion(x, y)) {
+				active = item;
+			}
+		}
+
+		for (SimpleMenuComponent item : noCahincontents) {
+			Rectangle reg = item.getTouchRegion();
+			if (reg != null && reg.isInRegion(x, y)) {
+				active = item;
+			}
+		}
+
+		select();
 	}
 
 }

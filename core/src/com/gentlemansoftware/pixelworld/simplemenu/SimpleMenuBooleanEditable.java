@@ -4,13 +4,15 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
 import com.gentlemansoftware.pixelworld.game.ResourceLoader;
+import com.gentlemansoftware.pixelworld.helper.Rectangle;
 import com.gentlemansoftware.pixelworld.inputs.GamePad;
 import com.gentlemansoftware.pixelworld.profiles.VarHolder;
 
-public class SimpleMenuBooleanEditable implements SimpleMenuComponent{
+public class SimpleMenuBooleanEditable implements SimpleMenuComponent {
 
 	VarHolder<Boolean> bool;
 	boolean active;
+	private Rectangle touchRegion;
 
 	public SimpleMenuBooleanEditable(VarHolder<Boolean> obj) {
 		setContent(obj);
@@ -28,15 +30,19 @@ public class SimpleMenuBooleanEditable implements SimpleMenuComponent{
 	public int render(CameraControllerInterface display, int yposStart) {
 		int ypos = yposStart;
 		int helper = ypos;
-		
+
 		ypos = drawSingleContent(display, ypos);
-		drawText(display,this.bool.getName(),helper);
+		drawText(display, this.bool.getName(), helper);
 		helper = ypos;
-		
+
 		ypos = drawSingleContent(display, ypos);
 		int percent = this.bool.value ? 100 : 0;
 		drawSlider(display, helper, percent);
-		
+
+		Sprite post_middle = new Sprite(ResourceLoader.getInstance().getGUI("menus/menu_information_top"));
+		setTouchRegion(new Rectangle(display.getWidth()/2 - post_middle.getRegionWidth()/2, ypos,
+				post_middle.getRegionWidth(), yposStart - ypos));
+
 		return ypos;
 	}
 
@@ -47,19 +53,19 @@ public class SimpleMenuBooleanEditable implements SimpleMenuComponent{
 		ypos = display.drawSpriteAndSubtractYpos(post_middle, xpos, ypos);
 		return ypos;
 	}
-	
-	private void drawText(CameraControllerInterface display, String text, int ypos){
+
+	private void drawText(CameraControllerInterface display, String text, int ypos) {
 		Sprite post_middle = new Sprite(ResourceLoader.getInstance().getGUI("menus/menu_information_top"));
-	
+
 		display.getFont().setColor(getColor());
 		display.getLayout().setText(display.getFont(), text);
 		int stringWidth = (int) display.getLayout().width;
 		int stringHeight = (int) display.getLayout().height;
 
 		int xpos = display.getWidth() / 2;
-		
-		display.getFont().draw(display.getSpriteBatch(), text, xpos-stringWidth/2,
-				ypos - post_middle.getHeight()/2 + stringHeight / 2);
+
+		display.getFont().draw(display.getSpriteBatch(), text, xpos - stringWidth / 2,
+				ypos - post_middle.getHeight() / 2 + stringHeight / 2);
 	}
 
 	private int drawSlider(CameraControllerInterface display, int ypos, int percent) {
@@ -96,7 +102,16 @@ public class SimpleMenuBooleanEditable implements SimpleMenuComponent{
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	public void setTouchRegion(Rectangle touchRegion) {
+		this.touchRegion = touchRegion;
+	}
+
+	@Override
+	public Rectangle getTouchRegion() {
+		return this.touchRegion;
 	}
 
 }

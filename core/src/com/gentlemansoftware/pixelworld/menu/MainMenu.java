@@ -4,7 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.gentlemansoftware.pixelworld.game.CameraControllerInterface;
+import com.gentlemansoftware.pixelworld.game.ResourceLoader;
 import com.gentlemansoftware.pixelworld.menuComponents.ChatOverlay;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenu;
 import com.gentlemansoftware.pixelworld.simplemenu.SimpleMenuComponent;

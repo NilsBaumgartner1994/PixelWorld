@@ -101,7 +101,6 @@ public class Main extends ApplicationAdapter {
 			if(user.network.gameServer.isAlive()){
 				user.network.gameServer.gameWorld.timePassed(deltaTime);
 			}
-//			user.getTileWorld().timePassed(deltaTime);
 		}
 	}
 

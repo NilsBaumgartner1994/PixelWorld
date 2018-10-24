@@ -7,21 +7,21 @@ public class SplitscreenHelper {
 	
 	public static boolean startWithHorizontalSplit = false;
 
-	public static List<SplitScreenDimension> getDimensionsForAmountOfPlayers(int amount, int totalWidth,
+	public static List<Rectangle> getDimensionsForAmountOfPlayers(int amount, int totalWidth,
 			int totalHeight) {
-		List<SplitScreenDimension> dimensions = new LinkedList<SplitScreenDimension>();
-		SplitScreenDimension total = new SplitScreenDimension(0, 0, totalWidth, totalHeight);
+		List<Rectangle> dimensions = new LinkedList<Rectangle>();
+		Rectangle total = new Rectangle(0, 0, totalWidth, totalHeight);
 
 		if (amount > 1) {
-			List<SplitScreenDimension> nextToSplit = new LinkedList<SplitScreenDimension>();
+			List<Rectangle> nextToSplit = new LinkedList<Rectangle>();
 			nextToSplit.add(total);
 
 			boolean horizontal = startWithHorizontalSplit;
-			SplitScreenDimension firstOneSplittet = null;
+			Rectangle firstOneSplittet = null;
 			for (int i = 1; i < amount; i++) {
-				SplitScreenDimension toSplit = nextToSplit.get(0);
+				Rectangle toSplit = nextToSplit.get(0);
 				nextToSplit.remove(0);
-				List<SplitScreenDimension> splittet = splitDimenstion(toSplit, horizontal);
+				List<Rectangle> splittet = splitDimenstion(toSplit, horizontal);
 				if (firstOneSplittet == null || firstOneSplittet == splittet.get(0)) { // alternate
 																						// Splitting
 					horizontal = !horizontal;
@@ -38,18 +38,18 @@ public class SplitscreenHelper {
 		return dimensions;
 	}
 
-	private static List<SplitScreenDimension> splitDimenstion(SplitScreenDimension screen, boolean horizontal) {
-		List<SplitScreenDimension> dimensions = new LinkedList<SplitScreenDimension>();
+	private static List<Rectangle> splitDimenstion(Rectangle screen, boolean horizontal) {
+		List<Rectangle> dimensions = new LinkedList<Rectangle>();
 
 		if (horizontal) {
-			SplitScreenDimension upper = new SplitScreenDimension(screen.x, screen.y, screen.width, screen.height / 2);
-			SplitScreenDimension lower = new SplitScreenDimension(screen.x, screen.y + screen.height / 2, screen.width,
+			Rectangle upper = new Rectangle(screen.x, screen.y, screen.width, screen.height / 2);
+			Rectangle lower = new Rectangle(screen.x, screen.y + screen.height / 2, screen.width,
 					screen.height / 2);
 			dimensions.add(upper);
 			dimensions.add(lower);
 		} else {
-			SplitScreenDimension left = new SplitScreenDimension(screen.x, screen.y, screen.width / 2, screen.height);
-			SplitScreenDimension right = new SplitScreenDimension(screen.x + screen.width / 2, screen.y,
+			Rectangle left = new Rectangle(screen.x, screen.y, screen.width / 2, screen.height);
+			Rectangle right = new Rectangle(screen.x + screen.width / 2, screen.y,
 					screen.width / 2, screen.height);
 			dimensions.add(left);
 			dimensions.add(right);

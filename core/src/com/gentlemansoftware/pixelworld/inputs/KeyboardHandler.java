@@ -89,8 +89,8 @@ public class KeyboardHandler {
 																								// on
 																								// mac
 		u.gamepad.setButtonState(GamePadButtons.LEFTPAD_UP, keyboard.isPressed(Keys.RIGHT_BRACKET)); // +
-																								// on
-																								// mac
+		// on
+		// mac
 
 		u.gamepad.setButtonState(GamePadButtons.LEFTPAD_LEFT, keyboard.isPressed(Keys.LEFT));
 		u.gamepad.setButtonState(GamePadButtons.LEFTPAD_RIGHT, keyboard.isPressed(Keys.RIGHT));
@@ -110,6 +110,7 @@ public class KeyboardHandler {
 
 		if (button == Input.Buttons.LEFT) {
 			mouse.left.release();
+			u.gamepad.getCursor().left.release();
 			u.gamepad.setButtonState(GamePadButtons.RIGHTSHOULDER, false);
 		}
 		if (button == Input.Buttons.RIGHT) {
@@ -129,7 +130,8 @@ public class KeyboardHandler {
 
 		if (button == Input.Buttons.LEFT) {
 			mouse.left.press();
-			 u.gamepad.setButtonState(GamePadButtons.RIGHTSHOULDER, true);
+			u.gamepad.getCursor().left.press();
+			u.gamepad.setButtonState(GamePadButtons.RIGHTSHOULDER, true);
 		}
 		if (button == Input.Buttons.RIGHT) {
 			mouse.right.press();
@@ -146,7 +148,7 @@ public class KeyboardHandler {
 	}
 
 	public boolean scrolled(int amount) {
-		
+
 		User u = getUser();
 		u.gamepad.setButtonState(GamePadButtons.LEFTPAD_RIGHT, false);
 		u.gamepad.setButtonState(GamePadButtons.LEFTPAD_LEFT, false);

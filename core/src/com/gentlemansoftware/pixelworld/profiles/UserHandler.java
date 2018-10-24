@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.gentlemansoftware.pixelworld.game.Main;
-import com.gentlemansoftware.pixelworld.helper.SplitScreenDimension;
+import com.gentlemansoftware.pixelworld.helper.Rectangle;
 import com.gentlemansoftware.pixelworld.helper.SplitscreenHelper;
 
 public class UserHandler {
@@ -59,12 +59,12 @@ public class UserHandler {
 
 	public void adaptScreenSizeForAllPlayers() {
 		int playerAmounts = getUserAmount();
-		List<SplitScreenDimension> dimensions = SplitscreenHelper.getDimensionsForAmountOfPlayers(playerAmounts,
+		List<Rectangle> dimensions = SplitscreenHelper.getDimensionsForAmountOfPlayers(playerAmounts,
 				Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
 		User[] users = getUsers();
 		for(int i=0;i<playerAmounts;i++){
-			SplitScreenDimension dimension = dimensions.get(i);
+			Rectangle dimension = dimensions.get(i);
 			User user = users[i];
 			user.cameraController.resize(dimension);
 		}
